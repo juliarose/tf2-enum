@@ -6,7 +6,6 @@ Enum values related to the Team Fortress 2 item schema.
 use tf2_enum::Quality;
 
 assert_eq!(Quality::from_str("Decorated Weapon").unwrap(), Quality::DecoratedWeapon);
-// "5 keys, 2 ref"
 ```
 
 ## License
