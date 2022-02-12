@@ -1,0 +1,18 @@
+[package]
+name = "tf2-enum"
+version = "0.1.0"
+edition = "2021"
+description = "Enum values related to the Team Fortress 2 item schema."
+authors = ["Julia"]
+homepage = "https://github.com/juliarose/tf2-enum"
+repository = "https://github.com/juliarose/tf2-enum"
+license = "MIT"
+keywords = ["tf2", "steam"]
+readme = "README.md"
+
+[dependencies]
+serde = { version = "^1.0", features = ["derive"] }
+serde_repr = "^0.1"
+strum = "^0.21.0"
+strum_macros = "^0.21"
+num_enum = "^0.5.0"
