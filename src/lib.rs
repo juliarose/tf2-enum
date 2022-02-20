@@ -2,7 +2,7 @@ use strum_macros::{Display, EnumString};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u8)]
 pub enum Wear {
     #[strum(serialize = "Factory New")]
@@ -17,7 +17,7 @@ pub enum Wear {
     BattleScarred = 5
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u8)]
 pub enum KillstreakTier {
     #[strum(serialize = "Professional Killstreak")]
@@ -28,7 +28,7 @@ pub enum KillstreakTier {
     Basic = 1,
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u8)]
 pub enum Quality {
     Normal = 0,
@@ -50,7 +50,7 @@ pub enum Quality {
     DecoratedWeapon = 15,
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u8)]
 pub enum Rarity {
     Civilian = 1,
@@ -61,7 +61,7 @@ pub enum Rarity {
     Elite = 6,
 }
 
-#[derive(Debug, PartialEq, Display, EnumString, Clone)]
+#[derive(Debug, Hash, Eq, PartialEq, Display, EnumString, Clone)]
 pub enum Class {
     Scout,
     Soldier,
