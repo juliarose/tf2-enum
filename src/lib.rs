@@ -52,6 +52,44 @@ pub enum Quality {
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u8)]
+pub enum Sheen {
+    #[strum(serialize = "Team Shine")]
+    TeamShine = 1,
+    #[strum(serialize = "Deadly Daffodil")]
+    DeadlyDaffodil = 2,
+    #[strum(serialize = "Manndarin")]
+    Manndarin = 3,
+    #[strum(serialize = "Mean Green")]
+    MeanGreen = 4,
+    #[strum(serialize = "Agonizing Emerald")]
+    AgonizingEmerald = 5,
+    #[strum(serialize = "Villainous Violet")]
+    VillainousViolet = 6,
+    #[strum(serialize = "Hot Rod")]
+    HotRod = 7,
+}
+
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
+#[repr(u16)]
+pub enum Killstreaker {
+    #[strum(serialize = "Fire Horns")]
+    FireHorns = 2002,
+    #[strum(serialize = "Cerebral Discharge")]
+    CerebralDischarge = 2003,
+    #[strum(serialize = "Tornado")]
+    Tornado = 2004,
+    #[strum(serialize = "Flames")]
+    Flames = 2005,
+    #[strum(serialize = "Singularity")]
+    Singularity = 2006,
+    #[strum(serialize = "Incinerator")]
+    Incinerator = 2007,
+    #[strum(serialize = "Hypno-Beam")]
+    HypnoBeam = 2008,
+}
+
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
+#[repr(u8)]
 pub enum Rarity {
     Civilian = 1,
     Freelance = 2,
@@ -59,6 +97,42 @@ pub enum Rarity {
     Commando = 4,
     Assassin = 5,
     Elite = 6,
+}
+
+#[derive(Debug, Hash, Eq, PartialEq, Display, EnumString, Clone)]
+pub enum Spell {
+    #[strum(serialize = "Team Spirit Footprints")]
+    TeamSpiritFootprints,
+    #[strum(serialize = "Gangreen Footprints")]
+    GangreenFootprints,
+    #[strum(serialize = "Corpse Gray Footprints")]
+    CorpseGrayFootprints,
+    #[strum(serialize = "Violent Violet Footprints")]
+    ViolentVioletFootprints,
+    #[strum(serialize = "Rotten Orange Footprints")]
+    RottenOrangeFootprints,
+    #[strum(serialize = "Bruised Purple Footprints")]
+    BruisedPurpleFootprints,
+    #[strum(serialize = "Headless Horseshoes")]
+    HeadlessHorseshoes,
+    #[strum(serialize = "Die Job")]
+    DieJob,
+    #[strum(serialize = "Spectral Spectrum")]
+    SpectralSpectrum,
+    #[strum(serialize = "Putrescent Pigmentation")]
+    PutrescentPigmentation,
+    #[strum(serialize = "Sinister Staining")]
+    SinisterStaining,
+    #[strum(serialize = "Chromatic Corruption")]
+    ChromaticCorruption,
+    #[strum(serialize = "Voices From Below")]
+    VoicesFromBelow,
+    #[strum(serialize = "Exorcism")]
+    Exorcism,
+    #[strum(serialize = "Halloween Fire")]
+    HalloweenFire,
+    #[strum(serialize = "Pumpkin Bombs")]
+    PumpkinBombs,
 }
 
 #[derive(Debug, Hash, Eq, PartialEq, Display, EnumString, Clone)]

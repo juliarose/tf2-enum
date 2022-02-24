@@ -1,6 +1,6 @@
 [package]
 name = "tf2-enum"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 description = "Enum values related to the Team Fortress 2 item schema."
 authors = ["Julia"]
