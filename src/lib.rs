@@ -33,7 +33,9 @@ pub enum KillstreakTier {
 pub enum Quality {
     Normal = 0,
     Genuine = 1,
+    Rarity2 = 2,
     Vintage = 3,
+    Rarity4 = 4,
     Unusual = 5,
     Unique = 6,
     Community = 7,
