@@ -3,9 +3,12 @@
 Enum values related to the Team Fortress 2 item schema.
 
 ```rs
-use tf2_enum::Quality;
+use tf2_enum::{Quality, KillstreakTier};
 
-assert_eq!(Quality::from_str("Decorated Weapon").unwrap(), Quality::DecoratedWeapon);
+fn main() {
+    assert_eq!(Quality::from_str("Unusual").unwrap(), Quality::Unusual);
+    assert_eq!(KillstreakTier::Professional.to_string(), "Professional Killstreak");
+}
 ```
 
 ## License

@@ -12,3 +12,13 @@
 - `Sheen` enum.
 - `Killstreaker` enum.
 - `Spell` enum.
+
+## 0.3.0 (2022-03-14)
+
+### Added
+- `StrangePart` enum.
+- `Paint` enum.
+- Missing `Rarity2` and `Rarity3` variants for `Quality` enum.
+- `color` method for `Quality`.
+- `from_color` method for `Quality`.
+- `from_color_str` method for `Quality`.
