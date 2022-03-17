@@ -22,3 +22,11 @@
 - `color` method for `Quality`.
 - `from_color` method for `Quality`.
 - `from_color_str` method for `Quality`.
+
+## 0.3.1 (2022-03-17)
+
+### Added
+- `EnumIter` derive to all enums.
+
+### Fixed
+- `Paint` enum to parse string variants using lowercase and blu color variations.

@@ -1,6 +1,6 @@
-use strum_macros::{Display, EnumString};
+use strum_macros::{Display, EnumString, EnumIter};
 
-#[derive(Debug, Hash, Eq, PartialEq, Display, EnumString, Clone)]
+#[derive(Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, Clone)]
 pub enum Spell {
     #[strum(serialize = "Team Spirit Footprints")]
     TeamSpiritFootprints,

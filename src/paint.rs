@@ -1,8 +1,8 @@
-use strum_macros::{Display, EnumString};
+use strum_macros::{Display, EnumString, EnumIter};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u32)]
 pub enum Paint {
     #[strum(serialize = "A Color Similar to Slate")]
@@ -68,7 +68,11 @@ pub enum Paint {
 impl Paint {
     
     pub fn from_color_str(color: &str) -> Option<Self> {
-        match color {
+        if color.len() != 6 {
+            return None;
+        }
+        
+        match color.to_ascii_uppercase().as_str() {
             "2F4F4F" => Some(Paint::AColorSimilarToSlate),
             "7D4071" => Some(Paint::ADeepCommitmentToPurple),
             "141414" => Some(Paint::ADistinctiveLackOfHue),
@@ -92,12 +96,19 @@ impl Paint {
             "7C6C57" => Some(Paint::YeOldeRusticColour),
             "424F3B" => Some(Paint::ZepheniahsGreed),
             "654740" => Some(Paint::AnAirOfDebonair),
+            "28394D" => Some(Paint::AnAirOfDebonair),
             "3B1F23" => Some(Paint::BalaclavasAreForever),
+            "18233D" => Some(Paint::BalaclavasAreForever),
             "C36C2D" => Some(Paint::CreamSpirit),
+            "B88035" => Some(Paint::CreamSpirit),
             "483838" => Some(Paint::OperatorsOveralls),
+            "384248" => Some(Paint::OperatorsOveralls),
             "B8383B" => Some(Paint::TeamSpirit),
+            "5885A2" => Some(Paint::TeamSpirit),
             "803020" => Some(Paint::TheValueOfTeamwork),
+            "256D8D" => Some(Paint::TheValueOfTeamwork),
             "A89A8C" => Some(Paint::WaterloggedLabCoat),
+            "839FA3" => Some(Paint::WaterloggedLabCoat),
             _ => None,
         }
     }
@@ -204,4 +215,15 @@ mod tests {
     fn converts_to_hex() {
         assert_eq!(0xFF69B4, Paint::PinkAsHell.color());
     }
+    
+    #[test]
+    fn converts_from_hex_str() {
+        assert_eq!(Paint::from_color_str("839FA3").unwrap(), Paint::WaterloggedLabCoat);
+    }
+    
+    #[test]
+    fn converts_from_hex_str_lowercase() {
+        assert_eq!(Paint::from_color_str("839fa3").unwrap(), Paint::WaterloggedLabCoat);
+    }
+    
 }
