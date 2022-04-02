@@ -24,3 +24,4 @@ pub use strange_part::StrangePart;
 pub use wear::Wear;
 
 pub use strum;
+pub use num_enum;

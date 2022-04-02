@@ -1,5 +1,5 @@
 use strum_macros::{Display, EnumString, EnumIter};
-use num_enum::{TryFromPrimitive, IntoPrimitive};
+use num_enum::{TryFromPrimitive, IntoPrimitive, TryFromPrimitiveError};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 use std::fmt;
 use crate::{Attribute, Attributes};
@@ -16,14 +16,21 @@ pub enum Spell {
 
 impl Spell {
     
+    pub const DEFINDEX_PAINT: u32 = 1004;
+    pub const DEFINDEX_FOOTPRINTS: u32 = 1005;
+    pub const DEFINDEX_VOICES_FROM_BELOW: u32 = 1006;
+    pub const DEFINDEX_PUMPKIN_BOMBS: u32 = 1007;
+    pub const DEFINDEX_HALLOWEEN_FIRE: u32 = 1008;
+    pub const DEFINDEX_EXORCISM: u32 = 1009;
+    
     pub fn attribute_defindex(&self) -> u32 {
         match self {
-            Spell::Footprints(_) => FootprintsSpell::DEFINDEX,
-            Spell::Paint(_) =>  PaintSpell::DEFINDEX,
-            Spell::VoicesFromBelow => 1006,
-            Spell::PumpkinBombs => 1007,
-            Spell::HalloweenFire => 1008,
-            Spell::Exorcism => 1009,
+            Spell::Paint(_) => Self::DEFINDEX_PAINT,
+            Spell::Footprints(_) => Self::DEFINDEX_FOOTPRINTS,
+            Spell::VoicesFromBelow => Self::DEFINDEX_VOICES_FROM_BELOW,
+            Spell::PumpkinBombs => Self::DEFINDEX_PUMPKIN_BOMBS,
+            Spell::HalloweenFire => Self::DEFINDEX_HALLOWEEN_FIRE,
+            Spell::Exorcism => Self::DEFINDEX_EXORCISM,
         }
     }
 }

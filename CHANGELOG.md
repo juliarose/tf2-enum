@@ -45,8 +45,16 @@
 - `Attributes` implementation for `Spell`.
 - `TryFrom<f64>` implementation for `Wear`.
 - `TryFrom<f32>` implementation for `Wear`.
+- `attribute_defindex` method for `Spell`.
+- `DEFINDEX_PAINT` constant for `Spell`.
+- `DEFINDEX_FOOTPRINTS` constant for `Spell`.
+- `DEFINDEX_VOICES_FROM_BELOW` constant for `Spell`.
+- `DEFINDEX_PUMPKIN_BOMBS` constant for `Spell`.
+- `DEFINDEX_HALLOWEEN_FIRE` constant for `Spell`.
+- `DEFINDEX_EXORCISM` constant for `Spell`.
 - `PaintSpell` enum.
 - `FootprintsSpell` enum.
+- `num_enum` re-export.
 
 ### Changed
 - `Spell` is now divided by spell type.
