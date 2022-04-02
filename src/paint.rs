@@ -1,6 +1,7 @@
 use strum_macros::{Display, EnumString, EnumIter};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
+use crate::Attribute;
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u32)]
@@ -192,6 +193,10 @@ impl Paint {
     }
 }
 
+impl Attribute for Paint {
+    const DEFINDEX: u32 = 142;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -225,5 +230,4 @@ mod tests {
     fn converts_from_hex_str_lowercase() {
         assert_eq!(Paint::from_color_str("839fa3").unwrap(), Paint::WaterloggedLabCoat);
     }
-    
 }

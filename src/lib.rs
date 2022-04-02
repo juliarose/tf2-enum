@@ -8,12 +8,15 @@ mod killstreaker;
 mod paint;
 mod strange_part;
 mod wear;
+mod traits;
+
+pub use traits::{Attribute, Attributes};
 
 pub use quality::Quality;
 pub use class::Class;
 pub use killstreak_tier::KillstreakTier;
 pub use sheen::Sheen;
-pub use spell::Spell;
+pub use spell::{Spell, FootprintsSpell, PaintSpell};
 pub use rarity::Rarity;
 pub use killstreaker::Killstreaker;
 pub use paint::Paint;

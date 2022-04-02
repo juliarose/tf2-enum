@@ -30,3 +30,23 @@
 
 ### Fixed
 - `Paint` enum to parse string variants using lowercase and blu color variations.
+
+## 0.4.0 (2022-04-02)
+
+### Added
+- `Attribute` trait.
+- `Attributes` trait.
+- `Attribute` implementation for `Paint`.
+- `Attribute` implementation for `Killstreaker`.
+- `Attribute` implementation for `Sheen`.
+- `Attribute` implementation for `KillstreakTier`.
+- `Attribute` implementation for `Wear`.
+- `Attributes` implementation for `StrangePart`.
+- `Attributes` implementation for `Spell`.
+- `TryFrom<f64>` implementation for `Wear`.
+- `TryFrom<f32>` implementation for `Wear`.
+- `PaintSpell` enum.
+- `FootprintsSpell` enum.
+
+### Changed
+- `Spell` is now divided by spell type.

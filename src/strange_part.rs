@@ -1,6 +1,7 @@
 use strum_macros::{Display, EnumString, EnumIter};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
+use crate::Attributes;
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone)]
 #[repr(u8)]
@@ -173,6 +174,10 @@ impl StrangePart {
             StrangePart::PlayersHit => 6064,
         }
     }
+}
+
+impl Attributes for StrangePart {
+    const DEFINDEX: &'static [u32] = &[380, 382, 384];
 }
 
 #[cfg(test)]
