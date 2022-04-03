@@ -43,18 +43,8 @@ impl fmt::Display for Spell {
     
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Spell::Paint(PaintSpell::DieJob) => write!(f, "Die Job"),
-            Spell::Paint(PaintSpell::ChromaticCorruption) => write!(f, "Chromatic Corruption"),
-            Spell::Paint(PaintSpell::PutrescentPigmentation) => write!(f, "Putrescent Pigmentation"),
-            Spell::Paint(PaintSpell::SpectralSpectrum) => write!(f, "Spectral Spectrum"),
-            Spell::Paint(PaintSpell::SinisterStaining) => write!(f, "Sinister Staining"),
-            Spell::Footprints(FootprintsSpell::TeamSpiritFootprints) => write!(f, "Team Spirit Footprints"),
-            Spell::Footprints(FootprintsSpell::GangreenFootprints) => write!(f, "Gangreen Footprints"),
-            Spell::Footprints(FootprintsSpell::CorpseGrayFootprints) => write!(f, "Corpse Gray Footprints"),
-            Spell::Footprints(FootprintsSpell::ViolentVioletFootprints) => write!(f, "Violent Violet Footprints"),
-            Spell::Footprints(FootprintsSpell::RottenOrangeFootprints) => write!(f, "Rotten Orange Footprints"),
-            Spell::Footprints(FootprintsSpell::BruisedPurpleFootprints) => write!(f, "Bruised Purple Footprints"),
-            Spell::Footprints(FootprintsSpell::HeadlessHorseshoes) => write!(f, "Headless Horseshoes"),
+            Spell::Paint(spell) => write!(f, "{}", spell),
+            Spell::Footprints(spell) => write!(f, "{}", spell),
             Spell::VoicesFromBelow => write!(f, "Voices From Below"),
             Spell::PumpkinBombs => write!(f, "Pumpkin Bombs"),
             Spell::HalloweenFire => write!(f, "Halloween Fire"),
