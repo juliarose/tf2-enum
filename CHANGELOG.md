@@ -57,3 +57,4 @@
 
 ### Changed
 - `Spell` is now divided by spell type.
+- `from_color_str` methods now accept strings prefixed by `#`.
