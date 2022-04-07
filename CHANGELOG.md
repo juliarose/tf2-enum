@@ -54,7 +54,6 @@
 - `DEFINDEX_EXORCISM` constant for `Spell`.
 - `PaintSpell` enum.
 - `FootprintsSpell` enum.
-- `num_enum` re-export.
 
 ### Changed
 - `Spell` is now divided by spell type.

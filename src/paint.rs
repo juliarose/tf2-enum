@@ -69,49 +69,22 @@ pub enum Paint {
 impl Paint {
     
     pub fn from_color_str(color: &str) -> Option<Self> {
-        if color.len() != 6 {
+        let len = color.len();
+        let mut color = color;
+        
+        if len == 7 && color.chars().next() == Some('#') {
+            color = &color[1..len];
+        } else if len != 6 {
             return None;
         }
         
-        match color.to_ascii_uppercase().as_str() {
-            "2F4F4F" => Some(Paint::AColorSimilarToSlate),
-            "7D4071" => Some(Paint::ADeepCommitmentToPurple),
-            "141414" => Some(Paint::ADistinctiveLackOfHue),
-            "BCDDB3" => Some(Paint::AMannsMint),
-            "2D2D24" => Some(Paint::AfterEight),
-            "7E7E7E" => Some(Paint::AgedMoustacheGrey),
-            "E6E6E6" => Some(Paint::AnExtraordinaryAbundanceOfTinge),
-            "E7B53B" => Some(Paint::AustraliumGold),
-            "D8BED8" => Some(Paint::ColorNo216190216),
-            "E9967A" => Some(Paint::DarkSalmonInjustice),
-            "808000" => Some(Paint::DrablyOlive),
-            "729E42" => Some(Paint::IndubitablyGreen),
-            "CF7336" => Some(Paint::MannCoOrange),
-            "A57545" => Some(Paint::Muskelmannbraun),
-            "51384A" => Some(Paint::NobleHattersViolet),
-            "C5AF91" => Some(Paint::PeculiarlyDrabTincture),
-            "FF69B4" => Some(Paint::PinkAsHell),
-            "694D3A" => Some(Paint::RadiganConagherBrown),
-            "32CD32" => Some(Paint::TheBitterTasteOfDefeatAndLime),
-            "F0E68C" => Some(Paint::TheColorOfAGentlemannsBusinessPants),
-            "7C6C57" => Some(Paint::YeOldeRusticColour),
-            "424F3B" => Some(Paint::ZepheniahsGreed),
-            "654740" => Some(Paint::AnAirOfDebonair),
-            "28394D" => Some(Paint::AnAirOfDebonair),
-            "3B1F23" => Some(Paint::BalaclavasAreForever),
-            "18233D" => Some(Paint::BalaclavasAreForever),
-            "C36C2D" => Some(Paint::CreamSpirit),
-            "B88035" => Some(Paint::CreamSpirit),
-            "483838" => Some(Paint::OperatorsOveralls),
-            "384248" => Some(Paint::OperatorsOveralls),
-            "B8383B" => Some(Paint::TeamSpirit),
-            "5885A2" => Some(Paint::TeamSpirit),
-            "803020" => Some(Paint::TheValueOfTeamwork),
-            "256D8D" => Some(Paint::TheValueOfTeamwork),
-            "A89A8C" => Some(Paint::WaterloggedLabCoat),
-            "839FA3" => Some(Paint::WaterloggedLabCoat),
-            _ => None,
+        if let Ok(color) = u32::from_str_radix(color, 16) {
+            if let Ok(paint) = Self::try_from(color) {
+                return Some(paint);
+            }
         }
+        
+        None
     }
     
     pub fn defindex(&self) -> u32 {
@@ -201,6 +174,16 @@ impl Attribute for Paint {
 mod tests {
     use super::*;
 
+    
+    
+    #[test]
+    fn aaa() {
+        let a = usize::from_str_radix("7d4071", 16).unwrap();
+        
+        
+        assert_eq!(a, 8208497);
+    }
+    
     #[test]
     fn converts_to_primitive() {
         assert_eq!(16738740 as u32, Paint::PinkAsHell.into());
@@ -223,11 +206,16 @@ mod tests {
     
     #[test]
     fn converts_from_hex_str() {
-        assert_eq!(Paint::from_color_str("839FA3").unwrap(), Paint::WaterloggedLabCoat);
+        assert_eq!(Paint::from_color_str("FF69B4").unwrap(), Paint::PinkAsHell);
     }
     
     #[test]
     fn converts_from_hex_str_lowercase() {
-        assert_eq!(Paint::from_color_str("839fa3").unwrap(), Paint::WaterloggedLabCoat);
+        assert_eq!(Paint::from_color_str("ff69b4").unwrap(), Paint::PinkAsHell);
+    }
+    
+    #[test]
+    fn converts_from_hex_str_lowercase_with_pound() {
+        assert_eq!(Paint::from_color_str("#FF69B4").unwrap(), Paint::PinkAsHell);
     }
 }

@@ -48,20 +48,20 @@ impl Quality {
     }
     
     pub fn from_color_str(color: &str) -> Option<Self> {
-        match color {
-            "B2B2B2" => Some(Quality::Normal),
-            "4D7455" => Some(Quality::Genuine),
-            "476291" => Some(Quality::Vintage),
-            "8650AC" => Some(Quality::Unusual),
-            "FFD700" => Some(Quality::Unique),
-            "56083F" => Some(Quality::Valve),
-            "70B04A" => Some(Quality::SelfMade),
-            "CF6A32" => Some(Quality::Strange),
-            "38F3AB" => Some(Quality::Haunted),
-            "AA0000" => Some(Quality::Collectors),
-            "FAFAFA" => Some(Quality::DecoratedWeapon),
-            _ => None,
+        let len = color.len();
+        let mut color = color;
+        
+        if len == 7 && color.chars().next() == Some('#') {
+            color = &color[1..len];
+        } else if len != 6 {
+            return None;
         }
+        
+        if let Ok(color) = u32::from_str_radix(color, 16) {
+            return Self::from_color(color);
+        }
+        
+        None
     }
     
     pub fn color(&self) -> u32 {
@@ -115,4 +115,5 @@ mod tests {
     fn displays_as_string() {
         assert_eq!("Collector's", &format!("{}", Quality::Collectors));
     }
+    
 }
