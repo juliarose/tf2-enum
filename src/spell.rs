@@ -4,7 +4,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use std::fmt;
 use crate::{Attribute, Attributes};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone)]
+#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
 pub enum Spell {
     Footprints(FootprintsSpell),
     Paint(PaintSpell),
@@ -79,7 +79,7 @@ impl std::str::FromStr for Spell {
     }
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum PaintSpell {
     #[strum(serialize = "Die Job")]
@@ -98,7 +98,7 @@ impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum FootprintsSpell {
     #[strum(serialize = "Team Spirit Footprints")]
