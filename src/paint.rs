@@ -72,7 +72,7 @@ impl Paint {
         let len = color.len();
         let mut color = color;
         
-        if len == 7 && color.chars().next() == Some('#') {
+        if len == 7 && color.starts_with('#') {
             color = &color[1..len];
         } else if len != 6 {
             return None;
@@ -122,7 +122,7 @@ impl Paint {
     }
     
     pub fn color(&self) -> u32 {
-        u32::from(self.clone())
+        u32::from(*self)
     }
     
     pub fn colors(&self) -> (u32, u32) {

@@ -115,7 +115,7 @@ pub enum StrangePart {
 impl StrangePart {
     
     pub fn score_type(&self) -> u8 {
-        u8::from(self.clone())
+        u8::from(*self)
     }
     
     pub fn defindex(&self) -> u32 {
