@@ -3,7 +3,7 @@ use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
-#[repr(u8)]
+#[repr(u32)]
 pub enum Quality {
     Normal = 0,
     Genuine = 1,
@@ -103,7 +103,7 @@ mod tests {
 
     #[test]
     fn converts_to_primitive() {
-        assert_eq!(11 as u8, Quality::Strange.into());
+        assert_eq!(11 as u32, Quality::Strange.into());
     }
     
     #[test]

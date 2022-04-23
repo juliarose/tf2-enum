@@ -3,7 +3,7 @@ use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
-#[repr(u8)]
+#[repr(u32)]
 pub enum Rarity {
     Civilian = 1,
     Freelance = 2,

@@ -4,7 +4,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use crate::Attribute;
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
-#[repr(u8)]
+#[repr(u32)]
 pub enum Sheen {
     #[strum(serialize = "Team Shine")]
     TeamShine = 1,

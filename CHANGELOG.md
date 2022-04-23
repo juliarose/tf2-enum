@@ -58,3 +58,12 @@
 ### Changed
 - `Spell` is now divided by spell type.
 - `from_color_str` methods now accept strings prefixed by `#`.
+
+## 0.4.0 (2022-04-23)
+
+### Added
+- `CraftClass` enum.
+- `FootprintsSpell` enum.
+
+### Changed
+- All enum reprs to use `u32` for consistency.

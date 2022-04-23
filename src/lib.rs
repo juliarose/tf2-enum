@@ -9,6 +9,8 @@ mod paint;
 mod strange_part;
 mod wear;
 mod traits;
+mod craft_class;
+mod item_slot;
 
 pub use traits::{Attribute, Attributes};
 
@@ -22,5 +24,7 @@ pub use killstreaker::Killstreaker;
 pub use paint::Paint;
 pub use strange_part::StrangePart;
 pub use wear::Wear;
+pub use craft_class::CraftClass;
+pub use item_slot::ItemSlot;
 
 pub use strum;

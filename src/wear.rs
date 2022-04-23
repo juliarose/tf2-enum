@@ -4,7 +4,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use crate::Attribute;
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
-#[repr(u8)]
+#[repr(u32)]
 pub enum Wear {
     #[strum(serialize = "Factory New")]
     FactoryNew = 1,
@@ -26,7 +26,7 @@ impl TryFrom<f64> for Wear {
     type Error = TryFromPrimitiveError<Wear>;
     
     fn try_from(float_value: f64) -> Result<Wear, Self::Error> {
-        Wear::try_from((float_value * 5.0).round() as u8)
+        Wear::try_from((float_value * 5.0).round() as u32)
     }
 }
 
@@ -34,6 +34,6 @@ impl TryFrom<f32> for Wear {
     type Error = TryFromPrimitiveError<Wear>;
     
     fn try_from(float_value: f32) -> Result<Wear, Self::Error> {
-        Wear::try_from((float_value * 5.0).round() as u8)
+        Wear::try_from((float_value * 5.0).round() as u32)
     }
 }

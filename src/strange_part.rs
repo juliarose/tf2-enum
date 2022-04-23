@@ -4,7 +4,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use crate::Attributes;
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
-#[repr(u8)]
+#[repr(u32)]
 pub enum StrangePart {
     #[strum(serialize = "Scouts Killed")]
     ScoutsKilled = 10,
@@ -114,8 +114,8 @@ pub enum StrangePart {
 
 impl StrangePart {
     
-    pub fn score_type(&self) -> u8 {
-        u8::from(*self)
+    pub fn score_type(&self) -> u32 {
+        u32::from(*self)
     }
     
     pub fn defindex(&self) -> u32 {
