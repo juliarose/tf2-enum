@@ -1,6 +1,7 @@
+use serde::Serialize;
 use strum_macros::{Display, EnumString, EnumIter};
 
-#[derive(Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, Clone, Copy)]
+#[derive(Debug, Serialize, Hash, Eq, PartialEq, Display, EnumString, EnumIter, Clone, Copy)]
 pub enum CraftClass {
     #[strum(serialize = "weapon")]
     Weapon,
