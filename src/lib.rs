@@ -30,5 +30,3 @@ pub use craft_class::CraftClass;
 pub use item_slot::ItemSlot;
 pub use origin::Origin;
 pub use craft_material_type::CraftMaterialType;
-
-pub use strum;
