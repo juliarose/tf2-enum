@@ -115,5 +115,4 @@ mod tests {
     fn displays_as_string() {
         assert_eq!("Collector's", &format!("{}", Quality::Collectors));
     }
-    
 }

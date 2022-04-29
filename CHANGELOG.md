@@ -63,7 +63,17 @@
 
 ### Added
 - `CraftClass` enum.
-- `FootprintsSpell` enum.
 
 ### Changed
 - All enum reprs to use `u32` for consistency.
+
+## 0.5.0 (2022-04-29)
+
+### Added
+- `Serialize` implementation for `CraftClass`, `ItemSlot`, and `Class`.
+- `Deserialize` implementation for `CraftClass`, `ItemSlot`, and `Class`.
+- `CraftMaterialType` enum.
+- `Origin` enum.
+
+### Remove
+- `strum` re-export.

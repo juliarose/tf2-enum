@@ -173,16 +173,6 @@ impl Attribute for Paint {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    
-    
-    #[test]
-    fn aaa() {
-        let a = usize::from_str_radix("7d4071", 16).unwrap();
-        
-        
-        assert_eq!(a, 8208497);
-    }
     
     #[test]
     fn converts_to_primitive() {

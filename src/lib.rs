@@ -11,6 +11,8 @@ mod wear;
 mod traits;
 mod craft_class;
 mod item_slot;
+mod origin;
+mod craft_material_type;
 
 pub use traits::{Attribute, Attributes};
 
@@ -26,5 +28,7 @@ pub use strange_part::StrangePart;
 pub use wear::Wear;
 pub use craft_class::CraftClass;
 pub use item_slot::ItemSlot;
+pub use origin::Origin;
+pub use craft_material_type::CraftMaterialType;
 
 pub use strum;
