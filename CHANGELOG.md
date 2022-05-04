@@ -74,6 +74,8 @@
 - `Deserialize` implementation for `CraftClass`, `ItemSlot`, and `Class`.
 - `CraftMaterialType` enum.
 - `Origin` enum.
+- `IntoEnumIterator` re-export from `strum` for iterating over enums.
 
 ### Remove
 - `strum` re-export.
+

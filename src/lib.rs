@@ -1,3 +1,19 @@
+//! # tf2-enum
+//! 
+//! Provides enumerated types for models related to the Team Fortress 2 item schema. 
+//! 
+//! ## Usage
+//! 
+//! ```
+//! use tf2_enum::{Quality, Paint};
+//! 
+//! assert_eq!(Quality::from_str("Unusual").unwrap(), Quality::Unusual);
+//! assert_eq!(Quality::Unusual as u32, 5);
+//! assert_eq!(KillstreakTier::PinkAsHell.to_string(), "Pink as Hell");
+//! ```
+
+pub use strum::IntoEnumIterator;
+
 mod quality;
 mod class;
 mod killstreak_tier;

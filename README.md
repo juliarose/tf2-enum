@@ -1,6 +1,6 @@
 # tf2-enum
 
-Enum values related to the Team Fortress 2 item schema.
+Provides enumerated types for models related to the Team Fortress 2 item schema.
 
 ```rs
 use tf2_enum::{Quality, KillstreakTier};

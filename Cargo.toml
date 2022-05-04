@@ -2,7 +2,7 @@
 name = "tf2-enum"
 version = "0.5.0"
 edition = "2021"
-description = "Enum values related to the Team Fortress 2 item schema."
+description = "Provides enumerated types for models related to the Team Fortress 2 item schema."
 authors = ["Julia"]
 homepage = "https://github.com/juliarose/tf2-enum"
 repository = "https://github.com/juliarose/tf2-enum"
