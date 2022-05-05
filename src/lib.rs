@@ -6,10 +6,11 @@
 //! 
 //! ```
 //! use tf2_enum::{Quality, Paint};
+//! use std::str::FromStr;
 //! 
 //! assert_eq!(Quality::from_str("Unusual").unwrap(), Quality::Unusual);
 //! assert_eq!(Quality::Unusual as u32, 5);
-//! assert_eq!(KillstreakTier::PinkAsHell.to_string(), "Pink as Hell");
+//! assert_eq!(Paint::PinkAsHell.to_string(), "Pink as Hell");
 //! ```
 
 pub use strum::IntoEnumIterator;
