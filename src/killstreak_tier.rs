@@ -7,7 +7,7 @@ use crate::Attribute;
 #[repr(u32)]
 pub enum KillstreakTier {
     #[strum(serialize = "Killstreak")]
-    Basic = 1,
+    Killstreak = 1,
     #[strum(serialize = "Specialized Killstreak")]
     Specialized = 2,
     #[strum(serialize = "Professional Killstreak")]
