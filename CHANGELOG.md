@@ -79,3 +79,7 @@
 ### Remove
 - `strum` re-export.
 
+## 0.6.0 (2022-10-15)
+
+### Changed
+- `Basic` in `KillstreakTier` is now `Killstreak`
