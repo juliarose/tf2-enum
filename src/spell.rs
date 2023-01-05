@@ -71,6 +71,7 @@ impl std::str::FromStr for Spell {
             "Bruised Purple Footprints" => Result::Ok(Spell::Footprints(FootprintsSpell::BruisedPurpleFootprints)),
             "Headless Horseshoes" => Result::Ok(Spell::Footprints(FootprintsSpell::HeadlessHorseshoes)),
             "Voices From Below" => Result::Ok(Spell::VoicesFromBelow),
+            "Voices from Below" => Result::Ok(Spell::VoicesFromBelow),
             "Pumpkin Bombs" => Result::Ok(Spell::PumpkinBombs),
             "Halloween Fire" => Result::Ok(Spell::HalloweenFire),
             "Exorcism" => Result::Ok(Spell::Exorcism),

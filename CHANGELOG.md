@@ -82,4 +82,9 @@
 ## 0.6.0 (2022-10-15)
 
 ### Changed
-- `Basic` in `KillstreakTier` is now `Killstreak`
+- `Basic` in `KillstreakTier` is now `Killstreak`.
+
+## 0.6.1 (2023-01-05)
+
+### Added
+- `Spell::from_str` now also includes "Voices from Below" for `Spell::VoicesFromBelow`.
