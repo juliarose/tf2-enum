@@ -1,8 +1,8 @@
-use strum_macros::{Display, EnumString, EnumIter};
+use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum Quality {
     Normal = 0,
@@ -29,6 +29,26 @@ pub enum Quality {
 }
 
 impl Quality {
+    pub fn color(&self) -> u32 {
+        match self {
+            Quality::Normal => 0xB2B2B2,
+            Quality::Genuine => 0x4D7455,
+            Quality::Rarity2 => 0xFFFFFF,
+            Quality::Vintage => 0x476291,
+            Quality::Rarity3 => 0xFFFFFF,
+            Quality::Unusual => 0x8650AC,
+            Quality::Unique => 0xFFD700,
+            Quality::Community => 0x70B04A,
+            Quality::Valve => 0x56083F,
+            Quality::SelfMade => 0x70B04A,
+            Quality::Customized => 0xFFFFFF,
+            Quality::Strange => 0xCF6A32,
+            Quality::Completed => 0xFFFFFF,
+            Quality::Haunted => 0x38F3AB,
+            Quality::Collectors => 0xAA0000,
+            Quality::DecoratedWeapon => 0xFAFAFA,
+        }
+    }
     
     pub fn from_color(color: u32) -> Option<Self> {
         match color {
@@ -57,32 +77,9 @@ impl Quality {
             return None;
         }
         
-        if let Ok(color) = u32::from_str_radix(color, 16) {
-            return Self::from_color(color);
-        }
+        let color = u32::from_str_radix(color, 16).ok()?;
         
-        None
-    }
-    
-    pub fn color(&self) -> u32 {
-        match self {
-            Quality::Normal => 0xB2B2B2,
-            Quality::Genuine => 0x4D7455,
-            Quality::Rarity2 => 0xFFFFFF,
-            Quality::Vintage => 0x476291,
-            Quality::Rarity3 => 0xFFFFFF,
-            Quality::Unusual => 0x8650AC,
-            Quality::Unique => 0xFFD700,
-            Quality::Community => 0x70B04A,
-            Quality::Valve => 0x56083F,
-            Quality::SelfMade => 0x70B04A,
-            Quality::Customized => 0xFFFFFF,
-            Quality::Strange => 0xCF6A32,
-            Quality::Completed => 0xFFFFFF,
-            Quality::Haunted => 0x38F3AB,
-            Quality::Collectors => 0xAA0000,
-            Quality::DecoratedWeapon => 0xFAFAFA,
-        }
+        Self::from_color(color)
     }
 }
 

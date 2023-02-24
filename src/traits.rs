@@ -1,3 +1,5 @@
+pub use strum::{IntoEnumIterator, EnumCount};
+
 pub trait Attribute {
     const DEFINDEX: u32;
 }

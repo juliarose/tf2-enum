@@ -1,10 +1,10 @@
-use strum_macros::{Display, EnumString, EnumIter};
+use crate::{Attribute, Attributes};
+use std::fmt;
+use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
-use std::fmt;
-use crate::{Attribute, Attributes};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
+#[derive(Debug, Hash, Eq, PartialEq, Clone, EnumCount, Copy)]
 pub enum Spell {
     Footprints(FootprintsSpell),
     Paint(PaintSpell),
@@ -15,7 +15,6 @@ pub enum Spell {
 }
 
 impl Spell {
-    
     pub const DEFINDEX_PAINT: u32 = 1004;
     pub const DEFINDEX_FOOTPRINTS: u32 = 1005;
     pub const DEFINDEX_VOICES_FROM_BELOW: u32 = 1006;
@@ -40,7 +39,6 @@ impl Attributes for Spell {
 }
 
 impl fmt::Display for Spell {
-    
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Spell::Paint(spell) => write!(f, "{}", spell),
@@ -80,7 +78,7 @@ impl std::str::FromStr for Spell {
     }
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum PaintSpell {
     #[strum(serialize = "Die Job")]
@@ -99,7 +97,7 @@ impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum FootprintsSpell {
     #[strum(serialize = "Team Spirit Footprints")]

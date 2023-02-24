@@ -1,7 +1,7 @@
+use crate::Attributes;
 use strum_macros::{Display, EnumString, EnumIter};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
-use crate::Attributes;
 
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
@@ -113,9 +113,12 @@ pub enum StrangePart {
 }
 
 impl StrangePart {
-    
     pub fn score_type(&self) -> u32 {
         u32::from(*self)
+    }
+    
+    pub fn from_score_type(score_type: u32) -> Option<Self> {
+        Self::try_from(score_type).ok()
     }
     
     pub fn defindex(&self) -> u32 {
@@ -172,6 +175,64 @@ impl StrangePart {
             StrangePart::Assists => 6065,
             StrangePart::NotCritNorMiniCritKills => 6063,
             StrangePart::PlayersHit => 6064,
+        }
+    }
+    
+    pub fn from_defindex(defindex: u32) -> Option<Self> {
+        match defindex {
+            6003 => Some(StrangePart::ScoutsKilled),
+            6005 => Some(StrangePart::SnipersKilled),
+            6001 => Some(StrangePart::DemomenKilled),
+            6000 => Some(StrangePart::HeaviesKilled),
+            6006 => Some(StrangePart::PyrosKilled),
+            6008 => Some(StrangePart::SpiesKilled),
+            6004 => Some(StrangePart::EngineersKilled),
+            6007 => Some(StrangePart::MedicsKilled),
+            6009 => Some(StrangePart::BuildingsDestroyed),
+            6010 => Some(StrangePart::ProjectilesReflected),
+            6011 => Some(StrangePart::HeadshotKills),
+            6012 => Some(StrangePart::AirborneEnemyKills),
+            6013 => Some(StrangePart::GibKills),
+            6015 => Some(StrangePart::KillsUnderAFullMoon),
+            6016 => Some(StrangePart::Dominations),
+            6018 => Some(StrangePart::Revenges),
+            6019 => Some(StrangePart::PosthumousKills),
+            6020 => Some(StrangePart::TeammatesExtinguished),
+            6021 => Some(StrangePart::CriticalKills),
+            6022 => Some(StrangePart::KillsWhileExplosiveJumping),
+            6025 => Some(StrangePart::SappersRemoved),
+            6024 => Some(StrangePart::CloakedSpiesKilled),
+            6023 => Some(StrangePart::MedicsKilledThatHaveFullUberCharge),
+            6026 => Some(StrangePart::RobotsDestroyed),
+            6035 => Some(StrangePart::DefendersKilled),
+            6036 => Some(StrangePart::SubmergedEnemyKills),
+            6037 => Some(StrangePart::KillsWhileInvulnUberCharged),
+            6038 => Some(StrangePart::TanksDestroyed),
+            6039 => Some(StrangePart::LongDistanceKills),
+            6041 => Some(StrangePart::KillsDuringVictoryTime),
+            6048 => Some(StrangePart::RobotSpiesDestroyed),
+            6051 => Some(StrangePart::TauntKills),
+            6052 => Some(StrangePart::UnusualWearingPlayerKills),
+            6053 => Some(StrangePart::BurningPlayerKills),
+            6054 => Some(StrangePart::KillstreaksEnded),
+            6055 => Some(StrangePart::FreezecamTauntAppearances),
+            6056 => Some(StrangePart::DamageDealt),
+            6057 => Some(StrangePart::FiresSurvived),
+            6058 => Some(StrangePart::AlliedHealingDone),
+            6059 => Some(StrangePart::PointBlankKills),
+            6034 => Some(StrangePart::RobotsKilledDuringHalloween),
+            6033 => Some(StrangePart::KillsDuringHalloween),
+            6032 => Some(StrangePart::KillsWhileLowHealth),
+            6028 => Some(StrangePart::GiantRobotsDestroyed),
+            6060 => Some(StrangePart::Kills),
+            6061 => Some(StrangePart::FullHealthKills),
+            6002 => Some(StrangePart::SoldiersKilled),
+            6042 => Some(StrangePart::RobotScoutsDestroyed),
+            6062 => Some(StrangePart::TauntingPlayerKills),
+            6065 => Some(StrangePart::Assists),
+            6063 => Some(StrangePart::NotCritNorMiniCritKills),
+            6064 => Some(StrangePart::PlayersHit),
+            _ => None,
         }
     }
 }

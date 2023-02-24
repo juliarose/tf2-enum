@@ -88,3 +88,10 @@
 
 ### Added
 - `Spell::from_str` now also includes "Voices from Below" for `Spell::VoicesFromBelow`.
+
+## 0.7.0 (2023-02-23)
+
+### Added
+- Some missing inconsistencies.
+- Export `num_enum::TryFromPrimitiveError`.
+- `strum::EnumCount` on enums.

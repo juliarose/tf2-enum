@@ -1,9 +1,9 @@
-use strum_macros::{Display, EnumString, EnumIter};
+use crate::Attribute;
+use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
-use crate::Attribute;
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum Paint {
     #[strum(serialize = "A Color Similar to Slate")]
@@ -67,6 +67,13 @@ pub enum Paint {
 }
 
 impl Paint {
+    pub fn color(&self) -> u32 {
+        u32::from(*self)
+    }
+    
+    pub fn from_color(color: u32) -> Option<Self> {
+        Self::try_from(color).ok()
+    }
     
     pub fn from_color_str(color: &str) -> Option<Self> {
         let len = color.len();
@@ -78,51 +85,9 @@ impl Paint {
             return None;
         }
         
-        if let Ok(color) = u32::from_str_radix(color, 16) {
-            if let Ok(paint) = Self::try_from(color) {
-                return Some(paint);
-            }
-        }
+        let color = u32::from_str_radix(color, 16).ok()?;
         
-        None
-    }
-    
-    pub fn defindex(&self) -> u32 {
-        match self {
-            Paint::AColorSimilarToSlate => 5052,
-            Paint::ADeepCommitmentToPurple => 5031,
-            Paint::ADistinctiveLackOfHue => 5040,
-            Paint::AMannsMint => 5076,
-            Paint::AfterEight => 5077,
-            Paint::AgedMoustacheGrey => 5038,
-            Paint::AnExtraordinaryAbundanceOfTinge => 5039,
-            Paint::AustraliumGold => 5037,
-            Paint::ColorNo216190216 => 5030,
-            Paint::DarkSalmonInjustice => 5056,
-            Paint::DrablyOlive => 5053,
-            Paint::IndubitablyGreen => 5027,
-            Paint::MannCoOrange => 5032,
-            Paint::Muskelmannbraun => 5033,
-            Paint::NobleHattersViolet => 5029,
-            Paint::PeculiarlyDrabTincture => 5034,
-            Paint::PinkAsHell => 5051,
-            Paint::RadiganConagherBrown => 5035,
-            Paint::TheBitterTasteOfDefeatAndLime => 5054,
-            Paint::TheColorOfAGentlemannsBusinessPants => 5055,
-            Paint::YeOldeRusticColour => 5036,
-            Paint::ZepheniahsGreed => 5028,
-            Paint::AnAirOfDebonair => 5063,
-            Paint::BalaclavasAreForever => 5062,
-            Paint::CreamSpirit => 5065,
-            Paint::OperatorsOveralls => 5060,
-            Paint::TeamSpirit => 5046,
-            Paint::TheValueOfTeamwork => 5064,
-            Paint::WaterloggedLabCoat => 5061,
-        }
-    }
-    
-    pub fn color(&self) -> u32 {
-        u32::from(*self)
+        Self::from_color(color)
     }
     
     pub fn colors(&self) -> (u32, u32) {
@@ -163,6 +128,75 @@ impl Paint {
         let (red, blu) = self.colors();
         
         red != blu
+    }
+    
+    pub fn from_defindex(defindex: u32) -> Option<Self> {
+        match defindex {
+            5052 => Some(Paint::AColorSimilarToSlate),
+            5031 => Some(Paint::ADeepCommitmentToPurple),
+            5040 => Some(Paint::ADistinctiveLackOfHue),
+            5076 => Some(Paint::AMannsMint),
+            5077 => Some(Paint::AfterEight),
+            5038 => Some(Paint::AgedMoustacheGrey),
+            5039 => Some(Paint::AnExtraordinaryAbundanceOfTinge),
+            5037 => Some(Paint::AustraliumGold),
+            5030 => Some(Paint::ColorNo216190216),
+            5056 => Some(Paint::DarkSalmonInjustice),
+            5053 => Some(Paint::DrablyOlive),
+            5027 => Some(Paint::IndubitablyGreen),
+            5032 => Some(Paint::MannCoOrange),
+            5033 => Some(Paint::Muskelmannbraun),
+            5029 => Some(Paint::NobleHattersViolet),
+            5034 => Some(Paint::PeculiarlyDrabTincture),
+            5051 => Some(Paint::PinkAsHell),
+            5035 => Some(Paint::RadiganConagherBrown),
+            5054 => Some(Paint::TheBitterTasteOfDefeatAndLime),
+            5055 => Some(Paint::TheColorOfAGentlemannsBusinessPants),
+            5036 => Some(Paint::YeOldeRusticColour),
+            5028 => Some(Paint::ZepheniahsGreed),
+            5063 => Some(Paint::AnAirOfDebonair),
+            5062 => Some(Paint::BalaclavasAreForever),
+            5065 => Some(Paint::CreamSpirit),
+            5060 => Some(Paint::OperatorsOveralls),
+            5046 => Some(Paint::TeamSpirit),
+            5064 => Some(Paint::TheValueOfTeamwork),
+            5061 => Some(Paint::WaterloggedLabCoat),
+            _ => None,
+        }
+    }
+    
+    pub fn defindex(&self) -> u32 {
+        match self {
+            Paint::AColorSimilarToSlate => 5052,
+            Paint::ADeepCommitmentToPurple => 5031,
+            Paint::ADistinctiveLackOfHue => 5040,
+            Paint::AMannsMint => 5076,
+            Paint::AfterEight => 5077,
+            Paint::AgedMoustacheGrey => 5038,
+            Paint::AnExtraordinaryAbundanceOfTinge => 5039,
+            Paint::AustraliumGold => 5037,
+            Paint::ColorNo216190216 => 5030,
+            Paint::DarkSalmonInjustice => 5056,
+            Paint::DrablyOlive => 5053,
+            Paint::IndubitablyGreen => 5027,
+            Paint::MannCoOrange => 5032,
+            Paint::Muskelmannbraun => 5033,
+            Paint::NobleHattersViolet => 5029,
+            Paint::PeculiarlyDrabTincture => 5034,
+            Paint::PinkAsHell => 5051,
+            Paint::RadiganConagherBrown => 5035,
+            Paint::TheBitterTasteOfDefeatAndLime => 5054,
+            Paint::TheColorOfAGentlemannsBusinessPants => 5055,
+            Paint::YeOldeRusticColour => 5036,
+            Paint::ZepheniahsGreed => 5028,
+            Paint::AnAirOfDebonair => 5063,
+            Paint::BalaclavasAreForever => 5062,
+            Paint::CreamSpirit => 5065,
+            Paint::OperatorsOveralls => 5060,
+            Paint::TeamSpirit => 5046,
+            Paint::TheValueOfTeamwork => 5064,
+            Paint::WaterloggedLabCoat => 5061,
+        }
     }
 }
 

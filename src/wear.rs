@@ -1,9 +1,9 @@
-use strum_macros::{Display, EnumString, EnumIter};
+use crate::Attribute;
+use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, TryFromPrimitiveError, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
-use crate::Attribute;
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum Wear {
     #[strum(serialize = "Factory New")]
@@ -23,7 +23,7 @@ impl Attribute for Wear {
 }
 
 impl TryFrom<f64> for Wear {
-    type Error = TryFromPrimitiveError<Wear>;
+    type Error = TryFromPrimitiveError<Self>;
     
     fn try_from(float_value: f64) -> Result<Wear, Self::Error> {
         Wear::try_from((float_value * 5.0).round() as u32)
@@ -31,7 +31,7 @@ impl TryFrom<f64> for Wear {
 }
 
 impl TryFrom<f32> for Wear {
-    type Error = TryFromPrimitiveError<Wear>;
+    type Error = TryFromPrimitiveError<Self>;
     
     fn try_from(float_value: f32) -> Result<Wear, Self::Error> {
         Wear::try_from((float_value * 5.0).round() as u32)
