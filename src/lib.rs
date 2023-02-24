@@ -45,4 +45,4 @@ pub use item_slot::ItemSlot;
 pub use origin::Origin;
 pub use craft_material_type::CraftMaterialType;
 
-pub use num_enum::TryFromPrimitiveError;
+pub use num_enum;

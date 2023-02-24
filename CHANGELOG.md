@@ -95,3 +95,11 @@
 - Some missing inconsistencies.
 - Export `num_enum::TryFromPrimitiveError`.
 - `strum::EnumCount` on enums.
+
+## 0.8.0 (2023-02-23)
+
+### Added
+- Re-export `num_enum`.
+
+### Removed
+- Export `num_enum::TryFromPrimitiveError`.
