@@ -103,3 +103,9 @@
 
 ### Removed
 - Export `num_enum::TryFromPrimitiveError`.
+
+## 0.8.1 (2023-02-27)
+
+### Added
+- `Serialize` impl for `Spell`.
+- `Deserialize` impl for `Spell`.

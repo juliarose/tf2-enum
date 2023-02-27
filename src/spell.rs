@@ -1,8 +1,11 @@
 use crate::{Attribute, Attributes};
 use std::fmt;
+use std::str::FromStr;
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
+use serde::{Serialize, Deserialize, Serializer};
+use serde::de::{self, Visitor, Deserializer};
 
 #[derive(Debug, Hash, Eq, PartialEq, Clone, EnumCount, Copy)]
 pub enum Spell {
@@ -78,6 +81,41 @@ impl std::str::FromStr for Spell {
     }
 }
 
+struct SpellVisitor;
+
+impl<'de> Visitor<'de> for SpellVisitor {
+    type Value = Spell;
+    
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string")
+    }
+    
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        Spell::from_str(value).map_err(serde::de::Error::custom)
+    }
+}
+
+impl<'de> Deserialize<'de> for Spell {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_any(SpellVisitor)
+    }
+}
+
+impl Serialize for Spell {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.to_string())
+    }
+}
+
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum PaintSpell {
@@ -128,6 +166,22 @@ mod tests {
     #[test]
     fn from_str() {
         assert_eq!(Spell::from_str("Headless Horseshoes").unwrap(), Spell::Footprints(FootprintsSpell::HeadlessHorseshoes));
+    }
+    
+    #[test]
+    fn serialize_spell() {
+        #[derive(Debug, Serialize, Deserialize, Eq, PartialEq)]
+        struct SpellAttribute {
+            spell: Spell,
+        }
+        
+        let attribute = SpellAttribute {
+            spell: Spell::Footprints(FootprintsSpell::HeadlessHorseshoes),
+        };
+        let json = serde_json::to_string(&attribute).unwrap();
+        
+        assert_eq!(json, "{\"spell\":\"Headless Horseshoes\"}");
+        assert_eq!(serde_json::from_str::<SpellAttribute>(&json).unwrap(), attribute);
     }
     
     #[test]

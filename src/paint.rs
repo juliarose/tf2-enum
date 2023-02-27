@@ -210,7 +210,7 @@ mod tests {
     
     #[test]
     fn converts_to_primitive() {
-        assert_eq!(16738740 as u32, Paint::PinkAsHell.into());
+        assert_eq!(16738740 as u32, Paint::PinkAsHell as u32);
     }
     
     #[test]

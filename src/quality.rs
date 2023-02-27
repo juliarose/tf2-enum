@@ -100,7 +100,7 @@ mod tests {
 
     #[test]
     fn converts_to_primitive() {
-        assert_eq!(11 as u32, Quality::Strange.into());
+        assert_eq!(11 as u32, Quality::Strange as u32);
     }
     
     #[test]

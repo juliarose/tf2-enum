@@ -1,6 +1,6 @@
 [package]
 name = "tf2-enum"
-version = "0.8.0"
+version = "0.8.1"
 edition = "2021"
 description = "Provides enumerated types for models related to the Team Fortress 2 item schema."
 authors = ["Julia"]
@@ -16,3 +16,6 @@ serde_repr = "0.1"
 strum = "0.21"
 strum_macros = "0.21"
 num_enum = "0.5"
+
+[dev-dependencies]
+serde_json = "1.0.93"
