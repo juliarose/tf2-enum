@@ -109,3 +109,9 @@
 ### Added
 - `Serialize` impl for `Spell`.
 - `Deserialize` impl for `Spell`.
+
+## 0.8.2 (2023-09-06)
+
+### Added
+- `Ord` impl for enums.
+- `PartialOrd` impl for enums.

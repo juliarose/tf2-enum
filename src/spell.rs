@@ -7,7 +7,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use serde::{Serialize, Deserialize, Serializer};
 use serde::de::{self, Visitor, Deserializer};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, EnumCount, Copy)]
+#[derive(Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Clone, EnumCount, Copy)]
 pub enum Spell {
     Footprints(FootprintsSpell),
     Paint(PaintSpell),
@@ -116,7 +116,7 @@ impl Serialize for Spell {
     }
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum PaintSpell {
     #[strum(serialize = "Die Job")]
@@ -135,7 +135,7 @@ impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
 }
 
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum FootprintsSpell {
     #[strum(serialize = "Team Spirit Footprints")]
