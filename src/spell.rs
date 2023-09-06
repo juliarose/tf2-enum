@@ -135,6 +135,12 @@ impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
 }
 
+impl Into<Spell> for PaintSpell {
+    fn into(self) -> Spell {
+        Spell::Paint(self)
+    }
+}
+
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum FootprintsSpell {
@@ -156,6 +162,12 @@ pub enum FootprintsSpell {
 
 impl Attribute for FootprintsSpell {
     const DEFINDEX: u32 = 1005;
+}
+
+impl Into<Spell> for FootprintsSpell {
+    fn into(self) -> Spell {
+        Spell::Footprints(self)
+    }
 }
 
 #[cfg(test)]

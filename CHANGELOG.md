@@ -115,3 +115,9 @@
 ### Added
 - `Ord` impl for enums.
 - `PartialOrd` impl for enums.
+
+## 0.8.3 (2023-09-06)
+
+### Added
+- `Into<Spell>` impl for `FootprintsSpell`.
+- `Into<Spell>` impl for `PaintSpell`.
