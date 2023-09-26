@@ -153,6 +153,7 @@ impl TryInto<u32> for Spell {
     }
 }
 
+/// Paint spell.
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum PaintSpell {
@@ -202,6 +203,7 @@ impl TryFrom<Spell> for PaintSpell {
     }
 }
 
+/// Footprints spell.
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum FootprintsSpell {
