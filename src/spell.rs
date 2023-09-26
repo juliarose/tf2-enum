@@ -1,3 +1,4 @@
+use crate::error::TryFromSpellError;
 use crate::{Attribute, Attributes};
 use std::fmt;
 use std::str::FromStr;
@@ -7,13 +8,40 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use serde::{Serialize, Deserialize, Serializer};
 use serde::de::{self, Visitor, Deserializer};
 
-#[derive(Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Clone, EnumCount, Copy)]
+/// Spell.
+#[derive(Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, Clone, Copy)]
 pub enum Spell {
-    Footprints(FootprintsSpell),
-    Paint(PaintSpell),
+    #[strum(serialize = "Team Spirit Footprints")]
+    TeamSpiritFootprints,
+    #[strum(serialize = "Gangreen Footprints")]
+    GangreenFootprints,
+    #[strum(serialize = "Corpse Gray Footprints")]
+    CorpseGrayFootprints,
+    #[strum(serialize = "Violent Violet Footprints")]
+    ViolentVioletFootprints,
+    #[strum(serialize = "Rotten Orange Footprints")]
+    RottenOrangeFootprints,
+    #[strum(serialize = "Bruised Purple Footprints")]
+    BruisedPurpleFootprints,
+    #[strum(serialize = "Headless Horseshoes")]
+    HeadlessHorseshoes,
+    #[strum(serialize = "Die Job")]
+    DieJob,
+    #[strum(serialize = "Chromatic Corruption")]
+    ChromaticCorruption,
+    #[strum(serialize = "Putrescent Pigmentation")]
+    PutrescentPigmentation,
+    #[strum(serialize = "Spectral Spectrum")]
+    SpectralSpectrum,
+    #[strum(serialize = "Sinister Staining")]
+    SinisterStaining,
+    #[strum(serialize = "Voices From Below")]
     VoicesFromBelow,
+    #[strum(serialize = "Pumpkin Bombs")]
     PumpkinBombs,
+    #[strum(serialize = "Halloween Fire")]
     HalloweenFire,
+    #[strum(serialize = "Exorcism")]
     Exorcism,
 }
 
@@ -25,60 +53,61 @@ impl Spell {
     pub const DEFINDEX_HALLOWEEN_FIRE: u32 = 1008;
     pub const DEFINDEX_EXORCISM: u32 = 1009;
     
+    /// Gets the attribute `defindex` of this spell.
     pub fn attribute_defindex(&self) -> u32 {
         match self {
-            Spell::Paint(_) => Self::DEFINDEX_PAINT,
-            Spell::Footprints(_) => Self::DEFINDEX_FOOTPRINTS,
-            Spell::VoicesFromBelow => Self::DEFINDEX_VOICES_FROM_BELOW,
-            Spell::PumpkinBombs => Self::DEFINDEX_PUMPKIN_BOMBS,
-            Spell::HalloweenFire => Self::DEFINDEX_HALLOWEEN_FIRE,
-            Spell::Exorcism => Self::DEFINDEX_EXORCISM,
+            Self::DieJob |
+            Self::ChromaticCorruption |
+            Self::PutrescentPigmentation |
+            Self::SpectralSpectrum |
+            Self::SinisterStaining => Self::DEFINDEX_PAINT,
+            Self::TeamSpiritFootprints |
+            Self::GangreenFootprints |
+            Self::CorpseGrayFootprints |
+            Self::ViolentVioletFootprints |
+            Self::RottenOrangeFootprints |
+            Self::BruisedPurpleFootprints |
+            Self::HeadlessHorseshoes => Self::DEFINDEX_FOOTPRINTS,
+            Self::VoicesFromBelow => Self::DEFINDEX_VOICES_FROM_BELOW,
+            Self::PumpkinBombs => Self::DEFINDEX_PUMPKIN_BOMBS,
+            Self::HalloweenFire => Self::DEFINDEX_HALLOWEEN_FIRE,
+            Self::Exorcism => Self::DEFINDEX_EXORCISM,
+        }
+    }
+    
+    /// Gets the value of an attribute belonging to a group of spell. Paint and footprint spells 
+    /// fall under a group which are aligned with a specific value to specify the exact spell while
+    /// other spells do not.
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::Spell;
+    /// 
+    /// assert_eq!(Spell::DieJob.attribute_value(), Some(0));
+    /// assert_eq!(Spell::HeadlessHorseshoes.attribute_value(), Some(2));
+    /// assert_eq!(Spell::Exorcism.attribute_value(), None);
+    /// ```
+    pub fn attribute_value(&self) -> Option<u32> {
+        match self {
+            Self::DieJob => Some(0),
+            Self::ChromaticCorruption => Some(1),
+            Self::PutrescentPigmentation => Some(2),
+            Self::SpectralSpectrum => Some(3),
+            Self::SinisterStaining => Some(4),
+            Self::TeamSpiritFootprints => Some(1),
+            Self::GangreenFootprints => Some(8421376),
+            Self::CorpseGrayFootprints => Some(3100495),
+            Self::ViolentVioletFootprints => Some(5322826),
+            Self::RottenOrangeFootprints => Some(13595446),
+            Self::BruisedPurpleFootprints => Some(8208497),
+            Self::HeadlessHorseshoes => Some(2),
+            _ => None,
         }
     }
 }
 
 impl Attributes for Spell {
     const DEFINDEX: &'static [u32] = &[1004, 1005, 1006, 1007, 1008, 1009];
-}
-
-impl fmt::Display for Spell {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Spell::Paint(spell) => write!(f, "{}", spell),
-            Spell::Footprints(spell) => write!(f, "{}", spell),
-            Spell::VoicesFromBelow => write!(f, "Voices From Below"),
-            Spell::PumpkinBombs => write!(f, "Pumpkin Bombs"),
-            Spell::HalloweenFire => write!(f, "Halloween Fire"),
-            Spell::Exorcism => write!(f, "Exorcism"),
-        }
-    }
-}
-
-impl std::str::FromStr for Spell {
-    type Err = ::strum::ParseError;
-
-    fn from_str(s: &str) -> Result<Spell, Self::Err> {
-        match s {
-            "Die Job" => Result::Ok(Spell::Paint(PaintSpell::DieJob)),
-            "Chromatic Corruption" => Result::Ok(Spell::Paint(PaintSpell::ChromaticCorruption)),
-            "Putrescent Pigmentation" => Result::Ok(Spell::Paint(PaintSpell::PutrescentPigmentation)),
-            "Spectral Spectrum" => Result::Ok(Spell::Paint(PaintSpell::SpectralSpectrum)),
-            "Sinister Staining" => Result::Ok(Spell::Paint(PaintSpell::SinisterStaining)),
-            "Team Spirit Footprints" => Result::Ok(Spell::Footprints(FootprintsSpell::TeamSpiritFootprints)),
-            "Gangreen Footprints" => Result::Ok(Spell::Footprints(FootprintsSpell::GangreenFootprints)),
-            "Corpse Gray Footprints" => Result::Ok(Spell::Footprints(FootprintsSpell::CorpseGrayFootprints)),
-            "Violent Violet Footprints" => Result::Ok(Spell::Footprints(FootprintsSpell::ViolentVioletFootprints)),
-            "Rotten Orange Footprints" => Result::Ok(Spell::Footprints(FootprintsSpell::RottenOrangeFootprints)),
-            "Bruised Purple Footprints" => Result::Ok(Spell::Footprints(FootprintsSpell::BruisedPurpleFootprints)),
-            "Headless Horseshoes" => Result::Ok(Spell::Footprints(FootprintsSpell::HeadlessHorseshoes)),
-            "Voices From Below" => Result::Ok(Spell::VoicesFromBelow),
-            "Voices from Below" => Result::Ok(Spell::VoicesFromBelow),
-            "Pumpkin Bombs" => Result::Ok(Spell::PumpkinBombs),
-            "Halloween Fire" => Result::Ok(Spell::HalloweenFire),
-            "Exorcism" => Result::Ok(Spell::Exorcism),
-            _ => Result::Err(strum::ParseError::VariantNotFound),
-        }
-    }
 }
 
 struct SpellVisitor;
@@ -116,6 +145,14 @@ impl Serialize for Spell {
     }
 }
 
+impl TryInto<u32> for Spell {
+    type Error = ();
+    
+    fn try_into(self) -> Result<u32, Self::Error> {
+        self.attribute_value().ok_or(())
+    }
+}
+
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum PaintSpell {
@@ -137,7 +174,31 @@ impl Attribute for PaintSpell {
 
 impl Into<Spell> for PaintSpell {
     fn into(self) -> Spell {
-        Spell::Paint(self)
+        match self {
+            Self::DieJob => Spell::DieJob,
+            Self::ChromaticCorruption => Spell::ChromaticCorruption,
+            Self::PutrescentPigmentation => Spell::PutrescentPigmentation,
+            Self::SpectralSpectrum => Spell::SpectralSpectrum,
+            Self::SinisterStaining => Spell::SinisterStaining,
+        }
+    }
+}
+
+impl TryFrom<Spell> for PaintSpell {
+    type Error = TryFromSpellError;
+    
+    fn try_from(value: Spell) -> Result<Self, Self::Error> {
+        match value {
+            Spell::DieJob => Ok(PaintSpell::DieJob),
+            Spell::ChromaticCorruption => Ok(PaintSpell::ChromaticCorruption),
+            Spell::PutrescentPigmentation => Ok(PaintSpell::PutrescentPigmentation),
+            Spell::SpectralSpectrum => Ok(PaintSpell::SpectralSpectrum),
+            Spell::SinisterStaining => Ok(PaintSpell::SinisterStaining),
+            _ => Err(TryFromSpellError {
+                defindex: Self::DEFINDEX,
+                value
+            }),
+        }
     }
 }
 
@@ -166,7 +227,15 @@ impl Attribute for FootprintsSpell {
 
 impl Into<Spell> for FootprintsSpell {
     fn into(self) -> Spell {
-        Spell::Footprints(self)
+        match self {
+            Self::TeamSpiritFootprints => Spell::TeamSpiritFootprints,
+            Self::GangreenFootprints => Spell::GangreenFootprints,
+            Self::CorpseGrayFootprints => Spell::CorpseGrayFootprints,
+            Self::ViolentVioletFootprints => Spell::ViolentVioletFootprints,
+            Self::RottenOrangeFootprints => Spell::RottenOrangeFootprints,
+            Self::BruisedPurpleFootprints => Spell::BruisedPurpleFootprints,
+            Self::HeadlessHorseshoes => Spell::HeadlessHorseshoes,
+        }
     }
 }
 
@@ -177,7 +246,7 @@ mod tests {
     
     #[test]
     fn from_str() {
-        assert_eq!(Spell::from_str("Headless Horseshoes").unwrap(), Spell::Footprints(FootprintsSpell::HeadlessHorseshoes));
+        assert_eq!(Spell::from_str("Headless Horseshoes").unwrap(), Spell::HeadlessHorseshoes);
     }
     
     #[test]
@@ -188,7 +257,7 @@ mod tests {
         }
         
         let attribute = SpellAttribute {
-            spell: Spell::Footprints(FootprintsSpell::HeadlessHorseshoes),
+            spell: Spell::HeadlessHorseshoes,
         };
         let json = serde_json::to_string(&attribute).unwrap();
         
@@ -198,7 +267,7 @@ mod tests {
     
     #[test]
     fn to_string() {
-        assert_eq!(Spell::Footprints(FootprintsSpell::HeadlessHorseshoes).to_string(), "Headless Horseshoes");
+        assert_eq!(Spell::HeadlessHorseshoes.to_string(), "Headless Horseshoes");
     }
     
     #[test]

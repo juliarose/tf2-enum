@@ -3,6 +3,8 @@ use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
+/// Paint. `repr` values are mapped to the corresponding color. For team paints this is the color 
+/// for RED team.
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum Paint {
@@ -71,10 +73,26 @@ impl Paint {
         u32::from(*self)
     }
     
+    /// Converts a hexadecimal color into a [`Paint`].
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::Paint;
+    /// 
+    /// assert_eq!(Paint::from_color(0x7D4071).unwrap(), Paint::ADeepCommitmentToPurple);
+    /// ```
     pub fn from_color(color: u32) -> Option<Self> {
         Self::try_from(color).ok()
     }
     
+    /// Converts a hexadecimal color string into a [`Paint`].
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::Paint;
+    /// 
+    /// assert_eq!(Paint::from_color_str("#7D4071").unwrap(), Paint::ADeepCommitmentToPurple);
+    /// ```
     pub fn from_color_str(color: &str) -> Option<Self> {
         let len = color.len();
         let mut color = color;
@@ -90,112 +108,117 @@ impl Paint {
         Self::from_color(color)
     }
     
+    /// Gets the colors for both teams. The RED team appears first. For non-team-color paints the 
+    /// color will be the same.
     pub fn colors(&self) -> (u32, u32) {
         match self {
-            Paint::AColorSimilarToSlate => (0x2F4F4F, 0x2F4F4F),
-            Paint::ADeepCommitmentToPurple => (0x7D4071, 0x7D4071),
-            Paint::ADistinctiveLackOfHue => (0x141414, 0x141414),
-            Paint::AMannsMint => (0xBCDDB3, 0xBCDDB3),
-            Paint::AfterEight => (0x2D2D24, 0x2D2D24),
-            Paint::AgedMoustacheGrey => (0x7E7E7E, 0x7E7E7E),
-            Paint::AnExtraordinaryAbundanceOfTinge => (0xE6E6E6, 0xE6E6E6),
-            Paint::AustraliumGold => (0xE7B53B, 0xE7B53B),
-            Paint::ColorNo216190216 => (0xD8BED8, 0xD8BED8),
-            Paint::DarkSalmonInjustice => (0xE9967A, 0xE9967A),
-            Paint::DrablyOlive => (0x808000, 0x808000),
-            Paint::IndubitablyGreen => (0x729E42, 0x729E42),
-            Paint::MannCoOrange => (0xCF7336, 0xCF7336),
-            Paint::Muskelmannbraun => (0xA57545, 0xA57545),
-            Paint::NobleHattersViolet => (0x51384A, 0x51384A),
-            Paint::PeculiarlyDrabTincture => (0xC5AF91, 0xC5AF91),
-            Paint::PinkAsHell => (0xFF69B4, 0xFF69B4),
-            Paint::RadiganConagherBrown => (0x694D3A, 0x694D3A),
-            Paint::TheBitterTasteOfDefeatAndLime => (0x32CD32, 0x32CD32),
-            Paint::TheColorOfAGentlemannsBusinessPants => (0xF0E68C, 0xF0E68C),
-            Paint::YeOldeRusticColour => (0x7C6C57, 0x7C6C57),
-            Paint::ZepheniahsGreed => (0x424F3B, 0x424F3B),
-            Paint::AnAirOfDebonair => (0x654740, 0x28394D),
-            Paint::BalaclavasAreForever => (0x3B1F23, 0x18233D),
-            Paint::CreamSpirit => (0xC36C2D, 0xB88035),
-            Paint::OperatorsOveralls => (0x483838, 0x384248),
-            Paint::TeamSpirit => (0xB8383B, 0x5885A2),
-            Paint::TheValueOfTeamwork => (0x803020, 0x256D8D),
-            Paint::WaterloggedLabCoat => (0xA89A8C, 0x839FA3),
+            Self::AColorSimilarToSlate => (0x2F4F4F, 0x2F4F4F),
+            Self::ADeepCommitmentToPurple => (0x7D4071, 0x7D4071),
+            Self::ADistinctiveLackOfHue => (0x141414, 0x141414),
+            Self::AMannsMint => (0xBCDDB3, 0xBCDDB3),
+            Self::AfterEight => (0x2D2D24, 0x2D2D24),
+            Self::AgedMoustacheGrey => (0x7E7E7E, 0x7E7E7E),
+            Self::AnExtraordinaryAbundanceOfTinge => (0xE6E6E6, 0xE6E6E6),
+            Self::AustraliumGold => (0xE7B53B, 0xE7B53B),
+            Self::ColorNo216190216 => (0xD8BED8, 0xD8BED8),
+            Self::DarkSalmonInjustice => (0xE9967A, 0xE9967A),
+            Self::DrablyOlive => (0x808000, 0x808000),
+            Self::IndubitablyGreen => (0x729E42, 0x729E42),
+            Self::MannCoOrange => (0xCF7336, 0xCF7336),
+            Self::Muskelmannbraun => (0xA57545, 0xA57545),
+            Self::NobleHattersViolet => (0x51384A, 0x51384A),
+            Self::PeculiarlyDrabTincture => (0xC5AF91, 0xC5AF91),
+            Self::PinkAsHell => (0xFF69B4, 0xFF69B4),
+            Self::RadiganConagherBrown => (0x694D3A, 0x694D3A),
+            Self::TheBitterTasteOfDefeatAndLime => (0x32CD32, 0x32CD32),
+            Self::TheColorOfAGentlemannsBusinessPants => (0xF0E68C, 0xF0E68C),
+            Self::YeOldeRusticColour => (0x7C6C57, 0x7C6C57),
+            Self::ZepheniahsGreed => (0x424F3B, 0x424F3B),
+            Self::AnAirOfDebonair => (0x654740, 0x28394D),
+            Self::BalaclavasAreForever => (0x3B1F23, 0x18233D),
+            Self::CreamSpirit => (0xC36C2D, 0xB88035),
+            Self::OperatorsOveralls => (0x483838, 0x384248),
+            Self::TeamSpirit => (0xB8383B, 0x5885A2),
+            Self::TheValueOfTeamwork => (0x803020, 0x256D8D),
+            Self::WaterloggedLabCoat => (0xA89A8C, 0x839FA3),
         }
     }
     
+    /// Determines if this paint is a team-colored paint.
     pub fn is_team_paint(&self) -> bool {
         let (red, blu) = self.colors();
         
         red != blu
     }
     
+    /// Converts a `defindex` into its related [`Paint`], if it exists.
     pub fn from_defindex(defindex: u32) -> Option<Self> {
         match defindex {
-            5052 => Some(Paint::AColorSimilarToSlate),
-            5031 => Some(Paint::ADeepCommitmentToPurple),
-            5040 => Some(Paint::ADistinctiveLackOfHue),
-            5076 => Some(Paint::AMannsMint),
-            5077 => Some(Paint::AfterEight),
-            5038 => Some(Paint::AgedMoustacheGrey),
-            5039 => Some(Paint::AnExtraordinaryAbundanceOfTinge),
-            5037 => Some(Paint::AustraliumGold),
-            5030 => Some(Paint::ColorNo216190216),
-            5056 => Some(Paint::DarkSalmonInjustice),
-            5053 => Some(Paint::DrablyOlive),
-            5027 => Some(Paint::IndubitablyGreen),
-            5032 => Some(Paint::MannCoOrange),
-            5033 => Some(Paint::Muskelmannbraun),
-            5029 => Some(Paint::NobleHattersViolet),
-            5034 => Some(Paint::PeculiarlyDrabTincture),
-            5051 => Some(Paint::PinkAsHell),
-            5035 => Some(Paint::RadiganConagherBrown),
-            5054 => Some(Paint::TheBitterTasteOfDefeatAndLime),
-            5055 => Some(Paint::TheColorOfAGentlemannsBusinessPants),
-            5036 => Some(Paint::YeOldeRusticColour),
-            5028 => Some(Paint::ZepheniahsGreed),
-            5063 => Some(Paint::AnAirOfDebonair),
-            5062 => Some(Paint::BalaclavasAreForever),
-            5065 => Some(Paint::CreamSpirit),
-            5060 => Some(Paint::OperatorsOveralls),
-            5046 => Some(Paint::TeamSpirit),
-            5064 => Some(Paint::TheValueOfTeamwork),
-            5061 => Some(Paint::WaterloggedLabCoat),
+            5052 => Some(Self::AColorSimilarToSlate),
+            5031 => Some(Self::ADeepCommitmentToPurple),
+            5040 => Some(Self::ADistinctiveLackOfHue),
+            5076 => Some(Self::AMannsMint),
+            5077 => Some(Self::AfterEight),
+            5038 => Some(Self::AgedMoustacheGrey),
+            5039 => Some(Self::AnExtraordinaryAbundanceOfTinge),
+            5037 => Some(Self::AustraliumGold),
+            5030 => Some(Self::ColorNo216190216),
+            5056 => Some(Self::DarkSalmonInjustice),
+            5053 => Some(Self::DrablyOlive),
+            5027 => Some(Self::IndubitablyGreen),
+            5032 => Some(Self::MannCoOrange),
+            5033 => Some(Self::Muskelmannbraun),
+            5029 => Some(Self::NobleHattersViolet),
+            5034 => Some(Self::PeculiarlyDrabTincture),
+            5051 => Some(Self::PinkAsHell),
+            5035 => Some(Self::RadiganConagherBrown),
+            5054 => Some(Self::TheBitterTasteOfDefeatAndLime),
+            5055 => Some(Self::TheColorOfAGentlemannsBusinessPants),
+            5036 => Some(Self::YeOldeRusticColour),
+            5028 => Some(Self::ZepheniahsGreed),
+            5063 => Some(Self::AnAirOfDebonair),
+            5062 => Some(Self::BalaclavasAreForever),
+            5065 => Some(Self::CreamSpirit),
+            5060 => Some(Self::OperatorsOveralls),
+            5046 => Some(Self::TeamSpirit),
+            5064 => Some(Self::TheValueOfTeamwork),
+            5061 => Some(Self::WaterloggedLabCoat),
             _ => None,
         }
     }
     
+    /// Gets the `defindex` related to this [`Paint`].
     pub fn defindex(&self) -> u32 {
         match self {
-            Paint::AColorSimilarToSlate => 5052,
-            Paint::ADeepCommitmentToPurple => 5031,
-            Paint::ADistinctiveLackOfHue => 5040,
-            Paint::AMannsMint => 5076,
-            Paint::AfterEight => 5077,
-            Paint::AgedMoustacheGrey => 5038,
-            Paint::AnExtraordinaryAbundanceOfTinge => 5039,
-            Paint::AustraliumGold => 5037,
-            Paint::ColorNo216190216 => 5030,
-            Paint::DarkSalmonInjustice => 5056,
-            Paint::DrablyOlive => 5053,
-            Paint::IndubitablyGreen => 5027,
-            Paint::MannCoOrange => 5032,
-            Paint::Muskelmannbraun => 5033,
-            Paint::NobleHattersViolet => 5029,
-            Paint::PeculiarlyDrabTincture => 5034,
-            Paint::PinkAsHell => 5051,
-            Paint::RadiganConagherBrown => 5035,
-            Paint::TheBitterTasteOfDefeatAndLime => 5054,
-            Paint::TheColorOfAGentlemannsBusinessPants => 5055,
-            Paint::YeOldeRusticColour => 5036,
-            Paint::ZepheniahsGreed => 5028,
-            Paint::AnAirOfDebonair => 5063,
-            Paint::BalaclavasAreForever => 5062,
-            Paint::CreamSpirit => 5065,
-            Paint::OperatorsOveralls => 5060,
-            Paint::TeamSpirit => 5046,
-            Paint::TheValueOfTeamwork => 5064,
-            Paint::WaterloggedLabCoat => 5061,
+            Self::AColorSimilarToSlate => 5052,
+            Self::ADeepCommitmentToPurple => 5031,
+            Self::ADistinctiveLackOfHue => 5040,
+            Self::AMannsMint => 5076,
+            Self::AfterEight => 5077,
+            Self::AgedMoustacheGrey => 5038,
+            Self::AnExtraordinaryAbundanceOfTinge => 5039,
+            Self::AustraliumGold => 5037,
+            Self::ColorNo216190216 => 5030,
+            Self::DarkSalmonInjustice => 5056,
+            Self::DrablyOlive => 5053,
+            Self::IndubitablyGreen => 5027,
+            Self::MannCoOrange => 5032,
+            Self::Muskelmannbraun => 5033,
+            Self::NobleHattersViolet => 5029,
+            Self::PeculiarlyDrabTincture => 5034,
+            Self::PinkAsHell => 5051,
+            Self::RadiganConagherBrown => 5035,
+            Self::TheBitterTasteOfDefeatAndLime => 5054,
+            Self::TheColorOfAGentlemannsBusinessPants => 5055,
+            Self::YeOldeRusticColour => 5036,
+            Self::ZepheniahsGreed => 5028,
+            Self::AnAirOfDebonair => 5063,
+            Self::BalaclavasAreForever => 5062,
+            Self::CreamSpirit => 5065,
+            Self::OperatorsOveralls => 5060,
+            Self::TeamSpirit => 5046,
+            Self::TheValueOfTeamwork => 5064,
+            Self::WaterloggedLabCoat => 5061,
         }
     }
 }

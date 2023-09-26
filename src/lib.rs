@@ -13,12 +13,14 @@
 //! assert_eq!(Paint::PinkAsHell.to_string(), "Pink as Hell");
 //! ```
 
+pub mod error;
+
 mod quality;
 mod class;
 mod killstreak_tier;
 mod sheen;
 mod spell;
-mod rarity;
+mod grade;
 mod killstreaker;
 mod paint;
 mod strange_part;
@@ -35,7 +37,7 @@ pub use class::Class;
 pub use killstreak_tier::KillstreakTier;
 pub use sheen::Sheen;
 pub use spell::{Spell, FootprintsSpell, PaintSpell};
-pub use rarity::Rarity;
+pub use grade::Grade;
 pub use killstreaker::Killstreaker;
 pub use paint::Paint;
 pub use strange_part::StrangePart;

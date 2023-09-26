@@ -121,3 +121,14 @@
 ### Added
 - `Into<Spell>` impl for `FootprintsSpell`.
 - `Into<Spell>` impl for `PaintSpell`.
+
+## 0.9.0 (2023-09-26)
+
+### Changed
+- `Spell` now includes individual variants for paint and footprints spells (reduces byte count from 8 to 1).
+- Renamed `Rarity` to `Grade`.
+
+### Added
+- `color` method to `Grade`.
+- `from_color` method to `Grade`.
+- `from_color_str` method to `Grade`.

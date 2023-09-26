@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 
+/// Craft material type.
 #[derive(Debug, Deserialize, Serialize, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, Clone, Copy)]
 pub enum CraftMaterialType {
     #[strum(serialize = "weapon")]

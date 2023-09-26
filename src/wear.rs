@@ -3,6 +3,7 @@ use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, TryFromPrimitiveError, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
+/// Wear.
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum Wear {
@@ -15,7 +16,7 @@ pub enum Wear {
     #[strum(serialize = "Well-Worn")]
     WellWorn = 4,
     #[strum(serialize = "Battle Scarred")]
-    BattleScarred = 5
+    BattleScarred = 5,
 }
 
 impl Attribute for Wear {
