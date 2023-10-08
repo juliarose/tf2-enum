@@ -35,7 +35,8 @@ pub enum Spell {
     SpectralSpectrum,
     #[strum(serialize = "Sinister Staining")]
     SinisterStaining,
-    #[strum(serialize = "Voices From Below")]
+    // Allow conversion from "Voices from Below" but serialize as "Voices From Below".
+    #[strum(serialize="Voices from Below", serialize = "Voices From Below")]
     VoicesFromBelow,
     #[strum(serialize = "Pumpkin Bombs")]
     PumpkinBombs,
@@ -275,5 +276,12 @@ mod tests {
     #[test]
     fn from_repr() {
         assert_eq!(FootprintsSpell::try_from(2).unwrap(), FootprintsSpell::HeadlessHorseshoes);
+    }
+    
+    #[test]
+    fn voices_from_below_from_str() {
+        assert_eq!(Spell::VoicesFromBelow.to_string(), "Voices From Below");
+        assert_eq!(Spell::from_str("Voices from Below").unwrap(), Spell::VoicesFromBelow);
+        assert_eq!(Spell::from_str("Voices From Below").unwrap(), Spell::VoicesFromBelow);
     }
 }
