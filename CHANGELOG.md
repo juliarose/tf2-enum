@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2 (2024-05-06)
+
+### Changed
+- Updated readme and docs.
+- Updated dependencies.
+
 ## 0.9.1 (2023-10-07)
 
 ### Changed
