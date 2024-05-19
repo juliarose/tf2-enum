@@ -1,6 +1,6 @@
 [package]
 name = "tf2-enum"
-version = "0.9.2"
+version = "0.9.3"
 edition = "2021"
 description = "Provides enumerated types for models related to the Team Fortress 2 item schema."
 authors = ["Julia"]
@@ -13,9 +13,9 @@ readme = "README.md"
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_repr = "0.1"
-strum = "0.26"
-strum_macros = "0.26"
-num_enum = "0.7"
+strum = "^0.26"
+strum_macros = "^0.26"
+num_enum = "^0.7"
 
 [dev-dependencies]
 serde_json = "1.0.93"

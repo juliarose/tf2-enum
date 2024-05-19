@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.3 (2024-05-18)
+
+### Added
+- `strum` and `strum_macros` re-export.
+
 ## 0.9.2 (2024-05-06)
 
 ### Changed

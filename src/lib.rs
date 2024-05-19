@@ -57,3 +57,5 @@ pub use origin::Origin;
 pub use craft_material_type::CraftMaterialType;
 
 pub use num_enum;
+pub use strum;
+pub use strum_macros;
