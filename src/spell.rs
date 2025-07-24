@@ -174,14 +174,14 @@ impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
 }
 
-impl Into<Spell> for PaintSpell {
-    fn into(self) -> Spell {
-        match self {
-            Self::DieJob => Spell::DieJob,
-            Self::ChromaticCorruption => Spell::ChromaticCorruption,
-            Self::PutrescentPigmentation => Spell::PutrescentPigmentation,
-            Self::SpectralSpectrum => Spell::SpectralSpectrum,
-            Self::SinisterStaining => Spell::SinisterStaining,
+impl From<PaintSpell> for Spell {
+    fn from(val: PaintSpell) -> Self {
+        match val {
+            PaintSpell::DieJob => Spell::DieJob,
+            PaintSpell::ChromaticCorruption => Spell::ChromaticCorruption,
+            PaintSpell::PutrescentPigmentation => Spell::PutrescentPigmentation,
+            PaintSpell::SpectralSpectrum => Spell::SpectralSpectrum,
+            PaintSpell::SinisterStaining => Spell::SinisterStaining,
         }
     }
 }
@@ -228,16 +228,16 @@ impl Attribute for FootprintsSpell {
     const DEFINDEX: u32 = 1005;
 }
 
-impl Into<Spell> for FootprintsSpell {
-    fn into(self) -> Spell {
-        match self {
-            Self::TeamSpiritFootprints => Spell::TeamSpiritFootprints,
-            Self::GangreenFootprints => Spell::GangreenFootprints,
-            Self::CorpseGrayFootprints => Spell::CorpseGrayFootprints,
-            Self::ViolentVioletFootprints => Spell::ViolentVioletFootprints,
-            Self::RottenOrangeFootprints => Spell::RottenOrangeFootprints,
-            Self::BruisedPurpleFootprints => Spell::BruisedPurpleFootprints,
-            Self::HeadlessHorseshoes => Spell::HeadlessHorseshoes,
+impl From<FootprintsSpell> for Spell {
+    fn from(val: FootprintsSpell) -> Self {
+        match val {
+            FootprintsSpell::TeamSpiritFootprints => Spell::TeamSpiritFootprints,
+            FootprintsSpell::GangreenFootprints => Spell::GangreenFootprints,
+            FootprintsSpell::CorpseGrayFootprints => Spell::CorpseGrayFootprints,
+            FootprintsSpell::ViolentVioletFootprints => Spell::ViolentVioletFootprints,
+            FootprintsSpell::RottenOrangeFootprints => Spell::RottenOrangeFootprints,
+            FootprintsSpell::BruisedPurpleFootprints => Spell::BruisedPurpleFootprints,
+            FootprintsSpell::HeadlessHorseshoes => Spell::HeadlessHorseshoes,
         }
     }
 }

@@ -233,12 +233,12 @@ mod tests {
     
     #[test]
     fn converts_to_primitive() {
-        assert_eq!(16738740 as u32, Paint::PinkAsHell as u32);
+        assert_eq!(16738740_u32, Paint::PinkAsHell as u32);
     }
     
     #[test]
     fn gets_defindex() {
-        assert_eq!(5051 as u32, Paint::PinkAsHell.defindex());
+        assert_eq!(5051_u32, Paint::PinkAsHell.defindex());
     }
     
     #[test]
