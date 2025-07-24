@@ -250,7 +250,7 @@ impl Attributes for StrangePart {
 mod tests {
     use super::*;
     use std::str::FromStr;
-
+    
     #[test]
     fn from_str_converts() {
         assert_eq!(
