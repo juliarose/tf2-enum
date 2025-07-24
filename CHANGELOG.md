@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.4 (2024-05-18)
+
+### Added
+- `Sized` to `Attribute` and `Attributes` traits.
+- `From<FootprintsSpell>` impl for `Spell`.
+- `From<PaintSpell>` impl for `Spell`.
+
 ## 0.9.3 (2024-05-18)
 
 ### Added

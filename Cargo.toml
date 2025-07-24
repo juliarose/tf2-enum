@@ -2,6 +2,8 @@
 name = "tf2-enum"
 version = "0.9.3"
 edition = "2021"
+# MSRV
+rust-version = "1.70.0"
 description = "Provides enumerated types for models related to the Team Fortress 2 item schema."
 authors = ["Julia"]
 homepage = "https://github.com/juliarose/tf2-enum"
@@ -13,8 +15,8 @@ readme = "README.md"
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_repr = "0.1"
-strum = "^0.26"
-strum_macros = "^0.26"
+strum = "^0.27"
+strum_macros = "^0.27"
 num_enum = "^0.7"
 
 [dev-dependencies]

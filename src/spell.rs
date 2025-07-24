@@ -47,11 +47,17 @@ pub enum Spell {
 }
 
 impl Spell {
+    /// The attribute `defindex` for paint spells.
     pub const DEFINDEX_PAINT: u32 = 1004;
+    /// The attribute `defindex` for footprints spells.
     pub const DEFINDEX_FOOTPRINTS: u32 = 1005;
+    /// The attribute `defindex` for voices from below spell.
     pub const DEFINDEX_VOICES_FROM_BELOW: u32 = 1006;
+    /// The attribute `defindex` for pumpkin bombs spell.
     pub const DEFINDEX_PUMPKIN_BOMBS: u32 = 1007;
+    /// The attribute `defindex` for halloween fire spell.
     pub const DEFINDEX_HALLOWEEN_FIRE: u32 = 1008;
+    /// The attribute `defindex` for exorcism spell.
     pub const DEFINDEX_EXORCISM: u32 = 1009;
     
     /// Gets the attribute `defindex` of this spell.
@@ -76,9 +82,10 @@ impl Spell {
         }
     }
     
-    /// Gets the value of an attribute belonging to a group of spell. Paint and footprint spells
-    /// fall under a group which are aligned with a specific value to specify the exact spell while
-    /// other spells do not.
+    /// Gets the value of an attribute belonging to a group of spells.
+    /// 
+    /// Footprints and paint spells share a common attribute but have specific values that
+    /// correspond to which spell is being referenced that can be used to identify the spell.
     /// 
     /// # Examples
     /// ```

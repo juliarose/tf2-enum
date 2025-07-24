@@ -5,12 +5,12 @@
 //! ## Usage
 //! 
 //! ```
-//! use tf2_enum::{Quality, Sheen};
+//! use tf2_enum::{Quality, Spell};
 //! use std::str::FromStr;
 //! 
 //! assert_eq!("Unusual".parse::<Quality>().unwrap(), Quality::Unusual);
 //! assert_eq!(Quality::Unusual as u32, 5);
-//! assert_eq!(Sheen::TeamShine.to_string(), "Team Shine");
+//! assert_eq!(Spell::HalloweenFire.to_string(), "Halloween Fire");
 //! ```
 pub mod error;
 
