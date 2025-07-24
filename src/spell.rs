@@ -76,7 +76,7 @@ impl Spell {
         }
     }
     
-    /// Gets the value of an attribute belonging to a group of spell. Paint and footprint spells 
+    /// Gets the value of an attribute belonging to a group of spell. Paint and footprint spells
     /// fall under a group which are aligned with a specific value to specify the exact spell while
     /// other spells do not.
     /// 

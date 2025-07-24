@@ -3,7 +3,7 @@ use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
-/// Paint. `repr` values are mapped to the corresponding color. For team paints this is the color 
+/// Paint. `repr` values are mapped to the corresponding color. For team paints this is the color
 /// for RED team.
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
@@ -108,7 +108,7 @@ impl Paint {
         Self::from_color(color)
     }
     
-    /// Gets the colors for both teams. The RED team appears first. For non-team-color paints the 
+    /// Gets the colors for both teams. The RED team appears first. For non-team-color paints the
     /// color will be the same.
     pub fn colors(&self) -> (u32, u32) {
         match self {
