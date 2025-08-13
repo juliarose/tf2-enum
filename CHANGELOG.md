@@ -6,6 +6,9 @@
 - `SpellSet` for holding sets of spells.
 - `StrangePartSet` for holding sets of strange parts.
 - `InsertError` enum for errors when inserting into sets.
+- `is_cosmetic_part` method to `StrangePart`.
+- `strange_part_name` method to `StrangePart`.
+- `from_strange_part_name` method to `StrangePart`.
 
 ### Changed
 - `StrangePart::DefendersKilled` to `StrangePart::DefenderKills`.

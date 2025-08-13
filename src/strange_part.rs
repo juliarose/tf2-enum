@@ -3,7 +3,8 @@ use strum_macros::{Display, EnumString, EnumIter};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
-/// Strange part. `repr` values are mapped to their `kill_eater_score_type` attribute value.
+/// Strange part. `repr` values are mapped to their `kill_eater_score_type` attribute value. Strings
+/// are the name of the `kill_eater_score_type`, **not** the name of the strange part.
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum StrangePart {
@@ -122,6 +123,128 @@ impl StrangePart {
     /// Converts a `kill_eater_score_type` attribute value into a [`StrangePart`].
     pub fn from_score_type(score_type: u32) -> Option<Self> {
         Self::try_from(score_type).ok()
+    }
+    
+    /// Gets the name of the strange part for this [`StrangePart`].
+    pub fn strange_part_name(&self) -> &'static str {
+        match self {
+            Self::ScoutsKilled => "Strange Part: Scouts Killed",
+            Self::SnipersKilled => "Strange Part: Snipers Killed",
+            Self::DemomenKilled => "Strange Part: Demomen Killed",
+            Self::HeaviesKilled => "Strange Part: Heavies Killed",
+            Self::PyrosKilled => "Strange Part: Pyros Killed",
+            Self::SpiesKilled => "Strange Part: Spies Killed",
+            Self::EngineersKilled => "Strange Part: Engineers Killed",
+            Self::MedicsKilled => "Strange Part: Medics Killed",
+            Self::BuildingsDestroyed => "Strange Part: Buildings Destroyed",
+            Self::ProjectilesReflected => "Strange Part: Projectiles Reflected",
+            Self::HeadshotKills => "Strange Part: Headshot Kills",
+            Self::AirborneEnemyKills => "Strange Part: Airborne Enemies Killed",
+            Self::GibKills => "Strange Part: Gib Kills",
+            Self::KillsUnderAFullMoon => "Strange Part: Full Moon Kills",
+            Self::Dominations => "Strange Part: Domination Kills",
+            Self::Revenges => "Strange Part: Revenge Kills",
+            Self::PosthumousKills => "Strange Part: Posthumous Kills",
+            Self::TeammatesExtinguished => "Strange Part: Teammates Extinguished",
+            Self::CriticalKills => "Strange Part: Critical Kills",
+            Self::KillsWhileExplosiveJumping => "Strange Part: Kills While Explosive Jumping",
+            Self::SappersRemoved => "Strange Part: Sappers Destroyed",
+            Self::CloakedSpiesKilled => "Strange Part: Cloaked Spies Killed",
+            Self::MedicsKilledThatHaveFullUberCharge => "Strange Part: Medics Killed That Have Full ÜberCharge",
+            Self::RobotsDestroyed => "Strange Part: Robots Destroyed",
+            Self::DefenderKills => "Strange Part: Defender Kills",
+            Self::SubmergedEnemyKills => "Strange Part: Underwater Kills",
+            Self::KillsWhileInvulnUberCharged => "Strange Part: Kills While Übercharged",
+            Self::TanksDestroyed => "Strange Part: Tanks Destroyed",
+            Self::LongDistanceKills => "Strange Part: Long-Distance Kills",
+            Self::KillsDuringVictoryTime => "Strange Part: Kills During Victory Time",
+            Self::RobotSpiesDestroyed => "Strange Part: Robot Spies Destroyed",
+            Self::TauntKills => "Strange Part: Kills with a Taunt Attack",
+            Self::UnusualWearingPlayerKills => "Strange Part: Unusual-Wearing Player Kills",
+            Self::BurningPlayerKills => "Strange Part: Burning Enemy Kills",
+            Self::KillstreaksEnded => "Strange Part: Killstreaks Ended",
+            Self::FreezecamTauntAppearances => "Strange Cosmetic Part: Freezecam Taunt Appearances",
+            Self::DamageDealt => "Strange Part: Damage Dealt",
+            Self::FiresSurvived => "Strange Cosmetic Part: Fires Survived",
+            Self::AlliedHealingDone => "Strange Part: Allied Healing Done",
+            Self::PointBlankKills => "Strange Part: Point-Blank Kills",
+            Self::RobotsKilledDuringHalloween => "Strange Part: Robots Destroyed During Halloween",
+            Self::KillsDuringHalloween => "Strange Part: Halloween Kills",
+            Self::KillsWhileLowHealth => "Strange Part: Low-Health Kills",
+            Self::GiantRobotsDestroyed => "Strange Part: Giant Robots Destroyed",
+            Self::Kills => "Strange Cosmetic Part: Kills",
+            Self::FullHealthKills => "Strange Part: Full Health Kills",
+            Self::SoldiersKilled => "Strange Part: Soldiers Killed",
+            Self::RobotScoutsDestroyed => "Strange Part: Robot Scouts Destroyed",
+            Self::TauntingPlayerKills => "Strange Part: Taunting Player Kills",
+            Self::Assists => "Strange Cosmetic Part: Assists",
+            Self::NotCritNorMiniCritKills => "Strange Part: Not Crit nor MiniCrit Kills",
+            Self::PlayerHits => "Strange Part: Player Hits",
+        }
+    }
+    
+    /// Gets the related [`StrangePart`] by its strange part name, if it exists.
+    pub fn from_strange_part_name(name: &str) -> Option<StrangePart> {
+        match name {
+            "Strange Part: Scouts Killed" => Some(Self::ScoutsKilled),
+            "Strange Part: Snipers Killed" => Some(Self::SnipersKilled),
+            "Strange Part: Demomen Killed" => Some(Self::DemomenKilled),
+            "Strange Part: Heavies Killed" => Some(Self::HeaviesKilled),
+            "Strange Part: Pyros Killed" => Some(Self::PyrosKilled),
+            "Strange Part: Spies Killed" => Some(Self::SpiesKilled),
+            "Strange Part: Engineers Killed" => Some(Self::EngineersKilled),
+            "Strange Part: Medics Killed" => Some(Self::MedicsKilled),
+            "Strange Part: Buildings Destroyed" => Some(Self::BuildingsDestroyed),
+            "Strange Part: Projectiles Reflected" => Some(Self::ProjectilesReflected),
+            "Strange Part: Headshot Kills" => Some(Self::HeadshotKills),
+            "Strange Part: Airborne Enemies Killed" => Some(Self::AirborneEnemyKills),
+            "Strange Part: Gib Kills" => Some(Self::GibKills),
+            "Strange Part: Full Moon Kills" => Some(Self::KillsUnderAFullMoon),
+            "Strange Part: Domination Kills" => Some(Self::Dominations),
+            "Strange Part: Revenge Kills" => Some(Self::Revenges),
+            "Strange Part: Posthumous Kills" => Some(Self::PosthumousKills),
+            "Strange Part: Teammates Extinguished" => Some(Self::TeammatesExtinguished),
+            "Strange Part: Critical Kills" => Some(Self::CriticalKills),
+            "Strange Part: Kills While Explosive Jumping" => Some(Self::KillsWhileExplosiveJumping),
+            "Strange Part: Sappers Destroyed" => Some(Self::SappersRemoved),
+            "Strange Part: Cloaked Spies Killed" => Some(Self::CloakedSpiesKilled),
+            "Strange Part: Medics Killed That Have Full ÜberCharge" => Some(Self::MedicsKilledThatHaveFullUberCharge),
+            "Strange Part: Robots Destroyed" => Some(Self::RobotsDestroyed),
+            "Strange Part: Defender Kills" => Some(Self::DefenderKills),
+            "Strange Part: Underwater Kills" => Some(Self::SubmergedEnemyKills),
+            "Strange Part: Kills While Übercharged" => Some(Self::KillsWhileInvulnUberCharged),
+            "Strange Part: Tanks Destroyed" => Some(Self::TanksDestroyed),
+            "Strange Part: Long-Distance Kills" => Some(Self::LongDistanceKills),
+            "Strange Part: Kills During Victory Time" => Some(Self::KillsDuringVictoryTime),
+            "Strange Part: Robot Spies Destroyed" => Some(Self::RobotSpiesDestroyed),
+            "Strange Part: Kills with a Taunt Attack" => Some(Self::TauntKills),
+            "Strange Part: Unusual-Wearing Player Kills" => Some(Self::UnusualWearingPlayerKills),
+            "Strange Part: Burning Enemy Kills" => Some(Self::BurningPlayerKills),
+            "Strange Part: Killstreaks Ended" => Some(Self::KillstreaksEnded),
+            "Strange Cosmetic Part: Freezecam Taunt Appearances" => Some(Self::FreezecamTauntAppearances),
+            "Strange Part: Damage Dealt" => Some(Self::DamageDealt),
+            "Strange Cosmetic Part: Fires Survived" => Some(Self::FiresSurvived),
+            "Strange Part: Allied Healing Done" => Some(Self::AlliedHealingDone),
+            "Strange Part: Point-Blank Kills" => Some(Self::PointBlankKills),
+            "Strange Part: Robots Destroyed During Halloween" => Some(Self::RobotsKilledDuringHalloween),
+            "Strange Part: Halloween Kills" => Some(Self::KillsDuringHalloween),
+            "Strange Part: Low-Health Kills" => Some(Self::KillsWhileLowHealth),
+            "Strange Part: Giant Robots Destroyed" => Some(Self::GiantRobotsDestroyed),
+            "Strange Cosmetic Part: Kills" => Some(Self::Kills),
+            "Strange Part: Full Health Kills" => Some(Self::FullHealthKills),
+            "Strange Part: Soldiers Killed" => Some(Self::SoldiersKilled),
+            "Strange Part: Robot Scouts Destroyed" => Some(Self::RobotScoutsDestroyed),
+            "Strange Part: Taunting Player Kills" => Some(Self::TauntingPlayerKills),
+            "Strange Cosmetic Part: Assists" => Some(Self::Assists),
+            "Strange Part: Not Crit nor MiniCrit Kills" => Some(Self::NotCritNorMiniCritKills),
+            "Strange Part: Player Hits" => Some(Self::PlayerHits),
+            _ => None,
+        }
+    }
+    
+    /// Is this a strange part for cosmetics?
+    pub fn is_cosmetic_part(&self) -> bool {
+        matches!(self, Self::Kills | Self::FullHealthKills | Self::Assists | Self::FreezecamTauntAppearances)
     }
     
     /// Gets the `defindex` for the [`StrangePart`].

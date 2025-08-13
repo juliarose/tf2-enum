@@ -427,7 +427,17 @@ impl Iterator for SpellSetIterator {
 
 impl fmt::Display for SpellSet {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.into_iter().map(|s| s.to_string()).collect::<Vec<_>>().join(", "))
+        let mut iter = self.into_iter();
+        
+        if let Some(first) = iter.next() {
+            write!(f, "{}", first)?;
+            
+            for s in iter {
+                write!(f, ", {}", s)?;
+            }
+        }
+        
+        Ok(())
     }
 }
     
@@ -524,5 +534,15 @@ mod tests {
             Some(Spell::Exorcism),
             None,
         ]));
+    }
+    
+    #[test]
+    fn stringify() {
+        let spells = SpellSet::from([
+            Some(Spell::Exorcism),
+            Some(Spell::HalloweenFire),
+        ]);
+        
+        assert_eq!(spells.to_string(), "Exorcism, Halloween Fire");
     }
 }

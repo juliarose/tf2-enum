@@ -1,5 +1,9 @@
 //! Provides enumerated types for models related to the Team Fortress 2 item schema.
 //! 
+//! For the most part, definitions here are relatively stable and don't have any new values added
+//! or changed. However, Valve can implement changes to the item schema at any time, which may
+//! affect some of the values defined here.
+//! 
 //! ## Usage
 //! 
 //! ```
@@ -45,8 +49,8 @@ pub use craft_class::CraftClass;
 pub use item_slot::ItemSlot;
 pub use origin::Origin;
 pub use craft_material_type::CraftMaterialType;
-pub use spell_set::SpellSet;
-pub use strange_part_set::StrangePartSet;
+pub use spell_set::{SpellSet, SpellSetIterator};
+pub use strange_part_set::{StrangePartSet, StrangePartSetIterator};
 
 pub use num_enum;
 pub use strum;

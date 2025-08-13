@@ -473,26 +473,19 @@ impl Iterator for StrangePartSetIterator {
     }
 }
 
-pub struct StrangePartSetIter<'a> {
-    inner: std::slice::Iter<'a, Option<StrangePart>>,
-}
-
-impl<'a> Iterator for StrangePartSetIter<'a> {
-    type Item = &'a StrangePart;
-    
-    fn next(&mut self) -> Option<Self::Item> {
-        while let Some(opt) = self.inner.next() {
-            if let Some(val) = opt.as_ref() {
-                return Some(val);
-            }
-        }
-        None
-    }
-}
-
 impl fmt::Display for StrangePartSet {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.into_iter().map(|s| s.to_string()).collect::<Vec<_>>().join(", "))
+        let mut iter = self.into_iter();
+        
+        if let Some(first) = iter.next() {
+            write!(f, "{}", first)?;
+            
+            for s in iter {
+                write!(f, ", {}", s)?;
+            }
+        }
+        
+        Ok(())
     }
 }
 
@@ -584,5 +577,16 @@ mod tests {
             (StrangePart::KillsWhileExplosiveJumping, 382),
             (StrangePart::CriticalKills, 384),
         ]);
+    }
+    
+    #[test]
+    fn stringify() {
+        let strange_parts = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::CriticalKills),
+        ]);
+        
+        assert_eq!(strange_parts.to_string(), "Taunt Kills, Kills While Explosive-Jumping, Critical Kills");
     }
 }
