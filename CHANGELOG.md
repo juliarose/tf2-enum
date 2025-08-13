@@ -1,9 +1,16 @@
 # Changelog
 
 ## 0.10.0 (2025-08-13)
-- Added `SpellSet` struct for holding sets of spells.
-- Added `StrangePartSet` struct for holding sets of strange parts.
-- Added `InsertError` enum for errors when inserting into sets.
+
+### Added
+- `SpellSet` for holding sets of spells.
+- `StrangePartSet` for holding sets of strange parts.
+- `InsertError` enum for errors when inserting into sets.
+
+### Changed
+- `StrangePart::DefendersKilled` to `StrangePart::DefenderKills`.
+- `StrangePart::PlayersHit` to `StrangePart::PlayerHits`.
+- Related strings for `StrangePart::PlayerHits` and `StrangePart::DefenderKills`.
 
 ## 0.9.4 (2024-05-18)
 

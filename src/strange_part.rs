@@ -55,8 +55,8 @@ pub enum StrangePart {
     MedicsKilledThatHaveFullUberCharge = 38,
     #[strum(serialize = "Robots Destroyed")]
     RobotsDestroyed = 39,
-    #[strum(serialize = "Defenders Killed")]
-    DefendersKilled = 47,
+    #[strum(serialize = "Defender Kills")]
+    DefenderKills = 47,
     #[strum(serialize = "Submerged Enemy Kills")]
     SubmergedEnemyKills = 48,
     #[strum(serialize = "Kills While Invuln ÜberCharged")]
@@ -109,8 +109,8 @@ pub enum StrangePart {
     Assists = 95,
     #[strum(serialize = "Not Crit nor MiniCrit Kills")]
     NotCritNorMiniCritKills = 93,
-    #[strum(serialize = "Players Hit")]
-    PlayersHit = 94,
+    #[strum(serialize = "Player Hits")]
+    PlayerHits = 94,
 }
 
 impl StrangePart {
@@ -151,7 +151,7 @@ impl StrangePart {
             Self::CloakedSpiesKilled => 6024,
             Self::MedicsKilledThatHaveFullUberCharge => 6023,
             Self::RobotsDestroyed => 6026,
-            Self::DefendersKilled => 6035,
+            Self::DefenderKills => 6035,
             Self::SubmergedEnemyKills => 6036,
             Self::KillsWhileInvulnUberCharged => 6037,
             Self::TanksDestroyed => 6038,
@@ -178,7 +178,7 @@ impl StrangePart {
             Self::TauntingPlayerKills => 6062,
             Self::Assists => 6065,
             Self::NotCritNorMiniCritKills => 6063,
-            Self::PlayersHit => 6064,
+            Self::PlayerHits => 6064,
         }
     }
     
@@ -209,7 +209,7 @@ impl StrangePart {
             6024 => Some(Self::CloakedSpiesKilled),
             6023 => Some(Self::MedicsKilledThatHaveFullUberCharge),
             6026 => Some(Self::RobotsDestroyed),
-            6035 => Some(Self::DefendersKilled),
+            6035 => Some(Self::DefenderKills),
             6036 => Some(Self::SubmergedEnemyKills),
             6037 => Some(Self::KillsWhileInvulnUberCharged),
             6038 => Some(Self::TanksDestroyed),
@@ -236,7 +236,7 @@ impl StrangePart {
             6062 => Some(Self::TauntingPlayerKills),
             6065 => Some(Self::Assists),
             6063 => Some(Self::NotCritNorMiniCritKills),
-            6064 => Some(Self::PlayersHit),
+            6064 => Some(Self::PlayerHits),
             _ => None,
         }
     }
@@ -257,5 +257,23 @@ mod tests {
             StrangePart::MedicsKilledThatHaveFullUberCharge,
             StrangePart::from_str("Medics Killed That Have Full ÜberCharge").unwrap()
         );
+    }
+    
+    #[test]
+    fn serializes_player_hits_correctly() {
+        let player_hits = StrangePart::PlayerHits;
+        let serialized = player_hits.to_string();
+
+        assert_eq!(serialized, "Player Hits");
+        assert_eq!(StrangePart::from_str("Player Hits").unwrap(), StrangePart::PlayerHits);
+    }
+    
+    #[test]
+    fn serializes_defender_kills_correctly() {
+        let defender_kills = StrangePart::DefenderKills;
+        let serialized = defender_kills.to_string();
+
+        assert_eq!(serialized, "Defender Kills");
+        assert_eq!(StrangePart::from_str("Defender Kills").unwrap(), StrangePart::DefenderKills);
     }
 }

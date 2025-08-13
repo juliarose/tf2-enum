@@ -9,11 +9,11 @@ use crate::Spell;
 const SPELL_COUNT: usize = 2;
 
 /// Contains up to 2 spells. Although the underlying data structure is an array, it behaves like a 
-/// set. Most methods mimic that of [`HashSet`](std::collections::HashSet).
+/// set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
 /// 
 /// This struct solves the following problems:
 /// - An item can only hold up to 2 spells.
-/// - An item cannot have duplicate spells.
+/// - An item cannot have duplicate spells or multiple spells of the same type.
 /// - Comparing spells for equality is order-agnostic.
 /// - Hashing is order-agnostic.
 /// 
@@ -57,8 +57,6 @@ impl SpellSet {
     /// use tf2_enum::SpellSet;
     /// 
     /// let spells = SpellSet::new();
-    /// 
-    /// assert!(spells.is_empty());
     /// ```
     pub fn new() -> Self {
         Self::default()
@@ -85,7 +83,9 @@ impl SpellSet {
     
     /// Creates a set for spells with two spells.
     /// 
-    /// If the same spell is added multiple times, only one will be kept.
+    /// If the same spell is added multiple times, only one will be kept. This is also true for
+    /// spells of the same type. In cases of multiple spells of the same type, the first occuring
+    /// spell will be prioritized.
     /// 
     /// # Examples
     /// ```
@@ -94,6 +94,11 @@ impl SpellSet {
     /// let spells = SpellSet::double(Spell::HeadlessHorseshoes, Spell::VoicesFromBelow);
     /// 
     /// assert_eq!(spells.len(), 2);
+    /// 
+    /// let spells = SpellSet::double(Spell::HeadlessHorseshoes, Spell::TeamSpiritFootprints);
+    /// 
+    /// assert_eq!(spells.len(), 1);
+    /// assert_eq!(SpellSet::single(Spell::HeadlessHorseshoes), spells);
     /// ```
     pub fn double(spell1: Spell, spell2: Spell) -> Self {
         Self::from([
@@ -142,7 +147,7 @@ impl SpellSet {
     pub fn insert(&mut self, spell: Spell) -> Result<(), InsertError> {
         let attribute_defindex = spell.attribute_defindex();
         
-        for s in self.inner.iter_mut().flatten() {
+        for s in self.inner.iter().flatten() {
             if s.attribute_defindex() == attribute_defindex {
                 return Err(InsertError::Duplicate);
             }
@@ -307,24 +312,26 @@ impl SpellSet {
     pub fn is_disjoint(&self, other: &Self) -> bool {
         self.intersection(other).is_empty()
     }
+    
+    /// Returns an iterator over the spells in the set.
+    pub fn iter(&self) -> impl Iterator<Item = &Spell> {
+        self.inner.iter().filter_map(|opt| opt.as_ref())
+    }
 }
 
 impl From<[Option<Spell>; SPELL_COUNT]> for SpellSet {
-    fn from(inner: [Option<Spell>; SPELL_COUNT]) -> Self {
-        let mut inner = inner;
-        
+    fn from(mut inner: [Option<Spell>; SPELL_COUNT]) -> Self {
         // remove duplicates
+        // since this only contains 2 spells it's not really necessary to do this using loops but
+        // the implementation is consistent with StrangePartSet
         for i in 0..SPELL_COUNT {
-            for j in 0..SPELL_COUNT {
-                if i == j {
-                    continue;
-                }
-                
-                if let Some(si) = inner[i] {
-                    if let Some(sj) = inner[j] {
-                        if si.attribute_defindex() == sj.attribute_defindex() {
+            if let Some(val_i) = inner[i] {
+                for j in 0..i {
+                    if let Some(val_j) = inner[j] {
+                        if val_i.attribute_defindex() == val_j.attribute_defindex() {
                             inner[i] = None;
-                        }
+                            break;
+                        } 
                     }
                 }
             }
@@ -382,8 +389,7 @@ impl IntoIterator for SpellSet {
     
     fn into_iter(self) -> Self::IntoIter {
         SpellSetIterator {
-            inner: self,
-            index: 0,
+            inner: self.inner.into_iter(),
         }
     }
 }
@@ -394,8 +400,7 @@ impl IntoIterator for &SpellSet {
     
     fn into_iter(self) -> Self::IntoIter {
         SpellSetIterator {
-            inner: *self,
-            index: 0,
+            inner: self.inner.into_iter(),
         }
     }
 }
@@ -403,20 +408,16 @@ impl IntoIterator for &SpellSet {
 /// Iterates over spells.
 #[derive(Debug)]
 pub struct SpellSetIterator {
-    inner: SpellSet,
-    index: usize,
+    inner: std::array::IntoIter<Option<Spell>, SPELL_COUNT>,
 }
 
 impl Iterator for SpellSetIterator {
     type Item = Spell;
-    
+
     fn next(&mut self) -> Option<Self::Item> {
-        while let Some(s) = self.inner.inner.get(self.index) {
-            self.index += 1;
-            
-            if let Some(s) = s {
-                // stop at first filled slot
-                return Some(*s);
+        while let Some(opt) = self.inner.next() {
+            if let Some(val) = opt {
+                return Some(val);
             }
         }
         
@@ -475,7 +476,7 @@ mod tests {
             Some(Spell::TeamSpiritFootprints),
             Some(Spell::HeadlessHorseshoes),
         ]), SpellSet::from([
-            Some(Spell::HeadlessHorseshoes),
+            Some(Spell::TeamSpiritFootprints),
             None,
         ]));
     }

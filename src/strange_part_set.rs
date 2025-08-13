@@ -9,7 +9,7 @@ use crate::StrangePart;
 const STRANGE_PART_COUNT: usize = 3;
 
 /// Contains up to 3 strange parts. Although the underlying data structure is an array, it behaves 
-/// like a set. Most methods mimic that of [`HashSet`](std::collections::HashSet).
+/// like a set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
 /// 
 /// This struct solves the following problems:
 /// - An item can only hold up to 3 strange parts.
@@ -61,8 +61,6 @@ impl StrangePartSet {
     /// use tf2_enum::StrangePartSet;
     /// 
     /// let strange_parts = StrangePartSet::new();
-    /// 
-    /// assert!(strange_parts.is_empty());
     /// ```
     pub fn new() -> Self {
         Self::default()
@@ -357,6 +355,11 @@ impl StrangePartSet {
     pub fn is_disjoint(&self, other: &Self) -> bool {
         self.intersection(other).is_empty()
     }
+    
+    /// Returns an iterator over the strange parts in the set.
+    pub fn iter(&self) -> impl Iterator<Item = &StrangePart> {
+        self.inner.iter().filter_map(|opt| opt.as_ref())
+    }
 }
 
 impl From<[Option<StrangePart>; STRANGE_PART_COUNT]> for StrangePartSet {
@@ -365,13 +368,14 @@ impl From<[Option<StrangePart>; STRANGE_PART_COUNT]> for StrangePartSet {
         
         // remove duplicates
         for i in 0..STRANGE_PART_COUNT {
-            for j in 0..STRANGE_PART_COUNT {
-                if i == j {
-                    continue;
-                }
-                
-                if inner[i] == inner[j] {
-                    inner[i] = None;
+            if let Some(val_i) = inner[i] {
+                // check elements after i for duplicates
+                for j in (i + 1)..STRANGE_PART_COUNT {
+                    if inner[j] == Some(val_i) {
+                        // later occurrence exists, remove current
+                        inner[i] = None;
+                        break;
+                    }
                 }
             }
         }
@@ -434,8 +438,7 @@ impl IntoIterator for StrangePartSet {
     
     fn into_iter(self) -> Self::IntoIter {
         StrangePartSetIterator {
-            inner: self,
-            index: 0,
+            inner: self.inner.into_iter(),
         }
     }
 }
@@ -446,32 +449,43 @@ impl IntoIterator for &StrangePartSet {
     
     fn into_iter(self) -> Self::IntoIter {
         StrangePartSetIterator {
-            inner: *self,
-            index: 0,
+            inner: self.inner.into_iter(),
         }
     }
 }
 
-/// Iterates over strange parts.
 #[derive(Debug)]
 pub struct StrangePartSetIterator {
-    inner: StrangePartSet,
-    index: usize,
+    inner: std::array::IntoIter<Option<StrangePart>, STRANGE_PART_COUNT>,
 }
 
 impl Iterator for StrangePartSetIterator {
     type Item = StrangePart;
-    
+
     fn next(&mut self) -> Option<Self::Item> {
-        while let Some(s) = self.inner.inner.get(self.index) {
-            self.index += 1;
-            
-            if let Some(s) = s {
-                // stop at first filled slot
-                return Some(*s);
+        while let Some(opt) = self.inner.next() {
+            if let Some(val) = opt {
+                return Some(val);
             }
         }
         
+        None
+    }
+}
+
+pub struct StrangePartSetIter<'a> {
+    inner: std::slice::Iter<'a, Option<StrangePart>>,
+}
+
+impl<'a> Iterator for StrangePartSetIter<'a> {
+    type Item = &'a StrangePart;
+    
+    fn next(&mut self) -> Option<Self::Item> {
+        while let Some(opt) = self.inner.next() {
+            if let Some(val) = opt.as_ref() {
+                return Some(val);
+            }
+        }
         None
     }
 }
@@ -485,6 +499,7 @@ impl fmt::Display for StrangePartSet {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::traits::Attributes;
     
     #[test]
     fn iterates_strange_parts() {
@@ -551,5 +566,23 @@ mod tests {
             None,
             None,
         ]).is_empty());
+    }
+    
+    #[test]
+    fn iter_zip() {
+        let strange_parts = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::CriticalKills),
+        ]);
+        let with_attribute_defindex = strange_parts.into_iter()
+            .zip(StrangePart::DEFINDEX.to_owned())
+            .collect::<Vec<_>>();
+        
+        assert_eq!(with_attribute_defindex, vec![
+            (StrangePart::TauntKills, 380),
+            (StrangePart::KillsWhileExplosiveJumping, 382),
+            (StrangePart::CriticalKills, 384),
+        ]);
     }
 }
