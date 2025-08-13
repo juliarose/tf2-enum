@@ -2,7 +2,22 @@ use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 
 /// Class.
-#[derive(Debug, Deserialize, Serialize, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, Clone, Copy)]
+#[derive(
+    Debug,
+    Deserialize,
+    Serialize,
+    Hash,
+    Eq,
+    PartialEq,
+    Ord,
+    PartialOrd,
+    Display,
+    EnumString,
+    EnumIter,
+    EnumCount,
+    Clone,
+    Copy,
+)]
 pub enum Class {
     #[serde(alias = "scout")]
     Scout,

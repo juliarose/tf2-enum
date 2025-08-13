@@ -1,11 +1,28 @@
-use crate::Attributes;
-use strum_macros::{Display, EnumString, EnumIter};
+use crate::{KillEaterScoreType, Attributes};
+use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
 /// Strange part. `repr` values are mapped to their `kill_eater_score_type` attribute value. Strings
 /// are the name of the `kill_eater_score_type`, **not** the name of the strange part.
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(
+    Serialize_repr,
+    Deserialize_repr,
+    Debug,
+    Hash,
+    Eq,
+    PartialEq,
+    Ord,
+    PartialOrd,
+    Display,
+    EnumString,
+    EnumIter,
+    EnumCount,
+    TryFromPrimitive,
+    IntoPrimitive,
+    Clone,
+    Copy,
+)]
 #[repr(u32)]
 pub enum StrangePart {
     #[strum(serialize = "Scouts Killed")]
@@ -362,6 +379,11 @@ impl StrangePart {
             6064 => Some(Self::PlayerHits),
             _ => None,
         }
+    }
+    
+    /// Converts this [`StrangePart`] into its related [`KillEaterScoreType`], if it exists.
+    pub fn kill_eater_score_type(&self) -> Option<KillEaterScoreType> {
+        KillEaterScoreType::try_from(*self as u32).ok()
     }
 }
 

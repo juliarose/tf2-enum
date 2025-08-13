@@ -31,6 +31,7 @@ mod craft_class;
 mod item_slot;
 mod origin;
 mod craft_material_type;
+mod kill_eater_score_type;
 mod spell_set;
 mod strange_part_set;
 
@@ -49,6 +50,7 @@ pub use craft_class::CraftClass;
 pub use item_slot::ItemSlot;
 pub use origin::Origin;
 pub use craft_material_type::CraftMaterialType;
+pub use kill_eater_score_type::KillEaterScoreType;
 pub use spell_set::{SpellSet, SpellSetIterator};
 pub use strange_part_set::{StrangePartSet, StrangePartSetIterator};
 

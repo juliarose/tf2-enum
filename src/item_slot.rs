@@ -2,7 +2,22 @@ use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 
 /// Item slot.
-#[derive(Debug, Deserialize, Serialize, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, Clone, Copy)]
+#[derive(
+    Debug,
+    Deserialize,
+    Serialize,
+    Hash,
+    Eq,
+    PartialEq,
+    Ord,
+    PartialOrd,
+    Display,
+    EnumString,
+    EnumIter,
+    EnumCount,
+    Clone,
+    Copy,
+)]
 pub enum ItemSlot {
     #[strum(serialize = "melee")]
     #[serde(rename = "melee")]

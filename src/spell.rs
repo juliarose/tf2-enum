@@ -9,7 +9,20 @@ use serde::{Serialize, Deserialize, Serializer};
 use serde::de::{self, Visitor, Deserializer};
 
 /// Spell.
-#[derive(Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, Clone, Copy)]
+#[derive(
+    Debug,
+    Hash,
+    Eq,
+    PartialEq,
+    Ord,
+    PartialOrd,
+    Display,
+    EnumString,
+    EnumIter,
+    EnumCount,
+    Clone,
+    Copy,
+)]
 pub enum Spell {
     #[strum(serialize = "Team Spirit Footprints")]
     TeamSpiritFootprints,
