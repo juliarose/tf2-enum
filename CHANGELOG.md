@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.10.0 (2025-08-13)
+- Added `SpellSet` struct for holding sets of spells.
+- Added `StrangePartSet` struct for holding sets of strange parts.
+- Added `InsertError` enum for errors when inserting into sets.
+
 ## 0.9.4 (2024-05-18)
 
 ### Added

@@ -1,5 +1,3 @@
-//! # tf2-enum
-//! 
 //! Provides enumerated types for models related to the Team Fortress 2 item schema.
 //! 
 //! ## Usage
@@ -29,6 +27,8 @@ mod craft_class;
 mod item_slot;
 mod origin;
 mod craft_material_type;
+mod spell_set;
+mod strange_part_set;
 
 pub use traits::{IntoEnumIterator, EnumCount, Attribute, Attributes};
 pub use quality::Quality;
@@ -45,6 +45,8 @@ pub use craft_class::CraftClass;
 pub use item_slot::ItemSlot;
 pub use origin::Origin;
 pub use craft_material_type::CraftMaterialType;
+pub use spell_set::SpellSet;
+pub use strange_part_set::StrangePartSet;
 
 pub use num_enum;
 pub use strum;

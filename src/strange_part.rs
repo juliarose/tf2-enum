@@ -3,7 +3,7 @@ use strum_macros::{Display, EnumString, EnumIter};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
-/// Strange part. `repr` values are mapped to their `kill_eater_score_type` attribute value.  
+/// Strange part. `repr` values are mapped to their `kill_eater_score_type` attribute value.
 #[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
 #[repr(u32)]
 pub enum StrangePart {
@@ -124,7 +124,7 @@ impl StrangePart {
         Self::try_from(score_type).ok()
     }
     
-    /// Gets the `defindex` related to this [`StrangePart`].
+    /// Gets the `defindex` for the [`StrangePart`].
     pub fn defindex(&self) -> u32 {
         match self {
             Self::ScoutsKilled => 6003,
