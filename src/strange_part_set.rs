@@ -15,9 +15,7 @@ const STRANGE_PART_COUNT: usize = 3;
 /// - An item cannot have duplicate strange parts.
 /// - Comparing strange parts for equality is order-agnostic.
 /// - Hashing is order-agnostic.
-/// 
-/// Since the number of strange parts is fixed, the struct uses zero heap allocations and is 
-/// therefore [`Copy`].
+/// - The type is `Copy`, allowing for cheap and easy duplication.
 /// 
 /// # Examples
 /// ```
@@ -527,8 +525,9 @@ impl Iterator for StrangePartSetIterator {
     type Item = StrangePart;
 
     fn next(&mut self) -> Option<Self::Item> {
-        #[allow(clippy::manual_flatten)]
-        while let Some(opt) = self.inner.next() {
+        let iter = self.inner.by_ref();
+        
+        for opt in iter {
             if opt.is_some() {
                 return opt;
             }

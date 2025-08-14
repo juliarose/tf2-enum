@@ -68,6 +68,7 @@ pub enum StockWeapon {
     DestructionPDA,
     #[strum(serialize = "Disguise Kit")]
     DisguiseKit,
+    /// The PDA is defined in the schema but not used in-game, included here for thoroughness.
     #[strum(serialize = "PDA")]
     PDA,
     #[strum(serialize = "Medi Gun")]
@@ -77,7 +78,7 @@ pub enum StockWeapon {
 }
 
 impl StockWeapon {
-    /// Gets the set of related defindexes of the weapon.
+    /// Gets the set of related defindexes of the weapon. Excludes definitions for skinned items.
     pub fn defindex(&self) -> &'static [u32] {
         match self {
             Self::Bat => &[0, 190],
@@ -110,7 +111,8 @@ impl StockWeapon {
         }
     }
 
-    /// Attempts to create a `StockWeapon` from a defindex.
+    /// Attempts to create a [`StockWeapon`] from a defindex. Excludes definitions for skinned
+    /// items.
     pub fn from_defindex(defindex: u32) -> Option<StockWeapon> {
         match defindex {
             0 | 190 => Some(Self::Bat),
@@ -143,8 +145,13 @@ impl StockWeapon {
             _ => None,
         }
     }
+    
+    /// Checks if the defindex belongs to a stock weapon.
+    pub fn defindex_is_stock_weapon(defindex: u32) -> bool {
+        Self::from_defindex(defindex).is_some()
+    }
 
-    /// Gets the set of classes that can use the weapon.
+    /// Gets the set of classes that can use this weapon.
     pub fn used_by_classes(&self) -> &'static [Class] {
         match self {
             Self::Bat |
@@ -176,7 +183,7 @@ impl StockWeapon {
             Self::Pistol => &[Class::Scout, Class::Engineer],
         }
     }
-
+    
     /// Checks if the weapon is used by a specific class.
     pub fn used_by_class(&self, class: Class) -> bool {
         self.used_by_classes().contains(&class)
@@ -198,12 +205,11 @@ impl StockWeapon {
     }
     
     /// Gets the item slot of the weapon for the class.
-    pub fn item_slot(&self, class: Class) -> Option<ItemSlot> {
-        if !self.used_by_class(class) {
-            return None;
-        }
-        
-        let item_slot = match self {
+    /// 
+    /// **Note:** [`StockWeapon::Shotgun`] is a secondary weapon for the Soldier and Pyro classes
+    /// but a primary weapon for the Engineer class. It's returned as [`ItemSlot::Secondary`] here.
+    pub fn item_slot(&self) -> ItemSlot {
+        match self {
             Self::Bat => ItemSlot::Melee,
             Self::Scattergun => ItemSlot::Primary,
             Self::Bottle => ItemSlot::Secondary,
@@ -231,11 +237,6 @@ impl StockWeapon {
             Self::DestructionPDA => ItemSlot::PDA2,
             Self::PDA => ItemSlot::Building,
             Self::Shotgun => ItemSlot::Secondary,
-        };
-        
-        match (class, self) {
-            (Class::Engineer, Self::Shotgun) => Some(ItemSlot::Secondary),
-            _ => Some(item_slot),
         }
     }
 }

@@ -238,6 +238,11 @@ impl Paint {
             Self::WaterloggedLabCoat => 5061,
         }
     }
+    
+    /// Checks if the defindex belongs to a paint.
+    pub fn defindex_is_paint(defindex: u32) -> bool {
+        Self::from_defindex(defindex).is_some()
+    }
 }
 
 impl Attribute for Paint {

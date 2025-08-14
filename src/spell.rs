@@ -175,7 +175,24 @@ impl TryInto<u32> for Spell {
 }
 
 /// Paint spell.
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(
+    Serialize_repr,
+    Deserialize_repr,
+    Debug,
+    Hash,
+    Eq,
+    PartialEq,
+    Ord,
+    PartialOrd,
+    Display,
+    EnumString,
+    EnumIter,
+    EnumCount,
+    TryFromPrimitive,
+    IntoPrimitive,
+    Clone,
+    Copy,
+)]
 #[repr(u32)]
 pub enum PaintSpell {
     #[strum(serialize = "Die Job")]
@@ -225,23 +242,40 @@ impl TryFrom<Spell> for PaintSpell {
 }
 
 /// Footprints spell.
-#[derive(Serialize_repr, Deserialize_repr, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Display, EnumString, EnumIter, EnumCount, TryFromPrimitive, IntoPrimitive, Clone, Copy)]
+#[derive(
+    Serialize_repr,
+    Deserialize_repr,
+    Debug,
+    Hash,
+    Eq,
+    PartialEq,
+    Ord,
+    PartialOrd,
+    Display,
+    EnumString,
+    EnumIter,
+    EnumCount,
+    TryFromPrimitive,
+    IntoPrimitive,
+    Clone,
+    Copy,
+)]
 #[repr(u32)]
 pub enum FootprintsSpell {
     #[strum(serialize = "Team Spirit Footprints")]
     TeamSpiritFootprints = 1,
-    #[strum(serialize = "Gangreen Footprints")]
-    GangreenFootprints = 8421376,
+    #[strum(serialize = "Headless Horseshoes")]
+    HeadlessHorseshoes = 2,
+    #[strum(serialize = "Rotten Orange Footprints")]
+    RottenOrangeFootprints = 13595446,
     #[strum(serialize = "Corpse Gray Footprints")]
     CorpseGrayFootprints = 3100495,
     #[strum(serialize = "Violent Violet Footprints")]
     ViolentVioletFootprints = 5322826,
-    #[strum(serialize = "Rotten Orange Footprints")]
-    RottenOrangeFootprints = 13595446,
     #[strum(serialize = "Bruised Purple Footprints")]
     BruisedPurpleFootprints = 8208497,
-    #[strum(serialize = "Headless Horseshoes")]
-    HeadlessHorseshoes = 2,
+    #[strum(serialize = "Gangreen Footprints")]
+    GangreenFootprints = 8421376,
 }
 
 impl Attribute for FootprintsSpell {

@@ -4,7 +4,6 @@ use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
 /// Killstreaker.
-
 #[derive(
     Serialize_repr,
     Deserialize_repr,

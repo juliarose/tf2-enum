@@ -13,8 +13,8 @@ keywords = ["tf2", "steam"]
 readme = "README.md"
 
 [dependencies]
-serde = { version = "1", features = ["derive"] }
-serde_repr = "0.1"
+serde = { version = "^1", features = ["derive"] }
+serde_repr = "^0.1"
 strum = "^0.27"
 strum_macros = "^0.27"
 num_enum = "^0.7"

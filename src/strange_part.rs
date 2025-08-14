@@ -381,6 +381,11 @@ impl StrangePart {
         }
     }
     
+    /// Checks if the defindex belongs to a strange part.
+    pub fn defindex_is_strange_part(defindex: u32) -> bool {
+        Self::from_defindex(defindex).is_some()
+    }
+    
     /// Converts this [`StrangePart`] into its related [`KillEaterScoreType`], if it exists.
     pub fn kill_eater_score_type(&self) -> Option<KillEaterScoreType> {
         KillEaterScoreType::try_from(*self).ok()
