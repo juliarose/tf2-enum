@@ -259,7 +259,7 @@ impl StrangePart {
         }
     }
     
-    /// Is this a strange part for cosmetics?
+    /// Is this strange part for cosmetics?
     pub fn is_cosmetic_part(&self) -> bool {
         matches!(self, Self::Kills | Self::FullHealthKills | Self::Assists | Self::FreezecamTauntAppearances)
     }
@@ -383,12 +383,28 @@ impl StrangePart {
     
     /// Converts this [`StrangePart`] into its related [`KillEaterScoreType`], if it exists.
     pub fn kill_eater_score_type(&self) -> Option<KillEaterScoreType> {
-        KillEaterScoreType::try_from(*self as u32).ok()
+        KillEaterScoreType::try_from(*self).ok()
     }
 }
 
 impl Attributes for StrangePart {
     const DEFINDEX: &'static [u32] = &[380, 382, 384];
+}
+
+impl TryFrom<KillEaterScoreType> for StrangePart {
+    type Error = num_enum::TryFromPrimitiveError<StrangePart>;
+    
+    fn try_from(part: KillEaterScoreType) -> Result<Self, Self::Error> {
+        StrangePart::try_from(part as u32)
+    }
+}
+
+impl TryFrom<&KillEaterScoreType> for StrangePart {
+    type Error = num_enum::TryFromPrimitiveError<StrangePart>;
+    
+    fn try_from(part: &KillEaterScoreType) -> Result<Self, Self::Error> {
+        StrangePart::try_from(*part as u32)
+    }
 }
 
 #[cfg(test)]

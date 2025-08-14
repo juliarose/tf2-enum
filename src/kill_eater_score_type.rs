@@ -3,7 +3,7 @@ use strum_macros::{Display, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
-/// Kill eater score types. Conversion from strings is not supported due to multiple variants
+/// Kill eater score type. Conversion from strings is not supported due to multiple variants
 /// having the same string representation. They can still be formatted into strings.
 #[derive(
     Serialize_repr,
@@ -217,12 +217,28 @@ pub enum KillEaterScoreType {
 impl KillEaterScoreType {
     /// Converts this [`KillEaterScoreType`] into its related [`StrangePart`], if it exists.
     pub fn strange_part(&self) -> Option<StrangePart> {
-        StrangePart::try_from(*self as u32).ok()
+        StrangePart::try_from(*self).ok()
     }
 }
 
 impl Attributes for KillEaterScoreType {
     const DEFINDEX: &'static [u32] = &[380, 382, 384];
+}
+
+impl TryFrom<StrangePart> for KillEaterScoreType {
+    type Error = num_enum::TryFromPrimitiveError<KillEaterScoreType>;
+    
+    fn try_from(part: StrangePart) -> Result<Self, Self::Error> {
+        KillEaterScoreType::try_from(part as u32)
+    }
+}
+
+impl TryFrom<&StrangePart> for KillEaterScoreType {
+    type Error = num_enum::TryFromPrimitiveError<KillEaterScoreType>;
+    
+    fn try_from(part: &StrangePart) -> Result<Self, Self::Error> {
+        KillEaterScoreType::try_from(*part as u32)
+    }
 }
 
 #[cfg(test)]

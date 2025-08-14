@@ -1,6 +1,5 @@
 //! Set for holding up to 2 spells.
 
-use crate::error::InsertError;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::Sub;
@@ -32,11 +31,11 @@ const SPELL_COUNT: usize = 2;
 /// assert_eq!(spells.len(), 1);
 /// 
 /// // Add a spell.
-/// spells.insert(Spell::VoicesFromBelow).ok();
+/// spells.insert(Spell::VoicesFromBelow);
 /// assert_eq!(spells.len(), 2);
 /// 
-/// // If a spell is added when spells are full, an error is returned.
-/// assert!(spells.insert(Spell::PumpkinBombs).is_err());
+/// // If a spell is added when spells are full, the insert will return false.
+/// assert!(!spells.insert(Spell::PumpkinBombs));
 /// assert!(!spells.contains(&Spell::PumpkinBombs));
 /// 
 /// // Iterate over spells.
@@ -125,9 +124,9 @@ impl SpellSet {
     
     /// Adds a spell to the first available slot.
     /// 
-    /// # Errors
-    /// - If the set is full.
-    /// - If the spell is already in the set.
+    /// Returns `false` if:
+    /// - The set is full.
+    /// - The spell is already in the set.
     /// 
     /// # Examples
     /// ```
@@ -137,30 +136,27 @@ impl SpellSet {
     /// 
     /// assert_eq!(spells.len(), 1);
     /// 
-    /// spells.insert(Spell::VoicesFromBelow).ok();
+    /// spells.insert(Spell::VoicesFromBelow);
     /// 
     /// assert_eq!(spells.len(), 2);
     /// 
     /// // Spells are full.
-    /// assert!(spells.insert(Spell::PumpkinBombs).is_err());
+    /// assert!(!spells.insert(Spell::PumpkinBombs));
     /// ```
-    pub fn insert(&mut self, spell: Spell) -> Result<(), InsertError> {
+    pub fn insert(&mut self, spell: Spell) -> bool {
         let attribute_defindex = spell.attribute_defindex();
         
-        for s in self.inner.iter().flatten() {
-            if s.attribute_defindex() == attribute_defindex {
-                return Err(InsertError::Duplicate);
-            }
+        if self.inner.iter().flatten().any(|s| s.attribute_defindex() == attribute_defindex) {
+            return false;
         }
         
-        for index in 0..SPELL_COUNT {
-            if self.inner[index].is_none() {
-                self.inner[index] = Some(spell);
-                return Ok(());
-            }
+        if let Some(slot) = self.inner.iter_mut().find(|slot| slot.is_none()) {
+            *slot = Some(spell);
+            return true;
         }
         
-        Err(InsertError::Full)
+        // full set, insertion failed
+        false
     }
     
     /// Removes a spell from the set. Returns whether the value was present in the set.
@@ -376,7 +372,7 @@ impl FromIterator<Spell> for SpellSet {
         let mut spell_set = Self::new();
         
         for spell in iter {
-            spell_set.insert(spell).ok();
+            spell_set.insert(spell);
         }
         
         spell_set
@@ -405,8 +401,8 @@ impl IntoIterator for &SpellSet {
     }
 }
 
-/// Iterates over spells.
-#[derive(Debug)]
+/// Iterator for spells.
+#[derive(Debug, Clone)]
 pub struct SpellSetIterator {
     inner: std::array::IntoIter<Option<Spell>, SPELL_COUNT>,
 }

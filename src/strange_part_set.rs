@@ -1,6 +1,5 @@
 //! Set for holding up to 3 strange parts.
 
-use crate::error::InsertError;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::Sub;
@@ -35,12 +34,12 @@ const STRANGE_PART_COUNT: usize = 3;
 /// assert_eq!(strange_parts.len(), 2);
 /// 
 /// // Add a strange part.
-/// strange_parts.insert(StrangePart::EngineersKilled).ok();
+/// strange_parts.insert(StrangePart::EngineersKilled);
 /// 
 /// assert_eq!(strange_parts.len(), 3);
 /// 
-/// // If a strange part is added when strange parts are full, an error is returned.
-/// assert!(strange_parts.insert(StrangePart::MedicsKilled).is_err());
+/// // If a strange part is added when strange parts are full, the insert will return false.
+/// assert!(!strange_parts.insert(StrangePart::MedicsKilled));
 /// assert!(!strange_parts.contains(&StrangePart::MedicsKilled));
 /// 
 /// // Iterate over strange parts.
@@ -178,26 +177,25 @@ impl StrangePartSet {
     /// 
     /// assert_eq!(strange_parts.len(), 2);
     /// 
-    /// strange_parts.insert(StrangePart::EngineersKilled).ok();
+    /// strange_parts.insert(StrangePart::EngineersKilled);
     /// 
     /// assert_eq!(strange_parts.len(), 3);
     /// 
     /// // Strange parts are full.
-    /// assert!(strange_parts.insert(StrangePart::MedicsKilled).is_err());
+    /// assert!(!strange_parts.insert(StrangePart::MedicsKilled));
     /// ```
-    pub fn insert(&mut self, strange_part: StrangePart) -> Result<(), InsertError> {
+    pub fn insert(&mut self, strange_part: StrangePart) -> bool {
         if self.contains(&strange_part) {
-            return Err(InsertError::Duplicate);
+            return false;
         }
         
-        for index in 0..STRANGE_PART_COUNT {
-            if self.inner[index].is_none() {
-                self.inner[index] = Some(strange_part);
-                return Ok(());
-            }
+        if let Some(slot) = self.inner.iter_mut().find(|slot| slot.is_none()) {
+            *slot = Some(strange_part);
+            return true;
         }
         
-        Err(InsertError::Full)
+        // full set, insertion failed
+        false
     }
     
     /// Removes a strange part.
@@ -425,7 +423,7 @@ impl FromIterator<StrangePart> for StrangePartSet {
         let mut strange_parts = Self::new();
         
         for strange_part in iter {
-            strange_parts.insert(strange_part).ok();
+            strange_parts.insert(strange_part);
         }
         
         strange_parts
@@ -454,7 +452,8 @@ impl IntoIterator for &StrangePartSet {
     }
 }
 
-#[derive(Debug)]
+/// Iterator for strange parts.
+#[derive(Debug, Clone)]
 pub struct StrangePartSetIterator {
     inner: std::array::IntoIter<Option<StrangePart>, STRANGE_PART_COUNT>,
 }
@@ -533,7 +532,7 @@ mod tests {
         assert!(!strange_parts.contains(&StrangePart::CriticalKills));
         assert_eq!(strange_parts.len(), 2);
         
-        strange_parts.insert(StrangePart::DamageDealt).ok();
+        strange_parts.insert(StrangePart::DamageDealt);
         
         assert!(strange_parts.contains(&StrangePart::DamageDealt));
         assert_eq!(strange_parts.len(), 3);
