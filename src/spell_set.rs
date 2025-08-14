@@ -2,13 +2,13 @@
 
 use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::ops::Sub;
+use std::ops::{BitAnd, Sub};
 use crate::Spell;
 
 const SPELL_COUNT: usize = 2;
 
-/// Contains up to 2 spells. Although the underlying data structure is an array, it behaves like a 
-/// set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
+/// Contains up to 2 spells. Although the underlying data structure is an array, this structure
+/// behaves like a set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
 /// 
 /// This struct solves the following problems:
 /// - An item can only hold up to 2 spells.
@@ -34,7 +34,7 @@ const SPELL_COUNT: usize = 2;
 /// spells.insert(Spell::VoicesFromBelow);
 /// assert_eq!(spells.len(), 2);
 /// 
-/// // If a spell is added when spells are full, the insert will return false.
+/// // If a spell is added when spells are full, the insert will fail.
 /// assert!(!spells.insert(Spell::PumpkinBombs));
 /// assert!(!spells.contains(&Spell::PumpkinBombs));
 /// 
@@ -309,6 +309,52 @@ impl SpellSet {
         self.intersection(other).is_empty()
     }
     
+    /// Returns true if the set is a subset of another, i.e., other contains at least all the values in self.
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::{SpellSet, Spell};
+    ///
+    /// let sup = SpellSet::double(Spell::HalloweenFire, Spell::Exorcism);
+    /// let mut spells = SpellSet::single(Spell::HalloweenFire);
+    ///
+    /// assert!(spells.is_subset(&sup));
+    /// 
+    /// spells.insert(Spell::HeadlessHorseshoes);
+    /// 
+    /// assert!(!spells.is_subset(&sup));
+    /// ```
+    pub fn is_subset(&self, other: &Self) -> bool {
+        if self.len() > other.len() {
+            return false;
+        }
+        
+        self.iter().all(|spell| other.contains(spell))
+    }
+    
+    /// Returns true if the set is a superset of another, i.e., self contains at least all the values in other.
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::{SpellSet, Spell};
+    ///
+    /// let sub = SpellSet::double(Spell::HalloweenFire, Spell::Exorcism);
+    /// let mut spells = SpellSet::new();
+    ///
+    /// assert!(!spells.is_superset(&sub));
+    /// 
+    /// spells.insert(Spell::HalloweenFire);
+    /// 
+    /// assert!(!spells.is_superset(&sub));
+    /// 
+    /// spells.insert(Spell::Exorcism);
+    /// 
+    /// assert!(spells.is_superset(&sub));
+    /// ```
+    pub fn is_superset(&self, other: &Self) -> bool {
+        other.is_subset(self)
+    }
+    
     /// Returns an iterator over the spells in the set.
     pub fn iter(&self) -> impl Iterator<Item = &Spell> {
         self.inner.iter().filter_map(|opt| opt.as_ref())
@@ -345,6 +391,30 @@ impl Sub for SpellSet {
     
     fn sub(self, other: Self) -> Self::Output {
         self.difference(&other)
+    }
+}
+
+impl Sub for &SpellSet {
+    type Output = SpellSet;
+    
+    fn sub(self, other: &SpellSet) -> Self::Output {
+        self.difference(other)
+    }
+}
+
+impl BitAnd for SpellSet {
+    type Output = Self;
+    
+    fn bitand(self, other: Self) -> Self::Output {
+        self.intersection(&other)
+    }
+}
+
+impl BitAnd for &SpellSet {
+    type Output = SpellSet;
+    
+    fn bitand(self, other: &SpellSet) -> Self::Output {
+        self.intersection(other)
     }
 }
 

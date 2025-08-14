@@ -2,13 +2,13 @@
 
 use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::ops::Sub;
+use std::ops::{BitAnd, Sub};
 use crate::StrangePart;
 
 const STRANGE_PART_COUNT: usize = 3;
 
-/// Contains up to 3 strange parts. Although the underlying data structure is an array, it behaves 
-/// like a set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
+/// Contains up to 3 strange parts. Although the underlying data structure is an array, this structure
+/// behaves like a set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
 /// 
 /// This struct solves the following problems:
 /// - An item can only hold up to 3 strange parts.
@@ -38,7 +38,7 @@ const STRANGE_PART_COUNT: usize = 3;
 /// 
 /// assert_eq!(strange_parts.len(), 3);
 /// 
-/// // If a strange part is added when strange parts are full, the insert will return false.
+/// // If a strange part is added when strange parts are full, the insert will fail.
 /// assert!(!strange_parts.insert(StrangePart::MedicsKilled));
 /// assert!(!strange_parts.contains(&StrangePart::MedicsKilled));
 /// 
@@ -349,6 +349,52 @@ impl StrangePartSet {
         self.intersection(other).is_empty()
     }
     
+    /// Returns true if the set is a subset of another, i.e., other contains at least all the values in self.
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::{StrangePartSet, StrangePart};
+    ///
+    /// let sup = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
+    /// let mut strange_parts = StrangePartSet::single(StrangePart::DamageDealt);
+    ///
+    /// assert!(strange_parts.is_subset(&sup));
+    /// 
+    /// strange_parts.insert(StrangePart::EngineersKilled);
+    /// 
+    /// assert!(!strange_parts.is_subset(&sup));
+    /// ```
+    pub fn is_subset(&self, other: &Self) -> bool {
+        if self.len() > other.len() {
+            return false;
+        }
+        
+        self.iter().all(|strange_part| other.contains(strange_part))
+    }
+    
+    /// Returns true if the set is a superset of another, i.e., self contains at least all the values in other.
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::{StrangePartSet, StrangePart};
+    ///
+    /// let sub = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
+    /// let mut strange_parts = StrangePartSet::new();
+    ///
+    /// assert!(!strange_parts.is_superset(&sub));
+    /// 
+    /// strange_parts.insert(StrangePart::DamageDealt);
+    /// 
+    /// assert!(!strange_parts.is_superset(&sub));
+    /// 
+    /// strange_parts.insert(StrangePart::CriticalKills);
+    /// 
+    /// assert!(strange_parts.is_superset(&sub));
+    /// ```
+    pub fn is_superset(&self, other: &Self) -> bool {
+        other.is_subset(self)
+    }
+    
     /// Returns an iterator over the strange parts in the set.
     pub fn iter(&self) -> impl Iterator<Item = &StrangePart> {
         self.inner.iter().filter_map(|opt| opt.as_ref())
@@ -386,6 +432,30 @@ impl Sub for StrangePartSet {
     
     fn sub(self, other: Self) -> Self::Output {
         self.difference(&other)
+    }
+}
+
+impl Sub for &StrangePartSet {
+    type Output = StrangePartSet;
+    
+    fn sub(self, other: &StrangePartSet) -> Self::Output {
+        self.difference(other)
+    }
+}
+
+impl BitAnd for StrangePartSet {
+    type Output = Self;
+    
+    fn bitand(self, other: Self) -> Self::Output {
+        self.intersection(&other)
+    }
+}
+
+impl BitAnd for &StrangePartSet {
+    type Output = StrangePartSet;
+    
+    fn bitand(self, other: &StrangePartSet) -> Self::Output {
+        self.intersection(other)
     }
 }
 
@@ -583,5 +653,38 @@ mod tests {
         ]);
         
         assert_eq!(strange_parts.to_string(), "Taunt Kills, Kills While Explosive-Jumping, Critical Kills");
+    }
+    
+    #[test]
+    fn bit_and() {
+        let set1 = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::CriticalKills),
+        ]);
+        let set2 = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::DamageDealt),
+            None,
+        ]);
+        let intersection = set1 & set2;
+        assert_eq!(intersection, StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            None,
+            None,
+        ]));
+    }
+    
+    #[test]
+    fn iterate_borrowed() {
+        let strange_parts = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::CriticalKills),
+        ]);
+        
+        for strange_part in &strange_parts {
+            assert!(strange_parts.contains(&strange_part));
+        }
     }
 }

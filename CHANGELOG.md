@@ -3,16 +3,22 @@
 ## 0.10.0 (2025-08-13)
 
 ### Added
+- `KillEaterScoreType` enum.
 - `SpellSet` for holding sets of spells.
 - `StrangePartSet` for holding sets of strange parts.
 - `is_cosmetic_part` method to `StrangePart`.
 - `strange_part_name` method to `StrangePart`.
 - `from_strange_part_name` method to `StrangePart`.
+- `kill_eater_score_type` method to `StrangePart`.
+- Missing `EnumCount` for some definitions.
+- `BitAnd` for `SpellSet` and `StrangePartSet`, and their borrowed variants.
+- `is_subset` and `is_superset` methods to `StrangePartSet` and `SpellSet`.
 
 ### Changed
 - `StrangePart::DefendersKilled` to `StrangePart::DefenderKills`.
 - `StrangePart::PlayersHit` to `StrangePart::PlayerHits`.
 - Related strings for `StrangePart::PlayerHits` and `StrangePart::DefenderKills`.
+- Collisions for `StrangePartSet` and `SpellSet` now prioritize keeping the first values rather than the last.
 
 ## 0.9.4 (2024-05-18)
 
