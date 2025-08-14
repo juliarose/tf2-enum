@@ -8,7 +8,8 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use serde::{Serialize, Deserialize, Serializer};
 use serde::de::{self, Visitor, Deserializer};
 
-/// Spell.
+/// Spell. In the schema, spells aren’t grouped together because they have different attributes,
+/// though in practice they’re often treated as if they are.
 #[derive(
     Debug,
     Hash,
@@ -49,7 +50,7 @@ pub enum Spell {
     #[strum(serialize = "Sinister Staining")]
     SinisterStaining,
     // Allow conversion from "Voices from Below" but serialize as "Voices From Below".
-    #[strum(serialize="Voices from Below", serialize = "Voices From Below")]
+    #[strum(serialize = "Voices from Below", serialize = "Voices From Below")]
     VoicesFromBelow,
     #[strum(serialize = "Pumpkin Bombs")]
     PumpkinBombs,

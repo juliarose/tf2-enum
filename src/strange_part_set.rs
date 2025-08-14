@@ -21,7 +21,7 @@ const STRANGE_PART_COUNT: usize = 3;
 /// ```
 /// use tf2_enum::{StrangePartSet, StrangePart};
 /// 
-/// // Create a set for strange parts with one strange part.
+/// // Create a set for strange parts with two strange parts.
 /// let mut strange_parts = StrangePartSet::double(
 ///     StrangePart::CriticalKills,
 ///     StrangePart::DamageDealt,

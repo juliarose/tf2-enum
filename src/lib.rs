@@ -19,8 +19,9 @@
 //! 
 //! let level = ItemLevel::KillEaterRank.score_level(9000);
 //! let killstreak_tier = KillstreakTier::Professional;
+//! let full_name = format!("{level} {killstreak_tier} Pomson 6000");
 //! 
-//! assert_eq!(format!("{level} {killstreak_tier} Pomson 6000"), "Hale's Own Professional Killstreak Pomson 6000");
+//! assert_eq!(full_name, "Hale's Own Professional Killstreak Pomson 6000");
 //! ```
 pub mod error;
 
@@ -42,6 +43,7 @@ mod craft_material_type;
 mod kill_eater_score_type;
 mod item_level;
 mod stock_weapon;
+mod capability;
 mod spell_set;
 mod strange_part_set;
 
@@ -63,6 +65,7 @@ pub use craft_material_type::CraftMaterialType;
 pub use kill_eater_score_type::KillEaterScoreType;
 pub use item_level::{ItemLevel, Level};
 pub use stock_weapon::StockWeapon;
+pub use capability::Capability;
 pub use spell_set::{SpellSet, SpellSetIterator};
 pub use strange_part_set::{StrangePartSet, StrangePartSetIterator};
 

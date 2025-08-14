@@ -5,6 +5,7 @@
 ### Added
 - `KillEaterScoreType` enum.
 - `ItemLevel` enum.
+- `Capability` enum.
 - `Level` struct associated with `ItemLevel`.
 - `SpellSet` for holding sets of spells.
 - `StrangePartSet` for holding sets of strange parts.
