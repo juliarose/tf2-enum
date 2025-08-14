@@ -1,7 +1,7 @@
+use crate::KillEaterScoreType;
+use std::fmt;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
-
-use crate::KillEaterScoreType;
 
 /// Item level.
 #[derive(
@@ -22,38 +22,52 @@ use crate::KillEaterScoreType;
 )]
 pub enum ItemLevel {
     #[strum(serialize = "KillEaterRank")]
+    #[serde(rename = "KillEaterRank")]
     KillEaterRank,
     #[strum(serialize = "SpiritOfGivingRank")]
+    #[serde(rename = "SpiritOfGivingRank")]
     SpiritOfGivingRank,
     #[strum(serialize = "KillEater_HolidayPunchRank")]
+    #[serde(rename = "KillEater_HolidayPunchRank")]
     KillEaterHolidayPunchRank,
     #[strum(serialize = "KillEater_ManTreadsRank")]
+    #[serde(rename = "KillEater_ManTreadsRank")]
     KillEaterManTreadsRank,
     #[strum(serialize = "KillEater_SapperRank")]
+    #[serde(rename = "KillEater_SapperRank")]
     KillEaterSapperRank,
     #[strum(serialize = "KillEater_RobotsKilledRank")]
+    #[serde(rename = "KillEater_RobotsKilledRank")]
     KillEaterRobotsKilledRank,
     #[strum(serialize = "KillEater_TimeCloakedRank")]
+    #[serde(rename = "KillEater_TimeCloakedRank")]
     KillEaterTimeCloakedRank,
     #[strum(serialize = "KillEater_HealthGivenRank")]
+    #[serde(rename = "KillEater_HealthGivenRank")]
     KillEaterHealthGivenRank,
     #[strum(serialize = "KillEater_PointsScored")]
+    #[serde(rename = "KillEater_PointsScored")]
     KillEaterPointsScored,
     #[strum(serialize = "Journal_DuckBadge")]
+    #[serde(rename = "Journal_DuckBadge")]
     JournalDuckBadge,
     #[strum(serialize = "KillEater_OperationContractRank")]
+    #[serde(rename = "KillEater_OperationContractRank")]
     KillEaterOperationContractRank,
     #[strum(serialize = "KillEater_HalloweenSoulsRank")]
+    #[serde(rename = "KillEater_HalloweenSoulsRank")]
     KillEaterHalloweenSoulsRank,
     #[strum(serialize = "KillEater_ContractPointsEarnedRank")]
+    #[serde(rename = "KillEater_ContractPointsEarnedRank")]
     KillEaterContractPointsEarnedRank,
     #[strum(serialize = "KillEater_BackstabsAbsorbed")]
+    #[serde(rename = "KillEater_BackstabsAbsorbed")]
     KillEaterBackstabsAbsorbed,
 }
 
 impl ItemLevel {
     /// Gets the level for a given `score`.
-    pub fn score_level(&self, score: u32) -> &'static Level {
+    pub fn score_level(&self, score: i32) -> &'static Level {
         let levels = self.levels();
         let mut prev_level = &levels[levels.len() - 1];
         
@@ -479,8 +493,14 @@ impl From<&KillEaterScoreType> for ItemLevel {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Level {
   pub level: u32,
-  pub required_score: u32,
+  pub required_score: i32,
   pub name: &'static str,
+}
+
+impl fmt::Display for Level {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.name.trim())
+    }
 }
 
 #[cfg(test)]
@@ -497,5 +517,15 @@ mod tests {
     fn strange_rank() {
         assert_eq!(ItemLevel::KillEaterRank.score_level(4).name, "Strange");
         assert_eq!(ItemLevel::KillEaterRank.score_level(15).name, "Unremarkable");
+    }
+    
+    #[test]
+    fn deserializes() {
+        let json = r#""KillEater_HolidayPunchRank""#;
+        let deserialized: ItemLevel = serde_json::from_str(json).unwrap();
+        assert_eq!(deserialized, ItemLevel::KillEaterHolidayPunchRank);
+        
+        let serialized = serde_json::to_string(&deserialized).unwrap();
+        assert_eq!(serialized, json);
     }
 }

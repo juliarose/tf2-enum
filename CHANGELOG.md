@@ -4,6 +4,8 @@
 
 ### Added
 - `KillEaterScoreType` enum.
+- `ItemLevel` enum.
+- `Level` struct associated with `ItemLevel`.
 - `SpellSet` for holding sets of spells.
 - `StrangePartSet` for holding sets of strange parts.
 - `is_cosmetic_part` method to `StrangePart`.
@@ -21,6 +23,9 @@
 - `StrangePart::PlayersHit` to `StrangePart::PlayerHits` to match the schema.
 - Related strings for `StrangePart::PlayerHits` and `StrangePart::DefenderKills`.
 - Collisions for `StrangePartSet` and `SpellSet` now prioritize keeping the first values rather than the last.
+
+### Removed
+- `IntoEnumIterator` and `EnumCount` re-exports. These can be pulled in from the `strum` re-export. 
 
 ## 0.9.4 (2024-05-18)
 

@@ -146,7 +146,7 @@ impl StockWeapon {
         }
     }
     
-    /// Checks if the defindex belongs to a stock weapon.
+    /// Checks if the `defindex` belongs to a stock weapon.
     pub fn defindex_is_stock_weapon(defindex: u32) -> bool {
         Self::from_defindex(defindex).is_some()
     }

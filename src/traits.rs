@@ -1,4 +1,3 @@
-pub use strum::{IntoEnumIterator, EnumCount};
 
 /// The `defindex` value for an item attribute.
 pub trait Attribute: Sized {

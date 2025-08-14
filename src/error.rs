@@ -15,4 +15,3 @@ impl fmt::Display for TryFromSpellError {
 }
 
 impl std::error::Error for TryFromSpellError {}
-

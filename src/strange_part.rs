@@ -74,6 +74,7 @@ pub enum StrangePart {
     #[strum(serialize = "Robots Destroyed")]
     RobotsDestroyed = 39,
     #[strum(serialize = "Defender Kills")]
+    #[serde(alias = "Defenders Killed")]
     DefenderKills = 47,
     #[strum(serialize = "Submerged Enemy Kills")]
     SubmergedEnemyKills = 48,
@@ -128,6 +129,7 @@ pub enum StrangePart {
     #[strum(serialize = "Not Crit nor MiniCrit Kills")]
     NotCritNorMiniCritKills = 93,
     #[strum(serialize = "Player Hits")]
+    #[serde(alias = "Players Hit")]
     PlayerHits = 94,
 }
 
@@ -381,7 +383,7 @@ impl StrangePart {
         }
     }
     
-    /// Checks if the defindex belongs to a strange part.
+    /// Checks if the `defindex` belongs to a strange part.
     pub fn defindex_is_strange_part(defindex: u32) -> bool {
         Self::from_defindex(defindex).is_some()
     }

@@ -4,15 +4,23 @@
 //! or changed. However, Valve can implement changes to the item schema at any time, which may
 //! affect some of the values defined here.
 //! 
+//! Definitions for things that are often updated like items, attributes, skins, and particles are
+//! not included.
+//! 
 //! ## Usage
 //! 
 //! ```
-//! use tf2_enum::{Quality, Spell};
+//! use tf2_enum::{Quality, Spell, ItemLevel, KillstreakTier};
 //! use std::str::FromStr;
 //! 
 //! assert_eq!("Unusual".parse::<Quality>().unwrap(), Quality::Unusual);
 //! assert_eq!(Quality::Unusual as u32, 5);
 //! assert_eq!(Spell::HalloweenFire.to_string(), "Halloween Fire");
+//! 
+//! let level = ItemLevel::KillEaterRank.score_level(9000);
+//! let killstreak_tier = KillstreakTier::Professional;
+//! 
+//! assert_eq!(format!("{level} {killstreak_tier} Pomson 6000"), "Hale's Own Professional Killstreak Pomson 6000");
 //! ```
 pub mod error;
 
@@ -37,7 +45,7 @@ mod stock_weapon;
 mod spell_set;
 mod strange_part_set;
 
-pub use traits::{IntoEnumIterator, EnumCount, Attribute, Attributes};
+pub use traits::{Attribute, Attributes};
 pub use quality::Quality;
 pub use class::Class;
 pub use killstreak_tier::KillstreakTier;

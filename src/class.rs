@@ -46,3 +46,25 @@ impl Class {
         StockWeapon::class_stock_weapons(*self)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn serializes() {
+        let json = r#""Scout""#;
+        let serialized = serde_json::to_string(&Class::Scout).unwrap();
+        assert_eq!(serialized, json);
+    }
+
+    #[test]
+    fn deserializes() {
+        let json = r#""Scout""#;
+        let deserialized: Class = serde_json::from_str(json).unwrap();
+        assert_eq!(deserialized, Class::Scout);
+
+        let serialized = serde_json::to_string(&deserialized).unwrap();
+        assert_eq!(serialized, json);
+    }
+}

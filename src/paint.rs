@@ -125,7 +125,7 @@ impl Paint {
         Self::from_color(color)
     }
     
-    /// Gets the colors for both teams. The RED team appears first. For non-team-color paints the
+    /// Gets the colors for both teams. The RED team appears first. For non-team-color paints, the
     /// color will be the same.
     pub fn colors(&self) -> (u32, u32) {
         match self {
@@ -239,7 +239,7 @@ impl Paint {
         }
     }
     
-    /// Checks if the defindex belongs to a paint.
+    /// Checks if the `defindex` belongs to a paint.
     pub fn defindex_is_paint(defindex: u32) -> bool {
         Self::from_defindex(defindex).is_some()
     }
