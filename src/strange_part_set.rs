@@ -458,9 +458,9 @@ impl Iterator for StrangePartSetIterator {
 
     fn next(&mut self) -> Option<Self::Item> {
         #[allow(clippy::manual_flatten)]
-        for opt in self.inner.by_ref() {
-            if let Some(val) = opt {
-                return Some(val);
+        while let Some(opt) = self.inner.next() {
+            if opt.is_some() {
+                return opt;
             }
         }
         
