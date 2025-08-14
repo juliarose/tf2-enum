@@ -145,11 +145,10 @@ impl StrangePartSet {
     /// ```
     /// use tf2_enum::{StrangePartSet, StrangePart};
     /// 
-    /// let mut strange_parts = StrangePartSet::from([
-    ///     Some(StrangePart::CriticalKills),
-    ///     Some(StrangePart::DamageDealt),
-    ///     None,
-    /// ]);
+    /// let mut strange_parts = StrangePartSet::double(
+    ///     StrangePart::CriticalKills,
+    ///     StrangePart::DamageDealt,
+    /// );
     /// 
     /// strange_parts.clear();
     /// 
@@ -162,9 +161,9 @@ impl StrangePartSet {
     /// Adds a strange part to the first available slot. If no slots are available, the new strange 
     /// part will be ignored.
     /// 
-    /// # Errors
-    /// - If the set is full.
-    /// - If the strange part is already in the set.
+    /// Returns `false` if:
+    /// - The strange part is already in the set.
+    /// - The set is full.
     /// 
     /// # Examples
     /// ```
@@ -263,11 +262,7 @@ impl StrangePartSet {
     /// ```
     /// use tf2_enum::{StrangePartSet, StrangePart};
     /// 
-    /// let strange_parts = StrangePartSet::from([
-    ///     Some(StrangePart::CriticalKills),
-    ///     Some(StrangePart::DamageDealt),
-    ///     None,
-    /// ]);
+    /// let strange_parts = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
     /// 
     /// assert_eq!(strange_parts.len(), 2);
     /// ```

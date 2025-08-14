@@ -125,8 +125,8 @@ impl SpellSet {
     /// Adds a spell to the first available slot.
     /// 
     /// Returns `false` if:
-    /// - The set is full.
     /// - The spell is already in the set.
+    /// - The set is full.
     /// 
     /// # Examples
     /// ```
