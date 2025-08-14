@@ -1,3 +1,4 @@
+use crate::StockWeapon;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 
@@ -37,4 +38,11 @@ pub enum Class {
     Sniper,
     #[serde(alias = "spy")]
     Spy,
+}
+
+impl Class {
+    /// Gets the set of stock weapons available to the class.
+    pub fn stock_weapons(&self) -> &'static [StockWeapon] {
+        StockWeapon::class_stock_weapons(*self)
+    }
 }
