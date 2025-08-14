@@ -102,7 +102,7 @@ impl ItemSlot {
                 StockWeapon::PDA,
             ],
             // No stock weapons for these slots
-            ItemSlot::Misc | ItemSlot::Taunt | ItemSlot::Action | ItemSlot::Utility | ItemSlot::Quest => &[],
+            _ => &[],
         }
     }
 }

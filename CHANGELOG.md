@@ -17,8 +17,8 @@
 - `is_subset` and `is_superset` methods to `StrangePartSet` and `SpellSet`.
 
 ### Changed
-- `StrangePart::DefendersKilled` to `StrangePart::DefenderKills`.
-- `StrangePart::PlayersHit` to `StrangePart::PlayerHits`.
+- `StrangePart::DefendersKilled` to `StrangePart::DefenderKills` to match the schema.
+- `StrangePart::PlayersHit` to `StrangePart::PlayerHits` to match the schema.
 - Related strings for `StrangePart::PlayerHits` and `StrangePart::DefenderKills`.
 - Collisions for `StrangePartSet` and `SpellSet` now prioritize keeping the first values rather than the last.
 

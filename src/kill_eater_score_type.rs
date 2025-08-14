@@ -1,4 +1,4 @@
-use crate::{Attributes, StrangePart};
+use crate::{Attributes, StrangePart, ItemLevel};
 use strum_macros::{Display, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -129,7 +129,7 @@ pub enum KillEaterScoreType {
     #[strum(serialize = "Long-Distance Kills")]
     LongDistanceKills = 62,
     #[strum(serialize = "KillEaterEvent_UniquePlayerKills")]
-    UniquePlayerKills = 63,
+    KillEaterEventUniquePlayerKills = 63,
     #[strum(serialize = "Points Scored")]
     PointsScored = 64,
     #[strum(serialize = "Double Donks")]
@@ -217,7 +217,12 @@ pub enum KillEaterScoreType {
 impl KillEaterScoreType {
     /// Converts this [`KillEaterScoreType`] into its related [`StrangePart`], if it exists.
     pub fn strange_part(&self) -> Option<StrangePart> {
-        StrangePart::try_from(*self).ok()
+        StrangePart::try_from(self).ok()
+    }
+
+    /// Converts this [`KillEaterScoreType`] into its related [`ItemLevel`].
+    pub fn item_level(&self) -> ItemLevel {
+        self.into()
     }
 }
 
@@ -249,5 +254,11 @@ mod tests {
     fn converts_to_string() {
         let score_type = KillEaterScoreType::Kills;
         assert_eq!(score_type.to_string(), "Kills");
+    }
+    
+    #[test]
+    fn gets_the_item_level() {
+        let score_type = KillEaterScoreType::Kills;
+        assert_eq!(ItemLevel::from(score_type), ItemLevel::KillEaterRank);
     }
 }
