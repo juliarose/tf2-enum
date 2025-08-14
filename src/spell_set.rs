@@ -409,9 +409,10 @@ pub struct SpellSetIterator {
 
 impl Iterator for SpellSetIterator {
     type Item = Spell;
-
+    
     fn next(&mut self) -> Option<Self::Item> {
-        while let Some(opt) = self.inner.next() {
+        #[allow(clippy::manual_flatten)]
+        for opt in self.inner.by_ref() {
             if let Some(val) = opt {
                 return Some(val);
             }
@@ -426,10 +427,10 @@ impl fmt::Display for SpellSet {
         let mut iter = self.into_iter();
         
         if let Some(first) = iter.next() {
-            write!(f, "{}", first)?;
+            write!(f, "{first}")?;
             
             for s in iter {
-                write!(f, ", {}", s)?;
+                write!(f, ", {s}")?;
             }
         }
         

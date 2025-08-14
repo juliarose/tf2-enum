@@ -457,7 +457,8 @@ impl Iterator for StrangePartSetIterator {
     type Item = StrangePart;
 
     fn next(&mut self) -> Option<Self::Item> {
-        while let Some(opt) = self.inner.next() {
+        #[allow(clippy::manual_flatten)]
+        for opt in self.inner.by_ref() {
             if let Some(val) = opt {
                 return Some(val);
             }
@@ -472,10 +473,10 @@ impl fmt::Display for StrangePartSet {
         let mut iter = self.into_iter();
         
         if let Some(first) = iter.next() {
-            write!(f, "{}", first)?;
+            write!(f, "{first}")?;
             
             for s in iter {
-                write!(f, ", {}", s)?;
+                write!(f, ", {s}")?;
             }
         }
         
