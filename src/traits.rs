@@ -45,15 +45,15 @@ pub trait Colored: Sized {
     /// Gets the color.
     fn color(&self) -> u32;
     
-    /// Converts a hexadecimal color.
+    /// Attempts to convert a hexadecimal color.
     fn from_color(color: u32) -> Option<Self>;
     
     /// Converts this into a hexademical color string in the format "#FFFFFF".
     fn color_str(&self) -> String {
         format!("#{:06X}", self.color())
     }
-
-    /// Attempts to convert a hexadecimal color.
+    
+    /// Attempts to convert a hexadecimal color string.
     fn from_color_str(color: &str) -> Option<Self> {
         let len = color.len();
         let mut color = color;
