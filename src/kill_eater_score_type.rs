@@ -1,5 +1,6 @@
 use crate::{Attributes, EffectType, DescriptionFormat, StrangePart, ItemLevel};
-use strum_macros::{Display, EnumIter, EnumCount};
+use crate::error::TryFromPrimitiveError;
+use strum::{Display, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
@@ -276,7 +277,7 @@ impl Attributes for KillEaterScoreType {
 }
 
 impl TryFrom<StrangePart> for KillEaterScoreType {
-    type Error = num_enum::TryFromPrimitiveError<KillEaterScoreType>;
+    type Error = TryFromPrimitiveError<KillEaterScoreType>;
     
     fn try_from(part: StrangePart) -> Result<Self, Self::Error> {
         KillEaterScoreType::try_from(part as u32)
@@ -284,7 +285,7 @@ impl TryFrom<StrangePart> for KillEaterScoreType {
 }
 
 impl TryFrom<&StrangePart> for KillEaterScoreType {
-    type Error = num_enum::TryFromPrimitiveError<KillEaterScoreType>;
+    type Error = TryFromPrimitiveError<KillEaterScoreType>;
     
     fn try_from(part: &StrangePart) -> Result<Self, Self::Error> {
         KillEaterScoreType::try_from(*part as u32)

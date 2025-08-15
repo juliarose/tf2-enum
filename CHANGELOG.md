@@ -8,10 +8,13 @@
 - `DescriptionFormat` and `EffectType` for traits `Attribute` and `Attributes`.
 - `Colored` trait for definitions associated with a color.
 - `ItemDefindex` trait for definitions associated with an item defindex.
+- `IntoEnumIterator`, `EnumCount`, `TryFromPrimitive`, `IntoPrimitive` re-exports.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.
 - `defindex_is_paint` for `Paint`.
+- `strum`, `num_enum`, `strum_macros` re-exports. Only the derived traits are re-exported.
+- `strum_macro` as a dependency, it's now included using `derive` feature for `strum`.
 
 ## 0.10.0 (2025-08-14)
 

@@ -2,7 +2,7 @@ use crate::error::TryFromSpellError;
 use crate::{Attribute, Attributes, EffectType, DescriptionFormat};
 use std::fmt;
 use std::str::FromStr;
-use strum_macros::{Display, EnumString, EnumIter, EnumCount};
+use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 use serde::{Serialize, Deserialize, Serializer};
@@ -27,18 +27,18 @@ use serde::de::{self, Visitor, Deserializer};
 pub enum Spell {
     #[strum(serialize = "Team Spirit Footprints")]
     TeamSpiritFootprints,
-    #[strum(serialize = "Gangreen Footprints")]
-    GangreenFootprints,
+    #[strum(serialize = "Headless Horseshoes")]
+    HeadlessHorseshoes,
     #[strum(serialize = "Corpse Gray Footprints")]
     CorpseGrayFootprints,
     #[strum(serialize = "Violent Violet Footprints")]
     ViolentVioletFootprints,
-    #[strum(serialize = "Rotten Orange Footprints")]
-    RottenOrangeFootprints,
     #[strum(serialize = "Bruised Purple Footprints")]
     BruisedPurpleFootprints,
-    #[strum(serialize = "Headless Horseshoes")]
-    HeadlessHorseshoes,
+    #[strum(serialize = "Gangreen Footprints")]
+    GangreenFootprints,
+    #[strum(serialize = "Rotten Orange Footprints")]
+    RottenOrangeFootprints,
     #[strum(serialize = "Die Job")]
     DieJob,
     #[strum(serialize = "Chromatic Corruption")]
@@ -117,12 +117,12 @@ impl Spell {
             Self::SpectralSpectrum => Some(3),
             Self::SinisterStaining => Some(4),
             Self::TeamSpiritFootprints => Some(1),
-            Self::GangreenFootprints => Some(8421376),
+            Self::HeadlessHorseshoes => Some(2),
             Self::CorpseGrayFootprints => Some(3100495),
             Self::ViolentVioletFootprints => Some(5322826),
-            Self::RottenOrangeFootprints => Some(13595446),
             Self::BruisedPurpleFootprints => Some(8208497),
-            Self::HeadlessHorseshoes => Some(2),
+            Self::GangreenFootprints => Some(8421376),
+            Self::RottenOrangeFootprints => Some(13595446),
             _ => None,
         }
     }
@@ -344,8 +344,6 @@ pub enum FootprintsSpell {
     TeamSpiritFootprints = 1,
     #[strum(serialize = "Headless Horseshoes")]
     HeadlessHorseshoes = 2,
-    #[strum(serialize = "Rotten Orange Footprints")]
-    RottenOrangeFootprints = 13595446,
     #[strum(serialize = "Corpse Gray Footprints")]
     CorpseGrayFootprints = 3100495,
     #[strum(serialize = "Violent Violet Footprints")]
@@ -354,6 +352,8 @@ pub enum FootprintsSpell {
     BruisedPurpleFootprints = 8208497,
     #[strum(serialize = "Gangreen Footprints")]
     GangreenFootprints = 8421376,
+    #[strum(serialize = "Rotten Orange Footprints")]
+    RottenOrangeFootprints = 13595446,
 }
 
 impl Attribute for FootprintsSpell {

@@ -1,6 +1,7 @@
 use crate::{Attribute, EffectType, DescriptionFormat};
-use strum_macros::{Display, EnumString, EnumIter, EnumCount};
-use num_enum::{TryFromPrimitive, TryFromPrimitiveError, IntoPrimitive};
+use crate::error::TryFromPrimitiveError;
+use strum::{Display, EnumString, EnumIter, EnumCount};
+use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
 
 /// Wear.

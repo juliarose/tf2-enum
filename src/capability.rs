@@ -1,4 +1,4 @@
-use strum_macros::{Display, EnumString, EnumIter, EnumCount};
+use strum::{Display, EnumString, EnumIter, EnumCount};
 
 /// Capability. Not meant for serialization.
 #[derive(

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use strum_macros::{Display, EnumString, EnumIter, EnumCount};
+use strum::{Display, EnumString, EnumIter, EnumCount};
  
 /// Description format.
 #[derive(

@@ -10,7 +10,7 @@
 //! ## Usage
 //! 
 //! ```
-//! use tf2_enum::{Quality, Spell, ItemLevel, KillstreakTier};
+//! use tf2_enum::{Quality, Spell, ItemLevel, KillstreakTier, IntoEnumIterator};
 //! use std::str::FromStr;
 //! 
 //! assert_eq!("Unusual".parse::<Quality>().unwrap(), Quality::Unusual);
@@ -22,7 +22,13 @@
 //! let full_name = format!("{level} {killstreak_tier} Pomson 6000");
 //! 
 //! assert_eq!(full_name, "Hale's Own Professional Killstreak Pomson 6000");
+//! 
+//! /// Iterate over all quality values.
+//! for quality in Quality::iter() {
+//!     println!("{quality}");
+//! }
 //! ```
+
 pub mod error;
 
 mod quality;
@@ -73,6 +79,5 @@ pub use description_format::DescriptionFormat;
 pub use spell_set::{SpellSet, SpellSetIterator};
 pub use strange_part_set::{StrangePartSet, StrangePartSetIterator};
 
-pub use num_enum;
-pub use strum;
-pub use strum_macros;
+pub use strum::{IntoEnumIterator, EnumCount};
+pub use num_enum::{TryFromPrimitive, IntoPrimitive};

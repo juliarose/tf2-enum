@@ -1,6 +1,6 @@
 use crate::{Class, ItemSlot};
 use serde::{Deserialize, Serialize};
-use strum_macros::{Display, EnumString, EnumIter, EnumCount};
+use strum::{Display, EnumString, EnumIter, EnumCount};
 
 /// Stock weapons.
 #[derive(
