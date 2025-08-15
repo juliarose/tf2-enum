@@ -18,24 +18,14 @@ use strum_macros::{Display, EnumString, EnumIter, EnumCount};
     Clone,
     Copy,
 )]
+#[strum(serialize_all = "snake_case")]
+#[serde(rename_all = "snake_case")]
 pub enum EffectType {
-    #[strum(serialize = "neutral")]
-    #[serde(rename = "neutral")]
     Neutral,
-    #[strum(serialize = "positive")]
-    #[serde(rename = "positive")]
     Positive,
-    #[strum(serialize = "negative")]
-    #[serde(rename = "negative")]
     Negative,
-    #[strum(serialize = "unusual")]
-    #[serde(rename = "unusual")]
     Unusual,
-    #[strum(serialize = "value_is_from_lookup_table")]
-    #[serde(rename = "value_is_from_lookup_table")]
     ValueIsFromLookupTable,
-    #[strum(serialize = "strange")]
-    #[serde(rename = "strange")]
     Strange,
 }
 

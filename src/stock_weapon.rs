@@ -111,7 +111,7 @@ impl StockWeapon {
         }
     }
     
-    /// Gets the econonomy defindex for this weapon (if available).
+    /// Gets the economy defindex for this weapon (if available).
     /// 
     /// This is the defindex that can be mapped to inventory items. Not available for
     /// [`StockWeapon::DestructionPDA`], [`StockWeapon::PDA`], and [`StockWeapon::DisguiseKit`].

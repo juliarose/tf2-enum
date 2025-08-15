@@ -24,6 +24,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 )]
 #[repr(u32)]
 pub enum KillEaterScoreType {
+    /// "Kills" used for most Strange weapons.
     #[strum(serialize = "Kills")]
     Kills = 0,
     #[strum(serialize = "Ubers")]
@@ -162,6 +163,7 @@ pub enum KillEaterScoreType {
     PointBlankKills = 85,
     #[strum(serialize = "Wrangled Sentry Kills")]
     WrangledSentryKills = 86,
+    /// "Kills" used for cosmetic items.
     #[strum(serialize = "Kills")]
     CosmeticKills = 87,
     #[strum(serialize = "Full Health Kills")]
@@ -182,6 +184,7 @@ pub enum KillEaterScoreType {
     Assists = 95,
     #[strum(serialize = "Contracts Completed")]
     ContractsCompleted = 96,
+    /// "Kills" used for contracts.
     #[strum(serialize = "Kills")]
     ContractKills = 97,
     #[strum(serialize = "Contract Points")]
