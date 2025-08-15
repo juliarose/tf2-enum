@@ -84,6 +84,8 @@ pub enum StrangePart {
     ScoutsKilled = 10,
     #[strum(serialize = "Snipers Killed")]
     SnipersKilled = 11,
+    #[strum(serialize = "Soldiers Killed")]
+    SoldiersKilled = 12,
     #[strum(serialize = "Demomen Killed")]
     DemomenKilled = 13,
     #[strum(serialize = "Heavies Killed")]
@@ -128,6 +130,14 @@ pub enum StrangePart {
     MedicsKilledThatHaveFullUberCharge = 38,
     #[strum(serialize = "Robots Destroyed")]
     RobotsDestroyed = 39,
+    #[strum(serialize = "Giant Robots Destroyed")]
+    GiantRobotsDestroyed = 40,
+    #[strum(serialize = "Kills While Low Health")]
+    KillsWhileLowHealth = 44,
+    #[strum(serialize = "Kills During Halloween")]
+    KillsDuringHalloween = 45,
+    #[strum(serialize = "Robots Killed During Halloween")]
+    RobotsKilledDuringHalloween = 46,
     #[strum(serialize = "Defender Kills")]
     #[serde(alias = "Defenders Killed")]
     DefenderKills = 47,
@@ -141,6 +151,8 @@ pub enum StrangePart {
     LongDistanceKills = 62,
     #[strum(serialize = "Kills during Victory Time")]
     KillsDuringVictoryTime = 67,
+    #[strum(serialize = "Robot Scouts Destroyed")]
+    RobotScoutsDestroyed = 68,
     #[strum(serialize = "Robot Spies Destroyed")]
     RobotSpiesDestroyed = 74,
     #[strum(serialize = "Taunt Kills")]
@@ -161,28 +173,16 @@ pub enum StrangePart {
     AlliedHealingDone = 84,
     #[strum(serialize = "Point Blank Kills")]
     PointBlankKills = 85,
-    #[strum(serialize = "Robots Killed During Halloween")]
-    RobotsKilledDuringHalloween = 46,
-    #[strum(serialize = "Kills During Halloween")]
-    KillsDuringHalloween = 45,
-    #[strum(serialize = "Kills While Low Health")]
-    KillsWhileLowHealth = 44,
-    #[strum(serialize = "Giant Robots Destroyed")]
-    GiantRobotsDestroyed = 40,
     #[strum(serialize = "Kills")]
     Kills = 87,
     #[strum(serialize = "Full Health Kills")]
     FullHealthKills = 88,
-    #[strum(serialize = "Soldiers Killed")]
-    SoldiersKilled = 12,
-    #[strum(serialize = "Robot Scouts Destroyed")]
-    RobotScoutsDestroyed = 68,
     #[strum(serialize = "Taunting Player Kills")]
     TauntingPlayerKills = 89,
-    #[strum(serialize = "Assists")]
-    Assists = 95,
     #[strum(serialize = "Not Crit nor MiniCrit Kills")]
     NotCritNorMiniCritKills = 93,
+    #[strum(serialize = "Assists")]
+    Assists = 95,
     #[strum(serialize = "Player Hits")]
     #[serde(alias = "Players Hit")]
     PlayerHits = 94,
@@ -204,6 +204,7 @@ impl StrangePart {
         match self {
             Self::ScoutsKilled => STR_SCOUTS_KILLED,
             Self::SnipersKilled => STR_SNIPERS_KILLED,
+            Self::SoldiersKilled => STR_SOLDIERS_KILLED,
             Self::DemomenKilled => STR_DEMOMEN_KILLED,
             Self::HeaviesKilled => STR_HEAVIES_KILLED,
             Self::PyrosKilled => STR_PYROS_KILLED,
@@ -226,12 +227,17 @@ impl StrangePart {
             Self::CloakedSpiesKilled => STR_CLOAKED_SPIES_KILLED,
             Self::MedicsKilledThatHaveFullUberCharge => STR_MEDICS_KILLED_THAT_HAVE_FULL_UBER_CHARGE,
             Self::RobotsDestroyed => STR_ROBOTS_DESTROYED,
+            Self::GiantRobotsDestroyed => STR_GIANT_ROBOTS_DESTROYED,
+            Self::KillsWhileLowHealth => STR_KILLS_WHILE_LOW_HEALTH,
+            Self::KillsDuringHalloween => STR_KILLS_DURING_HALLOWEEN,
+            Self::RobotsKilledDuringHalloween => STR_ROBOTS_KILLED_DURING_HALLOWEEN,
             Self::DefenderKills => STR_DEFENDER_KILLS,
             Self::SubmergedEnemyKills => STR_SUBMERGED_ENEMY_KILLS,
             Self::KillsWhileInvulnUberCharged => STR_KILLS_WHILE_INVULN_UBER_CHARGED,
             Self::TanksDestroyed => STR_TANKS_DESTROYED,
             Self::LongDistanceKills => STR_LONG_DISTANCE_KILLS,
             Self::KillsDuringVictoryTime => STR_KILLS_DURING_VICTORY_TIME,
+            Self::RobotScoutsDestroyed => STR_ROBOT_SCOUTS_DESTROYED,
             Self::RobotSpiesDestroyed => STR_ROBOT_SPIES_DESTROYED,
             Self::TauntKills => STR_TAUNT_KILLS,
             Self::UnusualWearingPlayerKills => STR_UNUSUAL_WEARING_PLAYER_KILLS,
@@ -242,26 +248,21 @@ impl StrangePart {
             Self::FiresSurvived => STR_FIRES_SURVIVED,
             Self::AlliedHealingDone => STR_ALLIED_HEALING_DONE,
             Self::PointBlankKills => STR_POINT_BLANK_KILLS,
-            Self::RobotsKilledDuringHalloween => STR_ROBOTS_KILLED_DURING_HALLOWEEN,
-            Self::KillsDuringHalloween => STR_KILLS_DURING_HALLOWEEN,
-            Self::KillsWhileLowHealth => STR_KILLS_WHILE_LOW_HEALTH,
-            Self::GiantRobotsDestroyed => STR_GIANT_ROBOTS_DESTROYED,
             Self::Kills => STR_KILLS,
             Self::FullHealthKills => STR_FULL_HEALTH_KILLS,
-            Self::SoldiersKilled => STR_SOLDIERS_KILLED,
-            Self::RobotScoutsDestroyed => STR_ROBOT_SCOUTS_DESTROYED,
             Self::TauntingPlayerKills => STR_TAUNTING_PLAYER_KILLS,
             Self::Assists => STR_ASSISTS,
             Self::NotCritNorMiniCritKills => STR_NOT_CRIT_NOR_MINI_CRIT_KILLS,
             Self::PlayerHits => STR_PLAYER_HITS,
         }
     }
-
+    
     /// Gets the related [`StrangePart`] by its strange part name, if it exists.
     pub fn from_strange_part_name(name: &str) -> Option<StrangePart> {
         match name {
             STR_SCOUTS_KILLED => Some(Self::ScoutsKilled),
             STR_SNIPERS_KILLED => Some(Self::SnipersKilled),
+            STR_SOLDIERS_KILLED => Some(Self::SoldiersKilled),
             STR_DEMOMEN_KILLED => Some(Self::DemomenKilled),
             STR_HEAVIES_KILLED => Some(Self::HeaviesKilled),
             STR_PYROS_KILLED => Some(Self::PyrosKilled),
@@ -284,12 +285,17 @@ impl StrangePart {
             STR_CLOAKED_SPIES_KILLED => Some(Self::CloakedSpiesKilled),
             STR_MEDICS_KILLED_THAT_HAVE_FULL_UBER_CHARGE => Some(Self::MedicsKilledThatHaveFullUberCharge),
             STR_ROBOTS_DESTROYED => Some(Self::RobotsDestroyed),
+            STR_GIANT_ROBOTS_DESTROYED => Some(Self::GiantRobotsDestroyed),
+            STR_KILLS_WHILE_LOW_HEALTH => Some(Self::KillsWhileLowHealth),
+            STR_KILLS_DURING_HALLOWEEN => Some(Self::KillsDuringHalloween),
+            STR_ROBOTS_KILLED_DURING_HALLOWEEN => Some(Self::RobotsKilledDuringHalloween),
             STR_DEFENDER_KILLS => Some(Self::DefenderKills),
             STR_SUBMERGED_ENEMY_KILLS => Some(Self::SubmergedEnemyKills),
             STR_KILLS_WHILE_INVULN_UBER_CHARGED => Some(Self::KillsWhileInvulnUberCharged),
             STR_TANKS_DESTROYED => Some(Self::TanksDestroyed),
             STR_LONG_DISTANCE_KILLS => Some(Self::LongDistanceKills),
             STR_KILLS_DURING_VICTORY_TIME => Some(Self::KillsDuringVictoryTime),
+            STR_ROBOT_SCOUTS_DESTROYED => Some(Self::RobotScoutsDestroyed),
             STR_ROBOT_SPIES_DESTROYED => Some(Self::RobotSpiesDestroyed),
             STR_TAUNT_KILLS => Some(Self::TauntKills),
             STR_UNUSUAL_WEARING_PLAYER_KILLS => Some(Self::UnusualWearingPlayerKills),
@@ -300,14 +306,8 @@ impl StrangePart {
             STR_FIRES_SURVIVED => Some(Self::FiresSurvived),
             STR_ALLIED_HEALING_DONE => Some(Self::AlliedHealingDone),
             STR_POINT_BLANK_KILLS => Some(Self::PointBlankKills),
-            STR_ROBOTS_KILLED_DURING_HALLOWEEN => Some(Self::RobotsKilledDuringHalloween),
-            STR_KILLS_DURING_HALLOWEEN => Some(Self::KillsDuringHalloween),
-            STR_KILLS_WHILE_LOW_HEALTH => Some(Self::KillsWhileLowHealth),
-            STR_GIANT_ROBOTS_DESTROYED => Some(Self::GiantRobotsDestroyed),
             STR_KILLS => Some(Self::Kills),
             STR_FULL_HEALTH_KILLS => Some(Self::FullHealthKills),
-            STR_SOLDIERS_KILLED => Some(Self::SoldiersKilled),
-            STR_ROBOT_SCOUTS_DESTROYED => Some(Self::RobotScoutsDestroyed),
             STR_TAUNTING_PLAYER_KILLS => Some(Self::TauntingPlayerKills),
             STR_ASSISTS => Some(Self::Assists),
             STR_NOT_CRIT_NOR_MINI_CRIT_KILLS => Some(Self::NotCritNorMiniCritKills),
@@ -379,6 +379,7 @@ impl ItemDefindex for StrangePart {
         match self {
             Self::ScoutsKilled => 6003,
             Self::SnipersKilled => 6005,
+            Self::SoldiersKilled => 6002,
             Self::DemomenKilled => 6001,
             Self::HeaviesKilled => 6000,
             Self::PyrosKilled => 6006,
@@ -401,12 +402,17 @@ impl ItemDefindex for StrangePart {
             Self::CloakedSpiesKilled => 6024,
             Self::MedicsKilledThatHaveFullUberCharge => 6023,
             Self::RobotsDestroyed => 6026,
+            Self::GiantRobotsDestroyed => 6028,
+            Self::KillsWhileLowHealth => 6032,
+            Self::KillsDuringHalloween => 6033,
+            Self::RobotsKilledDuringHalloween => 6034,
             Self::DefenderKills => 6035,
             Self::SubmergedEnemyKills => 6036,
             Self::KillsWhileInvulnUberCharged => 6037,
             Self::TanksDestroyed => 6038,
             Self::LongDistanceKills => 6039,
             Self::KillsDuringVictoryTime => 6041,
+            Self::RobotScoutsDestroyed => 6042,
             Self::RobotSpiesDestroyed => 6048,
             Self::TauntKills => 6051,
             Self::UnusualWearingPlayerKills => 6052,
@@ -417,18 +423,12 @@ impl ItemDefindex for StrangePart {
             Self::FiresSurvived => 6057,
             Self::AlliedHealingDone => 6058,
             Self::PointBlankKills => 6059,
-            Self::RobotsKilledDuringHalloween => 6034,
-            Self::KillsDuringHalloween => 6033,
-            Self::KillsWhileLowHealth => 6032,
-            Self::GiantRobotsDestroyed => 6028,
             Self::Kills => 6060,
             Self::FullHealthKills => 6061,
-            Self::SoldiersKilled => 6002,
-            Self::RobotScoutsDestroyed => 6042,
             Self::TauntingPlayerKills => 6062,
-            Self::Assists => 6065,
             Self::NotCritNorMiniCritKills => 6063,
             Self::PlayerHits => 6064,
+            Self::Assists => 6065,
         }
     }
     
@@ -437,6 +437,7 @@ impl ItemDefindex for StrangePart {
         match defindex {
             6003 => Some(Self::ScoutsKilled),
             6005 => Some(Self::SnipersKilled),
+            6002 => Some(Self::SoldiersKilled),
             6001 => Some(Self::DemomenKilled),
             6000 => Some(Self::HeaviesKilled),
             6006 => Some(Self::PyrosKilled),
@@ -459,12 +460,17 @@ impl ItemDefindex for StrangePart {
             6024 => Some(Self::CloakedSpiesKilled),
             6023 => Some(Self::MedicsKilledThatHaveFullUberCharge),
             6026 => Some(Self::RobotsDestroyed),
+            6028 => Some(Self::GiantRobotsDestroyed),
+            6032 => Some(Self::KillsWhileLowHealth),
+            6033 => Some(Self::KillsDuringHalloween),
+            6034 => Some(Self::RobotsKilledDuringHalloween),
             6035 => Some(Self::DefenderKills),
             6036 => Some(Self::SubmergedEnemyKills),
             6037 => Some(Self::KillsWhileInvulnUberCharged),
             6038 => Some(Self::TanksDestroyed),
             6039 => Some(Self::LongDistanceKills),
             6041 => Some(Self::KillsDuringVictoryTime),
+            6042 => Some(Self::RobotScoutsDestroyed),
             6048 => Some(Self::RobotSpiesDestroyed),
             6051 => Some(Self::TauntKills),
             6052 => Some(Self::UnusualWearingPlayerKills),
@@ -475,18 +481,12 @@ impl ItemDefindex for StrangePart {
             6057 => Some(Self::FiresSurvived),
             6058 => Some(Self::AlliedHealingDone),
             6059 => Some(Self::PointBlankKills),
-            6034 => Some(Self::RobotsKilledDuringHalloween),
-            6033 => Some(Self::KillsDuringHalloween),
-            6032 => Some(Self::KillsWhileLowHealth),
-            6028 => Some(Self::GiantRobotsDestroyed),
             6060 => Some(Self::Kills),
             6061 => Some(Self::FullHealthKills),
-            6002 => Some(Self::SoldiersKilled),
-            6042 => Some(Self::RobotScoutsDestroyed),
             6062 => Some(Self::TauntingPlayerKills),
-            6065 => Some(Self::Assists),
             6063 => Some(Self::NotCritNorMiniCritKills),
             6064 => Some(Self::PlayerHits),
+            6065 => Some(Self::Assists),
             _ => None,
         }
     }
