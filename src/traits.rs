@@ -11,7 +11,7 @@ pub trait Attribute: Sized {
     const STORED_AS_INTEGER: bool;
 }
 
-/// Attribute values for a set of attributes.
+/// Associated attribute values for a set of item attributes.
 pub trait Attributes: Sized {
     const DEFINDEX: &[u32];
     const NAME: &[&str];
