@@ -7,6 +7,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 // Avoid repeating strings
 const STR_SCOUTS_KILLED: &str = "Strange Part: Scouts Killed";
 const STR_SNIPERS_KILLED: &str = "Strange Part: Snipers Killed";
+const STR_SOLDIERS_KILLED: &str = "Strange Part: Soldiers Killed";
 const STR_DEMOMEN_KILLED: &str = "Strange Part: Demomen Killed";
 const STR_HEAVIES_KILLED: &str = "Strange Part: Heavies Killed";
 const STR_PYROS_KILLED: &str = "Strange Part: Pyros Killed";
@@ -29,12 +30,17 @@ const STR_SAPPERS_REMOVED: &str = "Strange Part: Sappers Destroyed";
 const STR_CLOAKED_SPIES_KILLED: &str = "Strange Part: Cloaked Spies Killed";
 const STR_MEDICS_KILLED_THAT_HAVE_FULL_UBER_CHARGE: &str = "Strange Part: Medics Killed That Have Full ÜberCharge";
 const STR_ROBOTS_DESTROYED: &str = "Strange Part: Robots Destroyed";
+const STR_GIANT_ROBOTS_DESTROYED: &str = "Strange Part: Giant Robots Destroyed";
+const STR_KILLS_WHILE_LOW_HEALTH: &str = "Strange Part: Low-Health Kills";
+const STR_KILLS_DURING_HALLOWEEN: &str = "Strange Part: Halloween Kills";
+const STR_ROBOTS_KILLED_DURING_HALLOWEEN: &str = "Strange Part: Robots Destroyed During Halloween";
 const STR_DEFENDER_KILLS: &str = "Strange Part: Defender Kills";
 const STR_SUBMERGED_ENEMY_KILLS: &str = "Strange Part: Underwater Kills";
 const STR_KILLS_WHILE_INVULN_UBER_CHARGED: &str = "Strange Part: Kills While Übercharged";
 const STR_TANKS_DESTROYED: &str = "Strange Part: Tanks Destroyed";
 const STR_LONG_DISTANCE_KILLS: &str = "Strange Part: Long-Distance Kills";
 const STR_KILLS_DURING_VICTORY_TIME: &str = "Strange Part: Kills During Victory Time";
+const STR_ROBOT_SCOUTS_DESTROYED: &str = "Strange Part: Robot Scouts Destroyed";
 const STR_ROBOT_SPIES_DESTROYED: &str = "Strange Part: Robot Spies Destroyed";
 const STR_TAUNT_KILLS: &str = "Strange Part: Kills with a Taunt Attack";
 const STR_UNUSUAL_WEARING_PLAYER_KILLS: &str = "Strange Part: Unusual-Wearing Player Kills";
@@ -45,18 +51,12 @@ const STR_DAMAGE_DEALT: &str = "Strange Part: Damage Dealt";
 const STR_FIRES_SURVIVED: &str = "Strange Cosmetic Part: Fires Survived";
 const STR_ALLIED_HEALING_DONE: &str = "Strange Part: Allied Healing Done";
 const STR_POINT_BLANK_KILLS: &str = "Strange Part: Point-Blank Kills";
-const STR_ROBOTS_KILLED_DURING_HALLOWEEN: &str = "Strange Part: Robots Destroyed During Halloween";
-const STR_KILLS_DURING_HALLOWEEN: &str = "Strange Part: Halloween Kills";
-const STR_KILLS_WHILE_LOW_HEALTH: &str = "Strange Part: Low-Health Kills";
-const STR_GIANT_ROBOTS_DESTROYED: &str = "Strange Part: Giant Robots Destroyed";
 const STR_KILLS: &str = "Strange Cosmetic Part: Kills";
 const STR_FULL_HEALTH_KILLS: &str = "Strange Part: Full Health Kills";
-const STR_SOLDIERS_KILLED: &str = "Strange Part: Soldiers Killed";
-const STR_ROBOT_SCOUTS_DESTROYED: &str = "Strange Part: Robot Scouts Destroyed";
 const STR_TAUNTING_PLAYER_KILLS: &str = "Strange Part: Taunting Player Kills";
-const STR_ASSISTS: &str = "Strange Cosmetic Part: Assists";
 const STR_NOT_CRIT_NOR_MINI_CRIT_KILLS: &str = "Strange Part: Not Crit nor MiniCrit Kills";
 const STR_PLAYER_HITS: &str = "Strange Part: Player Hits";
+const STR_ASSISTS: &str = "Strange Cosmetic Part: Assists";
 
 /// Strange part. `repr` values are mapped to their `kill_eater_score_type` attribute value. Strings
 /// are the name of the `kill_eater_score_type`, **not** the name of the strange part.
@@ -181,11 +181,11 @@ pub enum StrangePart {
     TauntingPlayerKills = 89,
     #[strum(serialize = "Not Crit nor MiniCrit Kills")]
     NotCritNorMiniCritKills = 93,
-    #[strum(serialize = "Assists")]
-    Assists = 95,
     #[strum(serialize = "Player Hits")]
     #[serde(alias = "Players Hit")]
     PlayerHits = 94,
+    #[strum(serialize = "Assists")]
+    Assists = 95,
 }
 
 impl StrangePart {
@@ -251,9 +251,9 @@ impl StrangePart {
             Self::Kills => STR_KILLS,
             Self::FullHealthKills => STR_FULL_HEALTH_KILLS,
             Self::TauntingPlayerKills => STR_TAUNTING_PLAYER_KILLS,
-            Self::Assists => STR_ASSISTS,
             Self::NotCritNorMiniCritKills => STR_NOT_CRIT_NOR_MINI_CRIT_KILLS,
             Self::PlayerHits => STR_PLAYER_HITS,
+            Self::Assists => STR_ASSISTS,
         }
     }
     
@@ -309,9 +309,9 @@ impl StrangePart {
             STR_KILLS => Some(Self::Kills),
             STR_FULL_HEALTH_KILLS => Some(Self::FullHealthKills),
             STR_TAUNTING_PLAYER_KILLS => Some(Self::TauntingPlayerKills),
-            STR_ASSISTS => Some(Self::Assists),
             STR_NOT_CRIT_NOR_MINI_CRIT_KILLS => Some(Self::NotCritNorMiniCritKills),
             STR_PLAYER_HITS => Some(Self::PlayerHits),
+            STR_ASSISTS => Some(Self::Assists),
             _ => None,
         }
     }
@@ -493,7 +493,7 @@ impl ItemDefindex for StrangePart {
 }
 
 impl TryFrom<KillEaterScoreType> for StrangePart {
-    type Error = TryFromPrimitiveError<StrangePart>;
+    type Error = TryFromPrimitiveError<Self>;
     
     fn try_from(part: KillEaterScoreType) -> Result<Self, Self::Error> {
         StrangePart::try_from(part as u32)
@@ -501,7 +501,7 @@ impl TryFrom<KillEaterScoreType> for StrangePart {
 }
 
 impl TryFrom<&KillEaterScoreType> for StrangePart {
-    type Error = TryFromPrimitiveError<StrangePart>;
+    type Error = TryFromPrimitiveError<Self>;
     
     fn try_from(part: &KillEaterScoreType) -> Result<Self, Self::Error> {
         StrangePart::try_from(*part as u32)

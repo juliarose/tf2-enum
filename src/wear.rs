@@ -56,10 +56,26 @@ impl TryFrom<f64> for Wear {
     }
 }
 
+impl TryFrom<&f64> for Wear {
+    type Error = TryFromPrimitiveError<Self>;
+    
+    fn try_from(float_value: &f64) -> Result<Wear, Self::Error> {
+        Wear::try_from(*float_value)
+    }
+}
+
 impl TryFrom<f32> for Wear {
     type Error = TryFromPrimitiveError<Self>;
     
     fn try_from(float_value: f32) -> Result<Wear, Self::Error> {
         Wear::try_from((float_value * 5.0).round() as u32)
+    }
+}
+
+impl TryFrom<&f32> for Wear {
+    type Error = TryFromPrimitiveError<Self>;
+    
+    fn try_from(float_value: &f32) -> Result<Wear, Self::Error> {
+        Wear::try_from(*float_value)
     }
 }

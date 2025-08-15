@@ -49,7 +49,7 @@ pub trait Colored: Sized {
     fn from_color(color: u32) -> Option<Self>;
     
     /// Converts this into a hexademical color string in the format "#FFFFFF".
-    fn color_str(&self) -> String {
+    fn color_string(&self) -> String {
         format!("#{:06X}", self.color())
     }
     
