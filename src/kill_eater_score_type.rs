@@ -227,7 +227,7 @@ impl KillEaterScoreType {
 }
 
 impl Attributes for KillEaterScoreType {
-    const DEFINDEX: &'static [u32] = &[380, 382, 384];
+    const DEFINDEX: &[u32] = &[380, 382, 384];
 }
 
 impl TryFrom<StrangePart> for KillEaterScoreType {

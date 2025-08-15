@@ -49,8 +49,8 @@ pub enum Spell {
     SpectralSpectrum,
     #[strum(serialize = "Sinister Staining")]
     SinisterStaining,
-    // Allow conversion from "Voices from Below" but serialize as "Voices From Below".
-    #[strum(serialize = "Voices from Below", serialize = "Voices From Below")]
+    // Allow conversion from "Voices From Below" but serialize as "Voices from Below".
+    #[strum(serialize = "Voices From Below", serialize = "Voices from Below")]
     VoicesFromBelow,
     #[strum(serialize = "Pumpkin Bombs")]
     PumpkinBombs,
@@ -129,7 +129,7 @@ impl Spell {
 }
 
 impl Attributes for Spell {
-    const DEFINDEX: &'static [u32] = &[1004, 1005, 1006, 1007, 1008, 1009];
+    const DEFINDEX: &[u32] = &[1004, 1005, 1006, 1007, 1008, 1009];
 }
 
 struct SpellVisitor;
@@ -208,8 +208,16 @@ pub enum PaintSpell {
     SinisterStaining = 4,
 }
 
+/// set_item_tint_rgb_override
 impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
+    const NAME: &str = "SPELL: set item tint RGB";
+    const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb_override";
+    const DESCRIPTION_STRING: Option<&str> = Some("%s1");
+    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_from_lookup_table");
+    const EFFECT_TYPE: &str = "positive";
+    const HIDDEN: bool = false;
+    const STORED_AS_INTEGER: bool = false;
 }
 
 impl From<PaintSpell> for Spell {
@@ -281,6 +289,13 @@ pub enum FootprintsSpell {
 
 impl Attribute for FootprintsSpell {
     const DEFINDEX: u32 = 1005;
+    const NAME: &str = "SPELL: set Halloween footstep type";
+    const ATTRIBUTE_CLASS: &str = "halloween_footstep_type";
+    const DESCRIPTION_STRING: Option<&str> = Some("%s1");
+    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_from_lookup_table");
+    const EFFECT_TYPE: &str = "positive";
+    const HIDDEN: bool = false;
+    const STORED_AS_INTEGER: bool = false;
 }
 
 impl From<FootprintsSpell> for Spell {
@@ -335,7 +350,7 @@ mod tests {
     
     #[test]
     fn voices_from_below_from_str() {
-        assert_eq!(Spell::VoicesFromBelow.to_string(), "Voices From Below");
+        assert_eq!(Spell::VoicesFromBelow.to_string(), "Voices from Below");
         assert_eq!(Spell::from_str("Voices from Below").unwrap(), Spell::VoicesFromBelow);
         assert_eq!(Spell::from_str("Voices From Below").unwrap(), Spell::VoicesFromBelow);
     }

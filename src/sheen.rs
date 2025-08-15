@@ -40,6 +40,14 @@ pub enum Sheen {
     HotRod = 7,
 }
 
+/// killstreak_idleeffect
 impl Attribute for Sheen {
     const DEFINDEX: u32 = 2014;
+    const NAME: &str = "killstreak idleeffect";
+    const ATTRIBUTE_CLASS: &str = "killstreak_idleeffect";
+    const DESCRIPTION_STRING: Option<&str> = Some("Sheen: %s1");
+    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_killstreak_idleeffect_index");
+    const EFFECT_TYPE: &str = "positive";
+    const HIDDEN: bool = false;
+    const STORED_AS_INTEGER: bool = false;
 }

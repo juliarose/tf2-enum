@@ -84,3 +84,19 @@ pub enum Origin {
     #[strum(serialize = "Untradable Free Contract Reward")]
     UntradableFreeContractReward = 29,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::str::FromStr;
+
+    #[test]
+    fn test_from_str() {
+        assert_eq!(Origin::from_str("Purchased").unwrap(), Origin::Purchased);
+    }
+
+    #[test]
+    fn test_try_from_primitive() {
+        assert_eq!(Origin::try_from(2u32).unwrap(), Origin::Purchased);
+    }
+}

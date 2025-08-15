@@ -245,8 +245,16 @@ impl Paint {
     }
 }
 
+/// set_item_tint_rgb
 impl Attribute for Paint {
     const DEFINDEX: u32 = 142;
+    const NAME: &str = "set item tint RGB";
+    const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb";
+    const DESCRIPTION_STRING: Option<&str> = Some("Item tint color code: %s1");
+    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_additive");
+    const EFFECT_TYPE: &str = "neutral";
+    const HIDDEN: bool = true;
+    const STORED_AS_INTEGER: bool = false;
 }
 
 #[cfg(test)]

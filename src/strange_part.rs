@@ -395,7 +395,7 @@ impl StrangePart {
 }
 
 impl Attributes for StrangePart {
-    const DEFINDEX: &'static [u32] = &[380, 382, 384];
+    const DEFINDEX: &[u32] = &[380, 382, 384];
 }
 
 impl TryFrom<KillEaterScoreType> for StrangePart {

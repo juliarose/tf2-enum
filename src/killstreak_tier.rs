@@ -32,6 +32,14 @@ pub enum KillstreakTier {
     Professional = 3,
 }
 
+/// killstreak_tier
 impl Attribute for KillstreakTier {
     const DEFINDEX: u32 = 2025;
+    const NAME: &str = "killstreak tier";
+    const ATTRIBUTE_CLASS: &str = "killstreak_tier";
+    const DESCRIPTION_STRING: Option<&str> = Some("Killstreaks Active");
+    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_additive");
+    const EFFECT_TYPE: &str = "positive";
+    const HIDDEN: bool = false;
+    const STORED_AS_INTEGER: bool = false;
 }

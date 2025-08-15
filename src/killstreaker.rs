@@ -40,6 +40,14 @@ pub enum Killstreaker {
     HypnoBeam = 2008,
 }
 
+/// killstreak_effect
 impl Attribute for Killstreaker {
     const DEFINDEX: u32 = 2013;
+    const NAME: &str = "killstreak effect";
+    const ATTRIBUTE_CLASS: &str = "killstreak_effect";
+    const DESCRIPTION_STRING: Option<&str> = Some("Killstreaker: %s1");
+    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_killstreakeffect_index");
+    const EFFECT_TYPE: &str = "positive";
+    const HIDDEN: bool = false;
+    const STORED_AS_INTEGER: bool = false;
 }

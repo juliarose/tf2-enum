@@ -18,12 +18,14 @@
 - `defindex_is_paint` for `Paint`.
 - `BitAnd` for `SpellSet` and `StrangePartSet`, and their borrowed variants.
 - `is_subset` and `is_superset` methods to `StrangePartSet` and `SpellSet`.
+- More fields for `Attribute`.
 
 ### Changed
 - `StrangePart::DefendersKilled` to `StrangePart::DefenderKills` to match the schema.
 - `StrangePart::PlayersHit` to `StrangePart::PlayerHits` to match the schema.
 - Related strings for `StrangePart::PlayerHits` and `StrangePart::DefenderKills`.
 - Collisions for `StrangePartSet` and `SpellSet` now prioritize keeping the first values rather than the last.
+- `Spell::VoicesFromBelow` now serializes as `Voices from Below` instead of `Voices From Below`.
 
 ### Removed
 - `IntoEnumIterator` and `EnumCount` re-exports. These can be pulled in from the `strum` re-export. 

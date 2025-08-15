@@ -38,6 +38,13 @@ pub enum Wear {
 
 impl Attribute for Wear {
     const DEFINDEX: u32 = 725;
+    const NAME: &str = "set_item_texture_wear";
+    const ATTRIBUTE_CLASS: &str = "set_item_texture_wear";
+    const DESCRIPTION_STRING: Option<&str> = None;
+    const DESCRIPTION_FORMAT: Option<&str> = None;
+    const EFFECT_TYPE: &str = "positive";
+    const HIDDEN: bool = true;
+    const STORED_AS_INTEGER: bool = false;
 }
 
 impl TryFrom<f64> for Wear {
