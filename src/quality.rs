@@ -1,3 +1,4 @@
+use crate::Colored;
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -46,9 +47,9 @@ pub enum Quality {
     DecoratedWeapon = 15,
 }
 
-impl Quality {
+impl Colored for Quality {
     /// Gets the related color of this quality as a hexadecimal color.
-    pub fn color(&self) -> u32 {
+    fn color(&self) -> u32 {
         match self {
             Self::Normal => 0xB2B2B2,
             Self::Genuine => 0x4D7455,
@@ -73,11 +74,11 @@ impl Quality {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::Quality;
+    /// use tf2_enum::{Quality, Colored};
     /// 
     /// assert_eq!(Quality::from_color(0x8650AC).unwrap(), Quality::Unusual);
     /// ```
-    pub fn from_color(color: u32) -> Option<Self> {
+    fn from_color(color: u32) -> Option<Self> {
         match color {
             0xB2B2B2 => Some(Self::Normal),
             0x4D7455 => Some(Self::Genuine),
@@ -92,29 +93,6 @@ impl Quality {
             0xFAFAFA => Some(Self::DecoratedWeapon),
             _ => None,
         }
-    }
-    
-    /// Converts a hexadecimal color string into a [`Quality`].
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::Quality;
-    /// 
-    /// assert_eq!(Quality::from_color_str("#8650AC").unwrap(), Quality::Unusual);
-    /// ```
-    pub fn from_color_str(color: &str) -> Option<Self> {
-        let len = color.len();
-        let mut color = color;
-        
-        if len == 7 && color.starts_with('#') {
-            color = &color[1..len];
-        } else if len != 6 {
-            return None;
-        }
-        
-        let color = u32::from_str_radix(color, 16).ok()?;
-        
-        Self::from_color(color)
     }
 }
 

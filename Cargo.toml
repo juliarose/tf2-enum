@@ -26,3 +26,7 @@ criterion = "0.3"
 [[bench]]
 name = "find_level"
 harness = false
+
+[[bench]]
+name = "match_vs_hashmap"
+harness = false

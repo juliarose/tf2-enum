@@ -1,4 +1,4 @@
-use crate::{KillEaterScoreType, Attributes, EffectType, DescriptionFormat};
+use crate::{KillEaterScoreType, Attributes, ItemDefindex, EffectType, DescriptionFormat};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -266,8 +266,61 @@ impl StrangePart {
         matches!(self, Self::Kills | Self::FullHealthKills | Self::Assists | Self::FreezecamTauntAppearances)
     }
     
+    /// Converts this [`StrangePart`] into its related [`KillEaterScoreType`], if it exists.
+    pub fn kill_eater_score_type(&self) -> Option<KillEaterScoreType> {
+        KillEaterScoreType::try_from(*self).ok()
+    }
+}
+
+/// kill_eater_user_score_type_1
+/// kill_eater_user_score_type_2
+/// kill_eater_user_score_type_3
+impl Attributes for StrangePart {
+    const DEFINDEX: &[u32] = &[
+        380,
+        382,
+        384,
+    ];
+    const NAME: &[&str] = &[
+        "kill eater user score type 1",
+        "kill eater user score type 2",
+        "kill eater user score type 3",
+    ];
+    const ATTRIBUTE_CLASS: &[&str] = &[
+        "kill_eater_user_score_type_1",
+        "kill_eater_user_score_type_2",
+        "kill_eater_user_score_type_3",
+    ];
+    const DESCRIPTION_STRING: &[Option<&str>] = &[
+        None,
+        None,
+        None,
+    ];
+    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>] = &[
+        None,
+        None,
+        None,
+    ];
+    const EFFECT_TYPE: &[EffectType] = &[
+        EffectType::Positive,
+        EffectType::Positive,
+        EffectType::Positive,
+    ];
+    const HIDDEN: &[bool] = &[
+        true,
+        true,
+        true,
+    ];
+    const STORED_AS_INTEGER: &[bool] = &[
+        false,
+        false,
+        false,
+    ];
+}
+
+impl ItemDefindex for StrangePart {
     /// Gets the `defindex` for the [`StrangePart`].
-    pub fn defindex(&self) -> u32 {
+    fn defindex(&self) -> u32 {
         match self {
             Self::ScoutsKilled => 6003,
             Self::SnipersKilled => 6005,
@@ -325,7 +378,7 @@ impl StrangePart {
     }
     
     /// Converts a `defindex` into its related [`StrangePart`], if it exists.
-    pub fn from_defindex(defindex: u32) -> Option<Self> {
+    fn from_defindex(defindex: u32) -> Option<Self> {
         match defindex {
             6003 => Some(Self::ScoutsKilled),
             6005 => Some(Self::SnipersKilled),
@@ -382,62 +435,6 @@ impl StrangePart {
             _ => None,
         }
     }
-    
-    /// Checks if the `defindex` belongs to a strange part.
-    pub fn defindex_is_strange_part(defindex: u32) -> bool {
-        Self::from_defindex(defindex).is_some()
-    }
-    
-    /// Converts this [`StrangePart`] into its related [`KillEaterScoreType`], if it exists.
-    pub fn kill_eater_score_type(&self) -> Option<KillEaterScoreType> {
-        KillEaterScoreType::try_from(*self).ok()
-    }
-}
-
-/// kill_eater_user_score_type_1
-/// kill_eater_user_score_type_2
-/// kill_eater_user_score_type_3
-impl Attributes for StrangePart {
-    const DEFINDEX: &[u32] = &[
-        380,
-        382,
-        384,
-    ];
-    const NAME: &[&str] = &[
-        "kill eater user score type 1",
-        "kill eater user score type 2",
-        "kill eater user score type 3",
-    ];
-    const ATTRIBUTE_CLASS: &[&str] = &[
-        "kill_eater_user_score_type_1",
-        "kill_eater_user_score_type_2",
-        "kill_eater_user_score_type_3",
-    ];
-    const DESCRIPTION_STRING: &[Option<&str>] = &[
-        None,
-        None,
-        None,
-    ];
-    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>] = &[
-        None,
-        None,
-        None,
-    ];
-    const EFFECT_TYPE: &[EffectType] = &[
-        EffectType::Positive,
-        EffectType::Positive,
-        EffectType::Positive,
-    ];
-    const HIDDEN: &[bool] = &[
-        true,
-        true,
-        true,
-    ];
-    const STORED_AS_INTEGER: &[bool] = &[
-        false,
-        false,
-        false,
-    ];
 }
 
 impl TryFrom<KillEaterScoreType> for StrangePart {

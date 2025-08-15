@@ -49,7 +49,7 @@ mod description_format;
 mod spell_set;
 mod strange_part_set;
 
-pub use traits::{Attribute, Attributes};
+pub use traits::{Attribute, Attributes, Colored, ItemDefindex};
 pub use quality::Quality;
 pub use class::Class;
 pub use killstreak_tier::KillstreakTier;

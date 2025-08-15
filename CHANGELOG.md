@@ -1,9 +1,17 @@
 # Changelog
 
 ## 0.11.0
-- Added `PartialOrd` and `Ord` traits to `StrangePartSet` and `SpellSet`.
+
+### Added
+- `PartialOrd` and `Ord` traits to `StrangePartSet` and `SpellSet`.
 - `econ_defindex` for `StockWeapon`.
 - `DescriptionFormat` and `EffectType` for traits `Attribute` and `Attributes`.
+- `Colored` trait for definitions associated with a color.
+- `ItemDefindex` trait for definitions associated with an item defindex.
+
+### Removed
+- `defindex_is_strange_part` for `StrangePart`.
+- `defindex_is_paint` for `Paint`.
 
 ## 0.10.0 (2025-08-14)
 

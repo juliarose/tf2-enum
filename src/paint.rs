@@ -1,4 +1,4 @@
-use crate::{Attribute, EffectType, DescriptionFormat};
+use crate::{Attribute, Colored, ItemDefindex, EffectType, DescriptionFormat};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -26,105 +26,66 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 #[repr(u32)]
 pub enum Paint {
     #[strum(serialize = "A Color Similar to Slate")]
-    AColorSimilarToSlate = 3100495,
+    AColorSimilarToSlate = 0x2F4F4F,
     #[strum(serialize = "A Deep Commitment to Purple")]
-    ADeepCommitmentToPurple = 8208497,
+    ADeepCommitmentToPurple = 0x7D4071,
     #[strum(serialize = "A Distinctive Lack of Hue")]
-    ADistinctiveLackOfHue = 1315860,
+    ADistinctiveLackOfHue = 0x141414,
     #[strum(serialize = "A Mann's Mint")]
-    AMannsMint = 12377523,
+    AMannsMint = 0xBCDDB3,
     #[strum(serialize = "After Eight")]
-    AfterEight = 2960676,
+    AfterEight = 0x2D2D24,
     #[strum(serialize = "Aged Moustache Grey")]
-    AgedMoustacheGrey = 8289918,
+    AgedMoustacheGrey = 0x7E7E7E,
     #[strum(serialize = "An Extraordinary Abundance of Tinge")]
-    AnExtraordinaryAbundanceOfTinge = 15132390,
+    AnExtraordinaryAbundanceOfTinge = 0xE6E6E6,
     #[strum(serialize = "Australium Gold")]
-    AustraliumGold = 15185211,
+    AustraliumGold = 0xE7B53B,
     #[strum(serialize = "Color No. 216-190-216")]
-    ColorNo216190216 = 14204632,
+    ColorNo216190216 = 0xD8BED8,
     #[strum(serialize = "Dark Salmon Injustice")]
-    DarkSalmonInjustice = 15308410,
+    DarkSalmonInjustice = 0xE9967A,
     #[strum(serialize = "Drably Olive")]
-    DrablyOlive = 8421376,
+    DrablyOlive = 0x808000,
     #[strum(serialize = "Indubitably Green")]
-    IndubitablyGreen = 7511618,
+    IndubitablyGreen = 0x729E42,
     #[strum(serialize = "Mann Co. Orange")]
-    MannCoOrange = 13595446,
+    MannCoOrange = 0xCF7336,
     #[strum(serialize = "Muskelmannbraun")]
-    Muskelmannbraun = 10843461,
+    Muskelmannbraun = 0xA57545,
     #[strum(serialize = "Noble Hatter's Violet")]
-    NobleHattersViolet = 5322826,
+    NobleHattersViolet = 0x51384A,
     #[strum(serialize = "Peculiarly Drab Tincture")]
-    PeculiarlyDrabTincture = 12955537,
+    PeculiarlyDrabTincture = 0xC5AF91,
     #[strum(serialize = "Pink as Hell")]
-    PinkAsHell = 16738740,
+    PinkAsHell = 0xFF69B4,
     #[strum(serialize = "Radigan Conagher Brown")]
-    RadiganConagherBrown = 6901050,
+    RadiganConagherBrown = 0x694D3A,
     #[strum(serialize = "The Bitter Taste of Defeat and Lime")]
-    TheBitterTasteOfDefeatAndLime = 3329330,
+    TheBitterTasteOfDefeatAndLime = 0x32CD32,
     #[strum(serialize = "The Color of a Gentlemann's Business Pants")]
-    TheColorOfAGentlemannsBusinessPants = 15787660,
+    TheColorOfAGentlemannsBusinessPants = 0xF0E68C,
     #[strum(serialize = "Ye Olde Rustic Colour")]
-    YeOldeRusticColour = 8154199,
+    YeOldeRusticColour = 0x7C6C57,
     #[strum(serialize = "Zepheniah's Greed")]
-    ZepheniahsGreed = 4345659,
+    ZepheniahsGreed = 0x424F3B,
     #[strum(serialize = "An Air of Debonair")]
-    AnAirOfDebonair = 6637376,
+    AnAirOfDebonair = 0x654740,
     #[strum(serialize = "Balaclavas Are Forever")]
-    BalaclavasAreForever = 3874595,
+    BalaclavasAreForever = 0x3B1F23,
     #[strum(serialize = "Cream Spirit")]
-    CreamSpirit = 12807213,
+    CreamSpirit = 0xC36C2D,
     #[strum(serialize = "Operator's Overalls")]
-    OperatorsOveralls = 4732984,
+    OperatorsOveralls = 0x483838,
     #[strum(serialize = "Team Spirit")]
-    TeamSpirit = 12073019,
+    TeamSpirit = 0xB8383B,
     #[strum(serialize = "The Value of Teamwork")]
-    TheValueOfTeamwork = 8400928,
+    TheValueOfTeamwork = 0x803020,
     #[strum(serialize = "Waterlogged Lab Coat")]
-    WaterloggedLabCoat = 11049612,
+    WaterloggedLabCoat = 0xA89A8C,
 }
 
 impl Paint {
-    pub fn color(&self) -> u32 {
-        u32::from(*self)
-    }
-    
-    /// Converts a hexadecimal color into a [`Paint`].
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::Paint;
-    /// 
-    /// assert_eq!(Paint::from_color(0x7D4071).unwrap(), Paint::ADeepCommitmentToPurple);
-    /// ```
-    pub fn from_color(color: u32) -> Option<Self> {
-        Self::try_from(color).ok()
-    }
-    
-    /// Converts a hexadecimal color string into a [`Paint`].
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::Paint;
-    /// 
-    /// assert_eq!(Paint::from_color_str("#7D4071").unwrap(), Paint::ADeepCommitmentToPurple);
-    /// ```
-    pub fn from_color_str(color: &str) -> Option<Self> {
-        let len = color.len();
-        let mut color = color;
-        
-        if len == 7 && color.starts_with('#') {
-            color = &color[1..len];
-        } else if len != 6 {
-            return None;
-        }
-        
-        let color = u32::from_str_radix(color, 16).ok()?;
-        
-        Self::from_color(color)
-    }
-    
     /// Gets the colors for both teams. The RED team appears first. For non-team-color paints, the
     /// color will be the same.
     pub fn colors(&self) -> (u32, u32) {
@@ -163,49 +124,53 @@ impl Paint {
     
     /// Determines if this paint is a team-colored paint.
     pub fn is_team_paint(&self) -> bool {
-        let (red, blu) = self.colors();
-        
-        red != blu
+        matches!(
+            self,
+            Self::AnAirOfDebonair |
+            Self::BalaclavasAreForever |
+            Self::CreamSpirit |
+            Self::OperatorsOveralls |
+            Self::TeamSpirit |
+            Self::TheValueOfTeamwork |
+            Self::WaterloggedLabCoat
+        )
+    }
+}
+
+/// set_item_tint_rgb
+impl Attribute for Paint {
+    const DEFINDEX: u32 = 142;
+    const NAME: &str = "set item tint RGB";
+    const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb";
+    const DESCRIPTION_STRING: Option<&str> = Some("Item tint color code: %s1");
+    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsAdditive);
+    const EFFECT_TYPE: EffectType = EffectType::Neutral;
+    const HIDDEN: bool = true;
+    const STORED_AS_INTEGER: bool = false;
+}
+
+impl Colored for Paint {
+    /// Gets the color of the [`Paint`].
+    fn color(&self) -> u32 {
+        u32::from(*self)
     }
     
-    /// Converts a `defindex` into its related [`Paint`], if it exists.
-    pub fn from_defindex(defindex: u32) -> Option<Self> {
-        match defindex {
-            5052 => Some(Self::AColorSimilarToSlate),
-            5031 => Some(Self::ADeepCommitmentToPurple),
-            5040 => Some(Self::ADistinctiveLackOfHue),
-            5076 => Some(Self::AMannsMint),
-            5077 => Some(Self::AfterEight),
-            5038 => Some(Self::AgedMoustacheGrey),
-            5039 => Some(Self::AnExtraordinaryAbundanceOfTinge),
-            5037 => Some(Self::AustraliumGold),
-            5030 => Some(Self::ColorNo216190216),
-            5056 => Some(Self::DarkSalmonInjustice),
-            5053 => Some(Self::DrablyOlive),
-            5027 => Some(Self::IndubitablyGreen),
-            5032 => Some(Self::MannCoOrange),
-            5033 => Some(Self::Muskelmannbraun),
-            5029 => Some(Self::NobleHattersViolet),
-            5034 => Some(Self::PeculiarlyDrabTincture),
-            5051 => Some(Self::PinkAsHell),
-            5035 => Some(Self::RadiganConagherBrown),
-            5054 => Some(Self::TheBitterTasteOfDefeatAndLime),
-            5055 => Some(Self::TheColorOfAGentlemannsBusinessPants),
-            5036 => Some(Self::YeOldeRusticColour),
-            5028 => Some(Self::ZepheniahsGreed),
-            5063 => Some(Self::AnAirOfDebonair),
-            5062 => Some(Self::BalaclavasAreForever),
-            5065 => Some(Self::CreamSpirit),
-            5060 => Some(Self::OperatorsOveralls),
-            5046 => Some(Self::TeamSpirit),
-            5064 => Some(Self::TheValueOfTeamwork),
-            5061 => Some(Self::WaterloggedLabCoat),
-            _ => None,
-        }
+    /// Converts a hexadecimal color into a [`Paint`].
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::{Paint, Colored};
+    /// 
+    /// assert_eq!(Paint::from_color(0x7D4071).unwrap(), Paint::ADeepCommitmentToPurple);
+    /// ```
+    fn from_color(color: u32) -> Option<Self> {
+        Self::try_from(color).ok()
     }
-    
+}
+
+impl ItemDefindex for Paint {
     /// Gets the `defindex` related to this [`Paint`].
-    pub fn defindex(&self) -> u32 {
+    fn defindex(&self) -> u32 {
         match self {
             Self::AColorSimilarToSlate => 5052,
             Self::ADeepCommitmentToPurple => 5031,
@@ -239,22 +204,41 @@ impl Paint {
         }
     }
     
-    /// Checks if the `defindex` belongs to a paint.
-    pub fn defindex_is_paint(defindex: u32) -> bool {
-        Self::from_defindex(defindex).is_some()
+    /// Converts a `defindex` into its related [`Paint`], if it exists.
+    fn from_defindex(defindex: u32) -> Option<Self> {
+        match defindex {
+            5052 => Some(Self::AColorSimilarToSlate),
+            5031 => Some(Self::ADeepCommitmentToPurple),
+            5040 => Some(Self::ADistinctiveLackOfHue),
+            5076 => Some(Self::AMannsMint),
+            5077 => Some(Self::AfterEight),
+            5038 => Some(Self::AgedMoustacheGrey),
+            5039 => Some(Self::AnExtraordinaryAbundanceOfTinge),
+            5037 => Some(Self::AustraliumGold),
+            5030 => Some(Self::ColorNo216190216),
+            5056 => Some(Self::DarkSalmonInjustice),
+            5053 => Some(Self::DrablyOlive),
+            5027 => Some(Self::IndubitablyGreen),
+            5032 => Some(Self::MannCoOrange),
+            5033 => Some(Self::Muskelmannbraun),
+            5029 => Some(Self::NobleHattersViolet),
+            5034 => Some(Self::PeculiarlyDrabTincture),
+            5051 => Some(Self::PinkAsHell),
+            5035 => Some(Self::RadiganConagherBrown),
+            5054 => Some(Self::TheBitterTasteOfDefeatAndLime),
+            5055 => Some(Self::TheColorOfAGentlemannsBusinessPants),
+            5036 => Some(Self::YeOldeRusticColour),
+            5028 => Some(Self::ZepheniahsGreed),
+            5063 => Some(Self::AnAirOfDebonair),
+            5062 => Some(Self::BalaclavasAreForever),
+            5065 => Some(Self::CreamSpirit),
+            5060 => Some(Self::OperatorsOveralls),
+            5046 => Some(Self::TeamSpirit),
+            5064 => Some(Self::TheValueOfTeamwork),
+            5061 => Some(Self::WaterloggedLabCoat),
+            _ => None,
+        }
     }
-}
-
-/// set_item_tint_rgb
-impl Attribute for Paint {
-    const DEFINDEX: u32 = 142;
-    const NAME: &str = "set item tint RGB";
-    const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb";
-    const DESCRIPTION_STRING: Option<&str> = Some("Item tint color code: %s1");
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsAdditive);
-    const EFFECT_TYPE: EffectType = EffectType::Neutral;
-    const HIDDEN: bool = true;
-    const STORED_AS_INTEGER: bool = false;
 }
 
 #[cfg(test)]
