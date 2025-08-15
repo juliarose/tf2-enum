@@ -1,4 +1,4 @@
-use crate::{Attributes, StrangePart, ItemLevel};
+use crate::{Attributes, EffectType, DescriptionFormat, StrangePart, ItemLevel};
 use strum_macros::{Display, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -250,15 +250,15 @@ impl Attributes for KillEaterScoreType {
         None,
         None,
     ];
-    const DESCRIPTION_FORMAT: &[Option<&str>] = &[
+    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>] = &[
         None,
         None,
         None,
     ];
-    const EFFECT_TYPE: &[&str] = &[
-        "positive",
-        "positive",
-        "positive",
+    const EFFECT_TYPE: &[EffectType] = &[
+        EffectType::Positive,
+        EffectType::Positive,
+        EffectType::Positive,
     ];
     const HIDDEN: &[bool] = &[
         true,

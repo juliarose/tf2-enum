@@ -1,5 +1,5 @@
 use crate::error::TryFromSpellError;
-use crate::{Attribute, Attributes};
+use crate::{Attribute, Attributes, EffectType, DescriptionFormat};
 use std::fmt;
 use std::str::FromStr;
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
@@ -167,21 +167,21 @@ impl Attributes for Spell {
         Some("Halloween Fire"),
         Some("Exorcism"),
     ];
-    const DESCRIPTION_FORMAT: &[Option<&str>] = &[
-        Some("value_is_from_lookup_table"),
-        Some("value_is_from_lookup_table"),
-        Some("value_is_additive"),
-        Some("value_is_additive"),
-        Some("value_is_additive"),
-        Some("value_is_additive"),
+    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>] = &[
+        Some(DescriptionFormat::ValueIsFromLookupTable),
+        Some(DescriptionFormat::ValueIsFromLookupTable),
+        Some(DescriptionFormat::ValueIsAdditive),
+        Some(DescriptionFormat::ValueIsAdditive),
+        Some(DescriptionFormat::ValueIsAdditive),
+        Some(DescriptionFormat::ValueIsAdditive),
     ];
-    const EFFECT_TYPE: &[&str] = &[
-        "positive",
-        "positive",
-        "positive",
-        "positive",
-        "positive",
-        "positive",
+    const EFFECT_TYPE: &[EffectType] = &[
+        EffectType::Positive,
+        EffectType::Positive,
+        EffectType::Positive,
+        EffectType::Positive,
+        EffectType::Positive,
+        EffectType::Positive,
     ];
     const HIDDEN: &[bool] = &[
         false,
@@ -283,8 +283,8 @@ impl Attribute for PaintSpell {
     const NAME: &str = "SPELL: set item tint RGB";
     const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb_override";
     const DESCRIPTION_STRING: Option<&str> = Some("%s1");
-    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_from_lookup_table");
-    const EFFECT_TYPE: &str = "positive";
+    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsFromLookupTable);
+    const EFFECT_TYPE: EffectType = EffectType::Positive;
     const HIDDEN: bool = false;
     const STORED_AS_INTEGER: bool = false;
 }
@@ -361,8 +361,8 @@ impl Attribute for FootprintsSpell {
     const NAME: &str = "SPELL: set Halloween footstep type";
     const ATTRIBUTE_CLASS: &str = "halloween_footstep_type";
     const DESCRIPTION_STRING: Option<&str> = Some("%s1");
-    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_from_lookup_table");
-    const EFFECT_TYPE: &str = "positive";
+    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsFromLookupTable);
+    const EFFECT_TYPE: EffectType = EffectType::Positive;
     const HIDDEN: bool = false;
     const STORED_AS_INTEGER: bool = false;
 }

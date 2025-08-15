@@ -1,4 +1,4 @@
-use crate::Attribute;
+use crate::{Attribute, EffectType, DescriptionFormat};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -251,8 +251,8 @@ impl Attribute for Paint {
     const NAME: &str = "set item tint RGB";
     const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb";
     const DESCRIPTION_STRING: Option<&str> = Some("Item tint color code: %s1");
-    const DESCRIPTION_FORMAT: Option<&str> = Some("value_is_additive");
-    const EFFECT_TYPE: &str = "neutral";
+    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsAdditive);
+    const EFFECT_TYPE: EffectType = EffectType::Neutral;
     const HIDDEN: bool = true;
     const STORED_AS_INTEGER: bool = false;
 }

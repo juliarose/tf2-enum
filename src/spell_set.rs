@@ -41,7 +41,7 @@ const SPELL_COUNT: usize = 2;
 ///     println!("{}", spell);
 /// }
 /// ```
-#[derive(Debug, Default, Clone, Copy, Eq)]
+#[derive(Debug, Default, Clone, Copy, Eq, PartialOrd, Ord)]
 pub struct SpellSet {
     inner: [Option<Spell>; SPELL_COUNT]
 }

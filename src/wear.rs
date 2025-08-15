@@ -1,4 +1,4 @@
-use crate::Attribute;
+use crate::{Attribute, EffectType, DescriptionFormat};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, TryFromPrimitiveError, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -41,8 +41,8 @@ impl Attribute for Wear {
     const NAME: &str = "set_item_texture_wear";
     const ATTRIBUTE_CLASS: &str = "set_item_texture_wear";
     const DESCRIPTION_STRING: Option<&str> = None;
-    const DESCRIPTION_FORMAT: Option<&str> = None;
-    const EFFECT_TYPE: &str = "positive";
+    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = None;
+    const EFFECT_TYPE: EffectType = EffectType::Positive;
     const HIDDEN: bool = true;
     const STORED_AS_INTEGER: bool = false;
 }

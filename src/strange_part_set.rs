@@ -45,7 +45,7 @@ const STRANGE_PART_COUNT: usize = 3;
 ///     println!("{strange_part}");
 /// }
 /// ```
-#[derive(Debug, Default, Clone, Copy, Eq)]
+#[derive(Debug, Default, Clone, Copy, Eq, PartialOrd, Ord)]
 pub struct StrangePartSet {
     inner: [Option<StrangePart>; STRANGE_PART_COUNT],
 }

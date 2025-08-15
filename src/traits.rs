@@ -1,3 +1,4 @@
+use crate::{EffectType, DescriptionFormat};
 
 /// Attribute values for an item attribute.
 pub trait Attribute: Sized {
@@ -5,8 +6,8 @@ pub trait Attribute: Sized {
     const NAME: &str;
     const ATTRIBUTE_CLASS: &str;
     const DESCRIPTION_STRING: Option<&str>;
-    const DESCRIPTION_FORMAT: Option<&str>;
-    const EFFECT_TYPE: &str;
+    const DESCRIPTION_FORMAT: Option<DescriptionFormat>;
+    const EFFECT_TYPE: EffectType;
     const HIDDEN: bool;
     const STORED_AS_INTEGER: bool;
 }
@@ -17,8 +18,8 @@ pub trait Attributes: Sized {
     const NAME: &[&str];
     const ATTRIBUTE_CLASS: &[&str];
     const DESCRIPTION_STRING: &[Option<&str>];
-    const DESCRIPTION_FORMAT: &[Option<&str>];
-    const EFFECT_TYPE: &[&str];
+    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>];
+    const EFFECT_TYPE: &[EffectType];
     const HIDDEN: &[bool];
     const STORED_AS_INTEGER: &[bool];
 }

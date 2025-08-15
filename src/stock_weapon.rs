@@ -110,7 +110,38 @@ impl StockWeapon {
             Self::InvisWatch => &[30, 212],
         }
     }
-
+    
+    /// Gets the econonomy defindex for this weapon (if available).
+    /// 
+    /// This is the defindex that can be mapped to inventory items. Not available for
+    /// [`StockWeapon::DestructionPDA`], [`StockWeapon::PDA`], and [`StockWeapon::DisguiseKit`].
+    pub fn econ_defindex(&self) -> Option<u32> {
+        match self {
+            Self::Bat => Some(190),
+            Self::Bottle => Some(191),
+            Self::FireAxe => Some(192),
+            Self::Kukri => Some(193),
+            Self::Knife => Some(194),
+            Self::Fists => Some(195),
+            Self::Shovel => Some(196),
+            Self::Wrench => Some(197),
+            Self::Bonesaw => Some(198),
+            Self::Shotgun => Some(199),
+            Self::Scattergun => Some(200),
+            Self::SniperRifle => Some(201),
+            Self::Minigun => Some(202),
+            Self::SMG => Some(203),
+            Self::SyringeGun => Some(204),
+            Self::RocketLauncher => Some(205),
+            Self::GrenadeLauncher => Some(206),
+            Self::StickybombLauncher => Some(207),
+            Self::FlameThrower => Some(208),
+            Self::Pistol => Some(209),
+            Self::Revolver => Some(210),
+            _ => None,
+        }
+    }
+    
     /// Attempts to create a [`StockWeapon`] from a defindex. Excludes definitions for skinned
     /// items.
     pub fn from_defindex(defindex: u32) -> Option<StockWeapon> {

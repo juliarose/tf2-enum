@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.10.0 (2025-08-13)
+## 0.11.0
+- Added `PartialOrd` and `Ord` traits to `StrangePartSet` and `SpellSet`.
+- `econ_defindex` for `StockWeapon`.
+- `DescriptionFormat` and `EffectType` for traits `Attribute` and `Attributes`.
+
+## 0.10.0 (2025-08-14)
 
 ### Added
 - `KillEaterScoreType` enum.

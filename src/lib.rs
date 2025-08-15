@@ -44,6 +44,8 @@ mod kill_eater_score_type;
 mod item_level;
 mod stock_weapon;
 mod capability;
+mod effect_type;
+mod description_format;
 mod spell_set;
 mod strange_part_set;
 
@@ -66,6 +68,8 @@ pub use kill_eater_score_type::KillEaterScoreType;
 pub use item_level::{ItemLevel, Level};
 pub use stock_weapon::StockWeapon;
 pub use capability::Capability;
+pub use effect_type::EffectType;
+pub use description_format::DescriptionFormat;
 pub use spell_set::{SpellSet, SpellSetIterator};
 pub use strange_part_set::{StrangePartSet, StrangePartSetIterator};
 

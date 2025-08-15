@@ -1,4 +1,4 @@
-use crate::{KillEaterScoreType, Attributes};
+use crate::{KillEaterScoreType, Attributes, EffectType, DescriptionFormat};
 use strum_macros::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -418,15 +418,15 @@ impl Attributes for StrangePart {
         None,
         None,
     ];
-    const DESCRIPTION_FORMAT: &[Option<&str>] = &[
+    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>] = &[
         None,
         None,
         None,
     ];
-    const EFFECT_TYPE: &[&str] = &[
-        "positive",
-        "positive",
-        "positive",
+    const EFFECT_TYPE: &[EffectType] = &[
+        EffectType::Positive,
+        EffectType::Positive,
+        EffectType::Positive,
     ];
     const HIDDEN: &[bool] = &[
         true,
