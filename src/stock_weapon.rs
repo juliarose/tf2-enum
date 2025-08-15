@@ -68,7 +68,6 @@ pub enum StockWeapon {
     DestructionPDA,
     #[strum(serialize = "Disguise Kit")]
     DisguiseKit,
-    /// The PDA is defined in the schema but not used in-game, included here for thoroughness.
     #[strum(serialize = "PDA")]
     PDA,
     #[strum(serialize = "Medi Gun")]
@@ -230,7 +229,7 @@ impl StockWeapon {
             Class::Spy => &[Self::Revolver, Self::Knife, Self::DisguiseKit, Self::InvisWatch],
             Class::Heavy => &[Self::Minigun, Self::Shotgun, Self::Fists],
             Class::Soldier => &[Self::RocketLauncher, Self::Shotgun, Self::Shovel],
-            Class::Engineer => &[Self::Shotgun, Self::Pistol, Self::Wrench, Self::ConstructionPDA, Self::DestructionPDA, Self::PDA],
+            Class::Engineer => &[Self::Shotgun, Self::Pistol, Self::Wrench, Self::ConstructionPDA, Self::DestructionPDA],
             Class::Medic => &[Self::SyringeGun, Self::MediGun, Self::Bonesaw],
         }
     }
