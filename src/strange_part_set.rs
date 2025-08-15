@@ -51,6 +51,11 @@ pub struct StrangePartSet {
 }
 
 impl StrangePartSet {
+    /// An empty [`StrangePartSet`].
+    pub const EMPTY: Self = Self {
+        inner: [None, None, None],
+    };
+    
     /// Creates a set for strange parts.
     /// 
     /// # Examples
@@ -493,6 +498,46 @@ impl FromIterator<StrangePart> for StrangePartSet {
     }
 }
 
+impl<'a> FromIterator<&'a StrangePart> for StrangePartSet {
+    fn from_iter<I: IntoIterator<Item = &'a StrangePart>>(iter: I) -> Self {
+        let mut strange_part_set = Self::new();
+        
+        for strange_part in iter {
+            strange_part_set.insert(*strange_part);
+        }
+        
+        strange_part_set
+    }
+}
+
+impl FromIterator<Option<StrangePart>> for StrangePartSet {
+    fn from_iter<I: IntoIterator<Item = Option<StrangePart>>>(iter: I) -> Self {
+        let mut strange_parts = Self::new();
+        
+        for opt in iter {
+            if let Some(strange_part) = opt {
+                strange_parts.insert(strange_part);
+            }
+        }
+        
+        strange_parts
+    }
+}
+
+impl<'a> FromIterator<Option<&'a StrangePart>> for StrangePartSet {
+    fn from_iter<I: IntoIterator<Item = Option<&'a StrangePart>>>(iter: I) -> Self {
+        let mut strange_parts = Self::new();
+        
+        for opt in iter {
+            if let Some(strange_part) = opt {
+                strange_parts.insert(*strange_part);
+            }
+        }
+        
+        strange_parts
+    }
+}
+
 impl IntoIterator for StrangePartSet {
     type Item = StrangePart;
     type IntoIter = StrangePartSetIterator;
@@ -509,9 +554,7 @@ impl IntoIterator for &StrangePartSet {
     type IntoIter = StrangePartSetIterator;
     
     fn into_iter(self) -> Self::IntoIter {
-        StrangePartSetIterator {
-            inner: self.inner.into_iter(),
-        }
+        (*self).into_iter()
     }
 }
 

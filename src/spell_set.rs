@@ -47,6 +47,11 @@ pub struct SpellSet {
 }
 
 impl SpellSet {
+    /// An empty [`SpellSet`].
+    pub const EMPTY: Self = Self {
+        inner: [None, None],
+    };
+    
     /// Creates a set for spells.
     /// 
     /// # Examples
@@ -447,6 +452,46 @@ impl FromIterator<Spell> for SpellSet {
     }
 }
 
+impl<'a> FromIterator<&'a Spell> for SpellSet {
+    fn from_iter<I: IntoIterator<Item = &'a Spell>>(iter: I) -> Self {
+        let mut spell_set = Self::new();
+        
+        for spell in iter {
+            spell_set.insert(*spell);
+        }
+        
+        spell_set
+    }
+}
+
+impl FromIterator<Option<Spell>> for SpellSet {
+    fn from_iter<I: IntoIterator<Item = Option<Spell>>>(iter: I) -> Self {
+        let mut spell_set = Self::new();
+        
+        for opt in iter {
+            if let Some(spell) = opt {
+                spell_set.insert(spell);
+            }
+        }
+        
+        spell_set
+    }
+}
+
+impl<'a> FromIterator<&'a Option<Spell>> for SpellSet {
+    fn from_iter<I: IntoIterator<Item = &'a Option<Spell>>>(iter: I) -> Self {
+        let mut spell_set = Self::new();
+        
+        for opt in iter {
+            if let Some(spell) = opt {
+                spell_set.insert(*spell);
+            }
+        }
+        
+        spell_set
+    }
+}
+
 impl IntoIterator for SpellSet {
     type Item = Spell;
     type IntoIter = SpellSetIterator;
@@ -463,9 +508,7 @@ impl IntoIterator for &SpellSet {
     type IntoIter = SpellSetIterator;
     
     fn into_iter(self) -> Self::IntoIter {
-        SpellSetIterator {
-            inner: self.inner.into_iter(),
-        }
+        (*self).into_iter()
     }
 }
 
