@@ -19,6 +19,7 @@
 - `BitAnd` for `SpellSet` and `StrangePartSet`, and their borrowed variants.
 - `is_subset` and `is_superset` methods to `StrangePartSet` and `SpellSet`.
 - More fields for `Attribute`.
+- More fields for `Attributes`.
 
 ### Changed
 - `StrangePart::DefendersKilled` to `StrangePart::DefenderKills` to match the schema.
