@@ -25,7 +25,11 @@ pub enum ItemSlot {
     Melee,
     Primary,
     Secondary,
+    #[strum(serialize = "pda")]
+    #[serde(rename = "pda")]
     PDA,
+    #[strum(serialize = "pda2")]
+    #[serde(rename = "pda2")]
     PDA2,
     Building,
     Misc,
@@ -84,5 +88,29 @@ impl ItemSlot {
             // No stock weapons for these slots
             _ => &[],
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_item_slot_stock_weapons() {
+        let primary_weapons = ItemSlot::Primary.stock_weapons();
+        assert!(primary_weapons.contains(&StockWeapon::Scattergun));
+        assert!(primary_weapons.contains(&StockWeapon::RocketLauncher));
+    }
+    
+    #[test]
+    fn serializes() {
+        let json = serde_json::to_string(&ItemSlot::Primary).unwrap();
+        assert_eq!(json, "\"primary\"");
+        
+        
+        let json = serde_json::to_string(&ItemSlot::PDA).unwrap();
+        assert_eq!(json, "\"pda\"");
+        let json = serde_json::to_string(&ItemSlot::PDA2).unwrap();
+        assert_eq!(json, "\"pda2\"");
     }
 }
