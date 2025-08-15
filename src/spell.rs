@@ -244,6 +244,44 @@ impl TryInto<u32> for Spell {
     }
 }
 
+impl From<PaintSpell> for Spell {
+    fn from(val: PaintSpell) -> Self {
+        match val {
+            PaintSpell::DieJob => Spell::DieJob,
+            PaintSpell::ChromaticCorruption => Spell::ChromaticCorruption,
+            PaintSpell::PutrescentPigmentation => Spell::PutrescentPigmentation,
+            PaintSpell::SpectralSpectrum => Spell::SpectralSpectrum,
+            PaintSpell::SinisterStaining => Spell::SinisterStaining,
+        }
+    }
+}
+
+impl From<&PaintSpell> for Spell {
+    fn from(val: &PaintSpell) -> Self {
+        Self::from(*val)
+    }
+}
+
+impl From<FootprintsSpell> for Spell {
+    fn from(val: FootprintsSpell) -> Self {
+        match val {
+            FootprintsSpell::TeamSpiritFootprints => Self::TeamSpiritFootprints,
+            FootprintsSpell::HeadlessHorseshoes => Self::HeadlessHorseshoes,
+            FootprintsSpell::CorpseGrayFootprints => Self::CorpseGrayFootprints,
+            FootprintsSpell::ViolentVioletFootprints => Self::ViolentVioletFootprints,
+            FootprintsSpell::BruisedPurpleFootprints => Self::BruisedPurpleFootprints,
+            FootprintsSpell::GangreenFootprints => Self::GangreenFootprints,
+            FootprintsSpell::RottenOrangeFootprints => Self::RottenOrangeFootprints,
+        }
+    }
+}
+
+impl From<&FootprintsSpell> for Spell {
+    fn from(val: &FootprintsSpell) -> Self {
+        Self::from(*val)
+    }
+}
+
 /// Paint spell.
 #[derive(
     Serialize_repr,
@@ -289,18 +327,6 @@ impl Attribute for PaintSpell {
     const STORED_AS_INTEGER: bool = false;
 }
 
-impl From<PaintSpell> for Spell {
-    fn from(val: PaintSpell) -> Self {
-        match val {
-            PaintSpell::DieJob => Spell::DieJob,
-            PaintSpell::ChromaticCorruption => Spell::ChromaticCorruption,
-            PaintSpell::PutrescentPigmentation => Spell::PutrescentPigmentation,
-            PaintSpell::SpectralSpectrum => Spell::SpectralSpectrum,
-            PaintSpell::SinisterStaining => Spell::SinisterStaining,
-        }
-    }
-}
-
 impl TryFrom<Spell> for PaintSpell {
     type Error = TryFromSpellError;
     
@@ -316,6 +342,14 @@ impl TryFrom<Spell> for PaintSpell {
                 value
             }),
         }
+    }
+}
+
+impl TryFrom<&Spell> for PaintSpell {
+    type Error = TryFromSpellError;
+    
+    fn try_from(value: &Spell) -> Result<Self, Self::Error> {
+        Self::try_from(*value)
     }
 }
 
@@ -367,17 +401,31 @@ impl Attribute for FootprintsSpell {
     const STORED_AS_INTEGER: bool = false;
 }
 
-impl From<FootprintsSpell> for Spell {
-    fn from(val: FootprintsSpell) -> Self {
-        match val {
-            FootprintsSpell::TeamSpiritFootprints => Spell::TeamSpiritFootprints,
-            FootprintsSpell::GangreenFootprints => Spell::GangreenFootprints,
-            FootprintsSpell::CorpseGrayFootprints => Spell::CorpseGrayFootprints,
-            FootprintsSpell::ViolentVioletFootprints => Spell::ViolentVioletFootprints,
-            FootprintsSpell::RottenOrangeFootprints => Spell::RottenOrangeFootprints,
-            FootprintsSpell::BruisedPurpleFootprints => Spell::BruisedPurpleFootprints,
-            FootprintsSpell::HeadlessHorseshoes => Spell::HeadlessHorseshoes,
+impl TryFrom<Spell> for FootprintsSpell {
+    type Error = TryFromSpellError;
+    
+    fn try_from(value: Spell) -> Result<Self, Self::Error> {
+        match value {
+            Spell::TeamSpiritFootprints => Ok(Self::TeamSpiritFootprints),
+            Spell::HeadlessHorseshoes => Ok(Self::HeadlessHorseshoes),
+            Spell::CorpseGrayFootprints => Ok(Self::CorpseGrayFootprints),
+            Spell::ViolentVioletFootprints => Ok(Self::ViolentVioletFootprints),
+            Spell::BruisedPurpleFootprints => Ok(Self::BruisedPurpleFootprints),
+            Spell::GangreenFootprints => Ok(Self::GangreenFootprints),
+            Spell::RottenOrangeFootprints => Ok(Self::RottenOrangeFootprints),
+            _ => Err(TryFromSpellError {
+                defindex: Self::DEFINDEX,
+                value
+            }),
         }
+    }
+}
+
+impl TryFrom<&Spell> for FootprintsSpell {
+    type Error = TryFromSpellError;
+    
+    fn try_from(value: &Spell) -> Result<Self, Self::Error> {
+        Self::try_from(*value)
     }
 }
 
@@ -386,6 +434,11 @@ mod tests {
     use super::*;
     use std::str::FromStr;
     
+    #[derive(Debug, Serialize, Deserialize, Eq, PartialEq)]
+    struct SpellAttribute {
+        spell: Spell,
+    }
+    
     #[test]
     fn from_str() {
         assert_eq!(Spell::from_str("Headless Horseshoes").unwrap(), Spell::HeadlessHorseshoes);
@@ -393,11 +446,6 @@ mod tests {
     
     #[test]
     fn serialize_spell() {
-        #[derive(Debug, Serialize, Deserialize, Eq, PartialEq)]
-        struct SpellAttribute {
-            spell: Spell,
-        }
-        
         let attribute = SpellAttribute {
             spell: Spell::HeadlessHorseshoes,
         };
@@ -405,6 +453,16 @@ mod tests {
         
         assert_eq!(json, "{\"spell\":\"Headless Horseshoes\"}");
         assert_eq!(serde_json::from_str::<SpellAttribute>(&json).unwrap(), attribute);
+        assert_eq!(serde_json::to_string(&Spell::HeadlessHorseshoes).unwrap(), "\"Headless Horseshoes\"");
+    }
+    
+    #[test]
+    fn deserializes_spell() {
+        let json = "{\"spell\":\"Headless Horseshoes\"}";
+        let attribute: SpellAttribute = serde_json::from_str(json).unwrap();
+        
+        assert_eq!(attribute.spell, Spell::HeadlessHorseshoes);
+        assert_eq!(serde_json::from_str::<Spell>("\"Headless Horseshoes\"").unwrap(), Spell::HeadlessHorseshoes);
     }
     
     #[test]
