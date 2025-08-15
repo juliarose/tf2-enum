@@ -128,8 +128,77 @@ impl Spell {
     }
 }
 
+/// set_item_tint_rgb_override
+/// halloween_footstep_type
+/// halloween_voice_modulation
+/// halloween_pumpkin_explosions
+/// halloween_green_flames
+/// halloween_death_ghosts
 impl Attributes for Spell {
-    const DEFINDEX: &[u32] = &[1004, 1005, 1006, 1007, 1008, 1009];
+    const DEFINDEX: &[u32] = &[
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1009,
+    ];
+    const NAME: &[&str] = &[
+        "SPELL: set item tint RGB",
+        "SPELL: set Halloween footstep type",
+        "SPELL: Halloween voice modulation",
+        "SPELL: Halloween pumpkin explosions",
+        "SPELL: Halloween green flames",
+        "SPELL: Halloween death ghosts",
+    ];
+    const ATTRIBUTE_CLASS: &[&str] = &[
+        "set_item_tint_rgb_override",
+        "halloween_footstep_type",
+        "halloween_voice_modulation",
+        "halloween_pumpkin_explosions",
+        "halloween_green_flames",
+        "halloween_death_ghosts",
+    ];
+    const DESCRIPTION_STRING: &[Option<&str>] = &[
+        Some("%s1"),
+        Some("%s1"),
+        Some("Voices from Below"),
+        Some("Pumpkin Bombs"),
+        Some("Halloween Fire"),
+        Some("Exorcism"),
+    ];
+    const DESCRIPTION_FORMAT: &[Option<&str>] = &[
+        Some("value_is_from_lookup_table"),
+        Some("value_is_from_lookup_table"),
+        Some("value_is_additive"),
+        Some("value_is_additive"),
+        Some("value_is_additive"),
+        Some("value_is_additive"),
+    ];
+    const EFFECT_TYPE: &[&str] = &[
+        "positive",
+        "positive",
+        "positive",
+        "positive",
+        "positive",
+        "positive",
+    ];
+    const HIDDEN: &[bool] = &[
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ];
+    const STORED_AS_INTEGER: &[bool] = &[
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ];
 }
 
 struct SpellVisitor;

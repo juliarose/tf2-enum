@@ -219,15 +219,33 @@ impl KillEaterScoreType {
     pub fn strange_part(&self) -> Option<StrangePart> {
         StrangePart::try_from(self).ok()
     }
-
+    
     /// Converts this [`KillEaterScoreType`] into its related [`ItemLevel`].
     pub fn item_level(&self) -> ItemLevel {
         self.into()
     }
 }
 
+/// kill_eater_user_score_type_1
+/// kill_eater_user_score_type_2
+/// kill_eater_user_score_type_3
 impl Attributes for KillEaterScoreType {
     const DEFINDEX: &[u32] = &[380, 382, 384];
+    const NAME: &[&str] = &[
+        "kill eater user score type 1",
+        "kill eater user score type 2",
+        "kill eater user score type 3",
+    ];
+    const ATTRIBUTE_CLASS: &[&str] = &[
+        "kill_eater_user_score_type_1",
+        "kill_eater_user_score_type_2",
+        "kill_eater_user_score_type_3",
+    ];
+    const DESCRIPTION_STRING: &[Option<&str>] = &[None, None, None];
+    const DESCRIPTION_FORMAT: &[Option<&str>] = &[None, None, None];
+    const EFFECT_TYPE: &[&str] = &["positive", "positive", "positive"];
+    const HIDDEN: &[bool] = &[true, true, true];
+    const STORED_AS_INTEGER: &[bool] = &[false, false, false];
 }
 
 impl TryFrom<StrangePart> for KillEaterScoreType {
