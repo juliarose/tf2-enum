@@ -99,7 +99,19 @@ impl Colored for Quality {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fmt::Display;
     use std::str::FromStr;
+    
+    fn color_span<C: Colored + Display>(c: C) -> String {
+        format!("<span style=\"color: {};\">{c}</span>", c.color_string())
+    }
+    
+    #[test]
+    fn get_html() {
+        let quality = Quality::Strange;
+        
+        assert_eq!(color_span(quality), "<span style=\"color: #CF6A32;\">Strange</span>");
+    }
     
     #[test]
     fn from_color() {

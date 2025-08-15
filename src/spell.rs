@@ -8,8 +8,10 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 use serde::{Serialize, Deserialize, Serializer};
 use serde::de::{self, Visitor, Deserializer};
 
-/// Spell. In the schema, spells aren’t grouped together because they have different attributes,
-/// though in practice they’re often treated as if they are.
+/// Spell.
+/// 
+/// As defined by the schema these wouldn't normally be grouped together as different types of
+/// spells fall under different attributes, but in practice they are often treated as if they are.
 #[derive(
     Debug,
     Hash,
@@ -125,6 +127,32 @@ impl Spell {
             Self::RottenOrangeFootprints => Some(13595446),
             _ => None,
         }
+    }
+
+    /// Checks if this spell is a paint spell.
+    pub fn is_paint_spell(&self) -> bool {
+        matches!(
+            self,
+            Self::DieJob |
+            Self::ChromaticCorruption |
+            Self::PutrescentPigmentation |
+            Self::SpectralSpectrum |
+            Self::SinisterStaining,
+        )
+    }
+
+    /// Checks if this spell is a footprints spell.
+    pub fn is_footprints_spell(&self) -> bool {
+        matches!(
+            self,
+            Self::TeamSpiritFootprints |
+            Self::HeadlessHorseshoes |
+            Self::CorpseGrayFootprints |
+            Self::ViolentVioletFootprints |
+            Self::BruisedPurpleFootprints |
+            Self::GangreenFootprints |
+            Self::RottenOrangeFootprints,
+        )
     }
 }
 
@@ -332,11 +360,11 @@ impl TryFrom<Spell> for PaintSpell {
     
     fn try_from(value: Spell) -> Result<Self, Self::Error> {
         match value {
-            Spell::DieJob => Ok(PaintSpell::DieJob),
-            Spell::ChromaticCorruption => Ok(PaintSpell::ChromaticCorruption),
-            Spell::PutrescentPigmentation => Ok(PaintSpell::PutrescentPigmentation),
-            Spell::SpectralSpectrum => Ok(PaintSpell::SpectralSpectrum),
-            Spell::SinisterStaining => Ok(PaintSpell::SinisterStaining),
+            Spell::DieJob => Ok(Self ::DieJob),
+            Spell::ChromaticCorruption => Ok(Self::ChromaticCorruption),
+            Spell::PutrescentPigmentation => Ok(Self::PutrescentPigmentation),
+            Spell::SpectralSpectrum => Ok(Self::SpectralSpectrum),
+            Spell::SinisterStaining => Ok(Self::SinisterStaining),
             _ => Err(TryFromSpellError {
                 defindex: Self::DEFINDEX,
                 value
