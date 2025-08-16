@@ -78,3 +78,111 @@ pub trait ItemDefindex: Sized {
     /// Converts a `defindex` into its related item, if it exists.
     fn from_defindex(defindex: u32) -> Option<Self>;
 }
+
+pub trait AttributeSet: Sized + Default {
+    /// Max number of items.
+    const MAX_COUNT: usize;
+    /// The item type.
+    type Item: PartialEq + Copy;
+    
+    /// Adds an item to the first available slot.
+    fn insert(&mut self, item: Self::Item) -> bool;
+    
+    /// Removes an item from the set. Returns whether the value was present in the set.
+    fn remove(&mut self, item: &Self::Item) -> bool;
+    
+    /// Removes and returns the item in the set, if any, that is equal to the given one.
+    fn take(&mut self, item: &Self::Item) -> Option<Self::Item>;
+    
+    /// Clears the set,.
+    fn clear(&mut self);
+    
+    /// Returns the number of elements in the set.
+    fn len(&self) -> usize {
+        self.inner()
+            .iter()
+            .filter(|x| x.is_some())
+            .count()
+    }
+
+    /// Returns true if the set contains the given item.
+    fn contains(&self, item: &Self::Item) -> bool {
+        self.inner().contains(&Some(*item))
+    }
+
+    /// Returns true if the set is empty.
+    fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+    
+    /// Returns the items that are in `self` but not in `other`.
+    fn difference(&self, other: &Self) -> Self {
+        let mut result = Self::default();
+        
+        for (i, s_option) in result.inner_mut().iter_mut().enumerate() {
+            if let Some(s) = self.inner()[i] {
+                if !other.contains(&s) {
+                    *s_option = Some(s);
+                }
+            }
+        }
+        
+        result
+    }
+    
+    /// Returns the items that are both in `self` and `other`.
+    fn intersection(&self, other: &Self) -> Self {
+        let mut result = Self::default();
+        
+        for (i, s_option) in result.inner_mut().iter_mut().enumerate() {
+            if let Some(s) = self.inner()[i] {
+                if other.contains(&s) {
+                    *s_option = Some(s);
+                }
+            }
+        }
+
+        result
+    }
+    
+    /// Returns `true` if `self` has no items in common with `other`. This is equivalent to 
+    /// checking for an empty intersection.
+    fn is_disjoint(&self, other: &Self) -> bool {
+        self.intersection(other).is_empty()
+    }
+    
+    /// Returns true if the set is a subset of another, i.e., other contains at least all the
+    /// values in self.
+    fn is_subset(&self, other: &Self) -> bool {
+        if self.len() > other.len() {
+            return false;
+        }
+        
+        self.iter().all(|spell| other.contains(spell))
+    }
+    
+    /// Returns true if the set is a superset of another, i.e., self contains at least all the
+    /// values in other.
+    fn is_superset(&self, other: &Self) -> bool {
+        other.is_subset(self)
+    }
+    
+    /// Returns an iterator over the set.
+    fn iter<'a>(&'a self) -> impl Iterator<Item = &'a Self::Item> {
+        self.inner().iter().filter_map(|opt| opt.as_ref())
+    }
+    
+    /// Returns true if the set is full, i.e., it contains the maximum number of elements.
+    fn is_full(&self) -> bool {
+        self.len() == Self::MAX_COUNT
+    }
+    
+    /// Converts this set into a vector.
+    fn to_vec(self) -> Vec<Self::Item>;
+    
+    /// Returns the inner storage as a slice.
+    fn inner(&self) -> &[Option<Self::Item>];
+    
+    /// Returns the inner storage as a mutable slice.
+    fn inner_mut(&mut self) -> &mut [Option<Self::Item>];
+}

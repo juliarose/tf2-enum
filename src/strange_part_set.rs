@@ -1,9 +1,9 @@
 //! Set for holding up to 3 strange parts.
 
+use crate::{StrangePart, AttributeSet};
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
-use crate::StrangePart;
 
 const STRANGE_PART_COUNT: usize = 3;
 
@@ -17,9 +17,11 @@ const STRANGE_PART_COUNT: usize = 3;
 /// - Hashing is order-agnostic.
 /// - The type is `Copy`, allowing for cheap and easy duplication.
 /// 
+/// Most methods require pulling in the [`AttributeSet`] trait.
+/// 
 /// # Examples
 /// ```
-/// use tf2_enum::{StrangePartSet, StrangePart};
+/// use tf2_enum::{StrangePartSet, StrangePart, AttributeSet};
 /// 
 /// // Create a set for strange parts with two strange parts.
 /// let mut strange_parts = StrangePartSet::double(
@@ -72,7 +74,7 @@ impl StrangePartSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
+    /// use tf2_enum::{StrangePartSet, StrangePart, AttributeSet};
     /// 
     /// let strange_parts = StrangePartSet::single(
     ///     StrangePart::DamageDealt,
@@ -94,7 +96,7 @@ impl StrangePartSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
+    /// use tf2_enum::{StrangePartSet, StrangePart, AttributeSet};
     /// 
     /// let strange_parts = StrangePartSet::double(
     ///     StrangePart::DamageDealt,
@@ -120,7 +122,7 @@ impl StrangePartSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
+    /// use tf2_enum::{StrangePartSet, StrangePart, AttributeSet};
     /// 
     /// let strange_parts = StrangePartSet::triple(
     ///     StrangePart::DamageDealt,
@@ -141,12 +143,19 @@ impl StrangePartSet {
             Some(strange_part3),
         ])
     }
+}
+
+impl AttributeSet for StrangePartSet {
+    /// Max number of items.
+    const MAX_COUNT: usize = STRANGE_PART_COUNT;
+    /// The item type.
+    type Item = StrangePart;
     
     /// Clears the set, removing all strange parts.
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
+    /// use tf2_enum::{StrangePartSet, StrangePart, AttributeSet};
     /// 
     /// let mut strange_parts = StrangePartSet::double(
     ///     StrangePart::CriticalKills,
@@ -157,7 +166,7 @@ impl StrangePartSet {
     /// 
     /// assert_eq!(strange_parts.len(), 0);
     /// ```
-    pub fn clear(&mut self) {
+    fn clear(&mut self) {
         self.inner = [None, None, None];
     }
     
@@ -170,7 +179,7 @@ impl StrangePartSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
+    /// use tf2_enum::{StrangePartSet, StrangePart, AttributeSet};
     /// 
     /// let mut strange_parts = StrangePartSet::double(
     ///     StrangePart::CriticalKills,
@@ -186,7 +195,7 @@ impl StrangePartSet {
     /// // Strange parts are full.
     /// assert!(!strange_parts.insert(StrangePart::MedicsKilled));
     /// ```
-    pub fn insert(&mut self, strange_part: StrangePart) -> bool {
+    fn insert(&mut self, strange_part: StrangePart) -> bool {
         if self.contains(&strange_part) {
             return false;
         }
@@ -204,14 +213,14 @@ impl StrangePartSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
+    /// use tf2_enum::{StrangePartSet, StrangePart, AttributeSet};
     /// 
     /// let mut strange_parts = StrangePartSet::single(StrangePart::CriticalKills);
     /// 
     /// assert!(strange_parts.remove(&StrangePart::CriticalKills));
     /// assert!(!strange_parts.contains(&StrangePart::CriticalKills));
     /// ```
-    pub fn remove(&mut self, strange_part: &StrangePart) -> bool {
+    fn remove(&mut self, strange_part: &StrangePart) -> bool {
         for s in self.inner.iter_mut() {
             if *s == Some(*strange_part) {
                 *s = None;
@@ -223,7 +232,7 @@ impl StrangePartSet {
     }
     
     /// Removes and returns the strange part in the set, if any, that is equal to the given one.
-    pub fn take(&mut self, strange_part: &StrangePart) -> Option<StrangePart> {
+    fn take(&mut self, strange_part: &StrangePart) -> Option<StrangePart> {
         for s in self.inner.iter_mut() {
             if *s == Some(*strange_part) {
                 *s = None;
@@ -234,197 +243,19 @@ impl StrangePartSet {
         None
     }
     
-    /// Returns `true` if the set contains no strange parts.
-    pub fn is_empty(&self) -> bool {
-        self.inner
-            .iter()
-            .all(|s| s.is_none())
+    /// Converts this set into a vector of strange parts.
+    fn to_vec(self) -> Vec<StrangePart> {
+        self.into()
     }
     
-    /// Returns `true` if the set contains a strange part.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
-    /// 
-    /// let strange_parts = StrangePartSet::from([
-    ///     Some(StrangePart::CriticalKills),
-    ///     Some(StrangePart::DamageDealt),
-    ///     None,
-    /// ]);
-    /// 
-    /// assert!(strange_parts.contains(&StrangePart::CriticalKills));
-    /// ```
-    pub fn contains(&self, strange_part: &StrangePart) -> bool {
-        self.inner.contains(&Some(*strange_part))
+    /// Returns the inner storage as a slice.
+    fn inner(&self) -> &[Option<StrangePart>] {
+        &self.inner
     }
     
-    /// Returns the number of strange parts in the set.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
-    /// 
-    /// let strange_parts = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
-    /// 
-    /// assert_eq!(strange_parts.len(), 2);
-    /// ```
-    pub fn len(&self) -> usize {
-        self.inner
-            .into_iter() // inner is Copy
-            .filter(Option::is_some)
-            .count()
-    }
-    
-    /// Returns the strange parts that are in `self` but not in `other`.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
-    /// 
-    /// let strange_parts1 = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
-    /// let strange_parts2 = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::EngineersKilled);
-    /// let difference = strange_parts1.difference(&strange_parts2);
-    /// 
-    /// assert_eq!(difference, StrangePartSet::single(StrangePart::CriticalKills));
-    /// 
-    /// let difference = strange_parts2.difference(&strange_parts1);
-    /// 
-    /// assert_eq!(difference, StrangePartSet::single(StrangePart::EngineersKilled));
-    /// ```
-    pub fn difference(&self, other: &Self) -> Self {
-        let mut inner = [None, None, None];
-        
-        for (i, s_option) in inner.iter_mut().enumerate() {
-            if let Some(s) = self.inner[i] {
-                if !other.contains(&s) {
-                    *s_option = Some(s);
-                }
-            }
-        }
-        
-        Self {
-            inner,
-        }
-    }
-    
-    /// Returns the strange parts that are both in `self` and `other`.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
-    /// 
-    /// let strange_parts1 = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
-    /// let strange_parts2 = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::EngineersKilled);
-    /// let intersection = strange_parts1.intersection(&strange_parts2);
-    /// 
-    /// assert_eq!(intersection, StrangePartSet::single(StrangePart::DamageDealt));
-    /// ```
-    pub fn intersection(&self, other: &Self) -> Self {
-        let mut inner = [None, None, None];
-        
-        for (i, s_option) in inner.iter_mut().enumerate() {
-            if let Some(s) = self.inner[i] {
-                if other.contains(&s) {
-                    *s_option = Some(s);
-                }
-            }
-        }
-        
-        Self {
-            inner,
-        }
-    }
-    
-    /// Returns `true` if `self` has no strange parts in common with `other`. This is equivalent to 
-    /// checking for an empty intersection.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
-    /// 
-    /// let strange_parts1 = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
-    /// let strange_parts2 = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::EngineersKilled);
-    /// 
-    /// assert!(!strange_parts1.is_disjoint(&strange_parts2));
-    /// ```
-    pub fn is_disjoint(&self, other: &Self) -> bool {
-        self.intersection(other).is_empty()
-    }
-    
-    /// Returns true if the set is a subset of another, i.e., other contains at least all the values in self.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
-    ///
-    /// let sup = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
-    /// let mut strange_parts = StrangePartSet::single(StrangePart::DamageDealt);
-    ///
-    /// assert!(strange_parts.is_subset(&sup));
-    /// 
-    /// strange_parts.insert(StrangePart::EngineersKilled);
-    /// 
-    /// assert!(!strange_parts.is_subset(&sup));
-    /// ```
-    pub fn is_subset(&self, other: &Self) -> bool {
-        if self.len() > other.len() {
-            return false;
-        }
-        
-        self.iter().all(|strange_part| other.contains(strange_part))
-    }
-    
-    /// Returns true if the set is a superset of another, i.e., self contains at least all the values in other.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{StrangePartSet, StrangePart};
-    ///
-    /// let sub = StrangePartSet::double(StrangePart::DamageDealt, StrangePart::CriticalKills);
-    /// let mut strange_parts = StrangePartSet::new();
-    ///
-    /// assert!(!strange_parts.is_superset(&sub));
-    /// 
-    /// strange_parts.insert(StrangePart::DamageDealt);
-    /// 
-    /// assert!(!strange_parts.is_superset(&sub));
-    /// 
-    /// strange_parts.insert(StrangePart::CriticalKills);
-    /// 
-    /// assert!(strange_parts.is_superset(&sub));
-    /// ```
-    pub fn is_superset(&self, other: &Self) -> bool {
-        other.is_subset(self)
-    }
-    
-    /// Returns an iterator over the strange parts in the set.
-    pub fn iter(&self) -> impl Iterator<Item = &StrangePart> {
-        self.inner.iter().filter_map(|opt| opt.as_ref())
-    }
-}
-
-impl From<[Option<StrangePart>; STRANGE_PART_COUNT]> for StrangePartSet {
-    fn from(inner: [Option<StrangePart>; STRANGE_PART_COUNT]) -> Self {
-        let mut inner = inner;
-        
-        // remove duplicates
-        for i in 0..STRANGE_PART_COUNT {
-            if let Some(val_i) = inner[i] {
-                // check elements after i for duplicates
-                for j in (i + 1)..STRANGE_PART_COUNT {
-                    if inner[j] == Some(val_i) {
-                        // later occurrence exists, remove current
-                        inner[i] = None;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        Self {
-            inner,
-        }
+    /// Returns the inner storage as a mutable slice.
+    fn inner_mut(&mut self) -> &mut [Option<StrangePart>] {
+        &mut self.inner
     }
 }
 
@@ -483,6 +314,42 @@ impl Hash for StrangePartSet {
         for value in values {
             value.hash(state);
         }
+    }
+}
+
+impl From<[Option<StrangePart>; STRANGE_PART_COUNT]> for StrangePartSet {
+    fn from(inner: [Option<StrangePart>; STRANGE_PART_COUNT]) -> Self {
+        let mut inner = inner;
+        
+        // remove duplicates
+        for i in 0..STRANGE_PART_COUNT {
+            if let Some(val_i) = inner[i] {
+                // check elements after i for duplicates
+                for j in (i + 1)..STRANGE_PART_COUNT {
+                    if inner[j] == Some(val_i) {
+                        // later occurrence exists, remove current
+                        inner[i] = None;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        Self {
+            inner,
+        }
+    }
+}
+
+impl From<StrangePartSet> for Vec<StrangePart>{
+    fn from(spell_set: StrangePartSet) -> Self {
+        spell_set.into_iter().collect()
+    }
+}
+
+impl From<&StrangePartSet> for Vec<StrangePart> {
+    fn from(spell_set: &StrangePartSet) -> Self {
+        (*spell_set).into()
     }
 }
 

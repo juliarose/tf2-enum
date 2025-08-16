@@ -1,9 +1,9 @@
 //! Set for holding up to 2 spells.
 
+use crate::{Spell, AttributeSet};
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
-use crate::Spell;
 
 const SPELL_COUNT: usize = 2;
 
@@ -17,9 +17,11 @@ const SPELL_COUNT: usize = 2;
 /// - Hashing is order-agnostic.
 /// - The type is `Copy`, allowing for cheap and easy duplication.
 /// 
+/// Most methods require pulling in the [`AttributeSet`] trait.
+/// 
 /// # Examples
 /// ```
-/// use tf2_enum::{SpellSet, Spell};
+/// use tf2_enum::{SpellSet, Spell, AttributeSet};
 /// 
 /// // Create a set for spells with one spell.
 /// let mut spells = SpellSet::single(Spell::HeadlessHorseshoes);
@@ -68,7 +70,7 @@ impl SpellSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{SpellSet, Spell};
+    /// use tf2_enum::{SpellSet, Spell, AttributeSet};
     /// 
     /// let spells = SpellSet::single(Spell::HeadlessHorseshoes);
     /// 
@@ -91,7 +93,7 @@ impl SpellSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{SpellSet, Spell};
+    /// use tf2_enum::{SpellSet, Spell, AttributeSet};
     /// 
     /// let spells = SpellSet::double(Spell::HeadlessHorseshoes, Spell::VoicesFromBelow);
     /// 
@@ -108,12 +110,19 @@ impl SpellSet {
             Some(spell2),
         ])
     }
+}
+
+impl AttributeSet for SpellSet {
+    /// Max number of items.
+    const MAX_COUNT: usize = SPELL_COUNT;
+    /// The item type.
+    type Item = Spell;
     
     /// Clears the set, removing all spells.
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{SpellSet, Spell};
+    /// use tf2_enum::{SpellSet, Spell, AttributeSet};
     /// 
     /// let mut spells = SpellSet::single(Spell::HeadlessHorseshoes);
     /// 
@@ -121,7 +130,7 @@ impl SpellSet {
     /// 
     /// assert_eq!(spells.len(), 0);
     /// ```
-    pub fn clear(&mut self) {
+    fn clear(&mut self) {
         self.inner = [None, None];
     }
     
@@ -133,7 +142,7 @@ impl SpellSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{SpellSet, Spell};
+    /// use tf2_enum::{SpellSet, Spell, AttributeSet};
     /// 
     /// let mut spells = SpellSet::single(Spell::HeadlessHorseshoes);
     /// 
@@ -146,7 +155,7 @@ impl SpellSet {
     /// // Spells are full.
     /// assert!(!spells.insert(Spell::PumpkinBombs));
     /// ```
-    pub fn insert(&mut self, spell: Spell) -> bool {
+    fn insert(&mut self, spell: Spell) -> bool {
         let attribute_defindex = spell.attribute_defindex();
         
         if self.inner.iter().flatten().any(|s| s.attribute_defindex() == attribute_defindex) {
@@ -166,14 +175,14 @@ impl SpellSet {
     /// 
     /// # Examples
     /// ```
-    /// use tf2_enum::{SpellSet, Spell};
+    /// use tf2_enum::{SpellSet, Spell, AttributeSet};
     /// 
     /// let mut spells = SpellSet::single(Spell::HeadlessHorseshoes);
     /// 
     /// assert!(spells.remove(&Spell::HeadlessHorseshoes));
     /// assert!(!spells.contains(&Spell::HeadlessHorseshoes));
     /// ```
-    pub fn remove(&mut self, spell: &Spell) -> bool {
+    fn remove(&mut self, spell: &Spell) -> bool {
         if self.inner[0] == Some(*spell) {
             self.inner[0] = None;
             true
@@ -186,7 +195,7 @@ impl SpellSet {
     }
     
     /// Removes and returns the spell in the set, if any, that is equal to the given one.
-    pub fn take(&mut self, spell: &Spell) -> Option<Spell> {
+    fn take(&mut self, spell: &Spell) -> Option<Spell> {
         if self.inner[0] == Some(*spell) {
             self.inner[0] = None;
             return Some(*spell);
@@ -198,193 +207,19 @@ impl SpellSet {
         None
     }
     
-    /// Returns `true` if the set contains no spells.
-    pub fn is_empty(&self) -> bool {
-        self.inner
-            .iter()
-            .all(|s| s.is_none())
+    /// Converts this set into a vector of spells.
+    fn to_vec(self) -> Vec<Spell> {
+        self.into()
     }
     
-    /// Returns `true` if the set contains a spell.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{SpellSet, Spell};
-    /// 
-    /// let mut spells = SpellSet::single(Spell::HeadlessHorseshoes);
-    /// 
-    /// assert!(spells.contains(&Spell::HeadlessHorseshoes));
-    /// ```
-    pub fn contains(&self, spell: &Spell) -> bool {
-        self.inner.contains(&Some(*spell))
+    /// Returns the inner storage as a slice.
+    fn inner(&self) -> &[Option<Spell>] {
+        &self.inner
     }
     
-    /// Returns the number of spells in the set.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{SpellSet, Spell};
-    /// 
-    /// let spells = SpellSet::single(Spell::HeadlessHorseshoes);
-    /// 
-    /// assert_eq!(spells.len(), 1);
-    /// ```
-    pub fn len(&self) -> usize {
-        self.inner
-            .iter()
-            .filter(|s| s.is_some())
-            .count()
-    }
-    
-    /// Returns the spells that are in `self` but not in `other`.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{SpellSet, Spell};
-    /// 
-    /// let spells1 = SpellSet::double(Spell::HalloweenFire, Spell::Exorcism);
-    /// let spells2 = SpellSet::double(Spell::HalloweenFire, Spell::VoicesFromBelow);
-    /// let difference = spells1.difference(&spells2);
-    /// 
-    /// assert_eq!(difference, SpellSet::single(Spell::Exorcism));
-    /// 
-    /// let difference = spells2.difference(&spells1);
-    /// 
-    /// assert_eq!(difference, SpellSet::single(Spell::VoicesFromBelow));
-    /// ```
-    pub fn difference(&self, other: &Self) -> Self {
-        let mut inner = [None, None];
-        
-        for (i, s_option) in inner.iter_mut().enumerate() {
-            if let Some(s) = self.inner[i] {
-                if !other.contains(&s) {
-                    *s_option = Some(s);
-                }
-            }
-        }
-        
-        Self {
-            inner,
-        }
-    }
-    
-    /// Returns the spells that are both in `self` and `other`.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{SpellSet, Spell};
-    /// 
-    /// let spells1 = SpellSet::double(Spell::HalloweenFire, Spell::Exorcism);
-    /// let spells2 = SpellSet::double(Spell::HalloweenFire, Spell::VoicesFromBelow);
-    /// let intersection = spells1.intersection(&spells2);
-    /// 
-    /// assert_eq!(intersection, SpellSet::single(Spell::HalloweenFire));
-    /// ```
-    pub fn intersection(&self, other: &Self) -> Self {
-        let mut inner = [None, None];
-        
-        for (i, s_option) in inner.iter_mut().enumerate() {
-            if let Some(s) = self.inner[i] {
-                if other.contains(&s) {
-                    *s_option = Some(s);
-                }
-            }
-        }
-        
-        Self {
-            inner,
-        }
-    }
-    
-    /// Returns `true` if `self` has no spells in common with `other`. This is equivalent to 
-    /// checking for an empty intersection.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{SpellSet, Spell};
-    /// 
-    /// let spells1 = SpellSet::double(Spell::HalloweenFire, Spell::Exorcism);
-    /// let spells2 = SpellSet::double(Spell::HalloweenFire, Spell::VoicesFromBelow);
-    /// 
-    /// assert!(!spells1.is_disjoint(&spells2));
-    /// ```
-    pub fn is_disjoint(&self, other: &Self) -> bool {
-        self.intersection(other).is_empty()
-    }
-    
-    /// Returns true if the set is a subset of another, i.e., other contains at least all the values in self.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{SpellSet, Spell};
-    ///
-    /// let sup = SpellSet::double(Spell::HalloweenFire, Spell::Exorcism);
-    /// let mut spells = SpellSet::single(Spell::HalloweenFire);
-    ///
-    /// assert!(spells.is_subset(&sup));
-    /// 
-    /// spells.insert(Spell::HeadlessHorseshoes);
-    /// 
-    /// assert!(!spells.is_subset(&sup));
-    /// ```
-    pub fn is_subset(&self, other: &Self) -> bool {
-        if self.len() > other.len() {
-            return false;
-        }
-        
-        self.iter().all(|spell| other.contains(spell))
-    }
-    
-    /// Returns true if the set is a superset of another, i.e., self contains at least all the values in other.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::{SpellSet, Spell};
-    ///
-    /// let sub = SpellSet::double(Spell::HalloweenFire, Spell::Exorcism);
-    /// let mut spells = SpellSet::new();
-    ///
-    /// assert!(!spells.is_superset(&sub));
-    /// 
-    /// spells.insert(Spell::HalloweenFire);
-    /// 
-    /// assert!(!spells.is_superset(&sub));
-    /// 
-    /// spells.insert(Spell::Exorcism);
-    /// 
-    /// assert!(spells.is_superset(&sub));
-    /// ```
-    pub fn is_superset(&self, other: &Self) -> bool {
-        other.is_subset(self)
-    }
-    
-    /// Returns an iterator over the spells in the set.
-    pub fn iter(&self) -> impl Iterator<Item = &Spell> {
-        self.inner.iter().filter_map(|opt| opt.as_ref())
-    }
-}
-
-impl From<[Option<Spell>; SPELL_COUNT]> for SpellSet {
-    fn from(mut inner: [Option<Spell>; SPELL_COUNT]) -> Self {
-        // remove duplicates
-        // since this only contains 2 spells it's not really necessary to do this using loops but
-        // the implementation is consistent with StrangePartSet
-        for i in 0..SPELL_COUNT {
-            if let Some(val_i) = inner[i] {
-                for j in 0..i {
-                    if let Some(val_j) = inner[j] {
-                        if val_i.attribute_defindex() == val_j.attribute_defindex() {
-                            inner[i] = None;
-                            break;
-                        } 
-                    }
-                }
-            }
-        }
-        
-        Self {
-            inner,
-        }
+    /// Returns the inner storage as a mutable slice.
+    fn inner_mut(&mut self) -> &mut [Option<Spell>] {
+        &mut self.inner
     }
 }
 
@@ -437,6 +272,42 @@ impl Hash for SpellSet {
             self.inner[1].hash(state);
             self.inner[0].hash(state);
         }
+    }
+}
+
+impl From<[Option<Spell>; SPELL_COUNT]> for SpellSet {
+    fn from(mut inner: [Option<Spell>; SPELL_COUNT]) -> Self {
+        // remove duplicates
+        // since this only contains 2 spells it's not really necessary to do this using loops but
+        // the implementation is consistent with StrangePartSet
+        for i in 0..SPELL_COUNT {
+            if let Some(val_i) = inner[i] {
+                for j in 0..i {
+                    if let Some(val_j) = inner[j] {
+                        if val_i.attribute_defindex() == val_j.attribute_defindex() {
+                            inner[i] = None;
+                            break;
+                        } 
+                    }
+                }
+            }
+        }
+        
+        Self {
+            inner,
+        }
+    }
+}
+
+impl From<SpellSet> for Vec<Spell>{
+    fn from(spell_set: SpellSet) -> Self {
+        spell_set.into_iter().collect()
+    }
+}
+
+impl From<&SpellSet> for Vec<Spell> {
+    fn from(spell_set: &SpellSet) -> Self {
+        (*spell_set).into()
     }
 }
 
@@ -554,6 +425,22 @@ impl fmt::Display for SpellSet {
 mod tests {
     use super::*;
     use std::collections::HashSet;
+    
+    #[test]
+    fn base_methods() {
+        let mut spell_set = SpellSet::new();
+        spell_set.insert(Spell::Exorcism);
+        spell_set.insert(Spell::HalloweenFire);
+        assert_eq!(spell_set.len(), 2);
+        assert!(spell_set.contains(&Spell::Exorcism));
+        assert!(spell_set.contains(&Spell::HalloweenFire));
+        assert!(!spell_set.contains(&Spell::VoicesFromBelow));
+        assert!(spell_set.remove(&Spell::Exorcism));
+        assert!(!spell_set.contains(&Spell::Exorcism));
+        assert!(spell_set.take(&Spell::HalloweenFire).is_some());
+        assert!(!spell_set.contains(&Spell::HalloweenFire));
+        assert!(spell_set.is_empty());
+    }
     
     #[test]
     fn spell_set_equals() {

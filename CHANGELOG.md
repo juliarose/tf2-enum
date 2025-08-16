@@ -11,6 +11,7 @@
 - `IntoEnumIterator`, `EnumCount`, `TryFromPrimitive`, `IntoPrimitive` re-exports.
 - Missing `From` and `TryFrom` conversions for spell enums.
 - `is_paint_spell` and `is_footprints_spell` methods to `Spell`.
+- `NONE` const for `SpellSet` and `StrangePartSet`.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.
