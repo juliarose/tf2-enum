@@ -3,9 +3,78 @@
 
 use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
 
-/// Macro to implement From<u64> and From<u32> for attribute types that wrap a u64.
-macro_rules! impl_from_u64_for_attr {
-    ($t:ty) => {
+/// Macro to implement Attribute for unit-like attribute structs.
+macro_rules! impl_unit_attr {
+    (
+        $t:ty,
+        $defindex:expr,
+        $name:expr,
+        $attribute_class:expr,
+        $description_string:expr,
+        $description_format:expr,
+        $effect_type:expr,
+        $hidden:expr,
+        $stored_as_integer:expr
+    ) => {
+        impl Attribute for $t {
+            const DEFINDEX: u32 = $defindex;
+            const ATTRIBUTE: AttributeDef = AttributeDef {
+                defindex: $defindex,
+                name: $name,
+                attribute_class: $attribute_class,
+                description_string: $description_string,
+                description_format: $description_format,
+                effect_type: $effect_type,
+                hidden: $hidden,
+                stored_as_integer: $stored_as_integer,
+            };
+            
+            fn attribute_value(&self) -> Option<AttributeValue> {
+                None
+            }
+            
+            fn attribute_float_value(&self) -> Option<f64> {
+                None
+            }
+        }
+    };
+}
+
+/// Macro to implement Attribute for newtypes wrapping u64.
+macro_rules! impl_u64_attr {
+    (
+        $t:ty,
+        $defindex:expr,
+        $name:expr,
+        $attribute_class:expr,
+        $description_string:expr,
+        $description_format:expr,
+        $effect_type:expr,
+        $hidden:expr,
+        $stored_as_integer:expr
+    ) => {
+        impl Attribute for $t {
+            const DEFINDEX: u32 = $defindex;
+            const ATTRIBUTE: AttributeDef = AttributeDef {
+                defindex: $defindex,
+                name: $name,
+                attribute_class: $attribute_class,
+                description_string: $description_string,
+                description_format: $description_format,
+                effect_type: $effect_type,
+                hidden: $hidden,
+                stored_as_integer: $stored_as_integer,
+            };
+            
+            fn attribute_value(&self) -> Option<AttributeValue> {
+                Some(self.0.into())
+            }
+            
+            fn attribute_float_value(&self) -> Option<f64> {
+                None
+            }
+        }
+        
         impl From<u64> for $t {
             fn from(val: u64) -> Self {
                 Self(val)
@@ -20,9 +89,78 @@ macro_rules! impl_from_u64_for_attr {
     };
 }
 
-/// Macro to implement From<String> and From<&str> for attribute types that wrap a String.
-macro_rules! impl_from_string_for_attr {
-    ($t:ty) => {
+/// Macro to implement Attribute for newtypes wrapping u64.
+macro_rules! impl_u64_attr_as_float_value {
+    (
+        $t:ty,
+        $defindex:expr,
+        $name:expr,
+        $attribute_class:expr,
+        $description_string:expr,
+        $description_format:expr,
+        $effect_type:expr,
+        $hidden:expr,
+        $stored_as_integer:expr
+    ) => {
+        impl Attribute for $t {
+            const DEFINDEX: u32 = $defindex;
+            const ATTRIBUTE: AttributeDef = AttributeDef {
+                defindex: $defindex,
+                name: $name,
+                attribute_class: $attribute_class,
+                description_string: $description_string,
+                description_format: $description_format,
+                effect_type: $effect_type,
+                hidden: $hidden,
+                stored_as_integer: $stored_as_integer,
+            };
+            
+            fn attribute_value(&self) -> Option<AttributeValue> {
+                None
+            }
+            
+            fn attribute_float_value(&self) -> Option<f64> {
+                Some(self.0 as f64)
+            }
+        }
+    };
+}
+
+/// Macro to implement Attribute for newtypes wrapping String.
+macro_rules! impl_string_attr {
+    (
+        $t:ty,
+        $defindex:expr,
+        $name:expr,
+        $attribute_class:expr,
+        $description_string:expr,
+        $description_format:expr,
+        $effect_type:expr,
+        $hidden:expr,
+        $stored_as_integer:expr
+    ) => {
+        impl Attribute for $t {
+            const DEFINDEX: u32 = $defindex;
+            const ATTRIBUTE: AttributeDef = AttributeDef {
+                defindex: $defindex,
+                name: $name,
+                attribute_class: $attribute_class,
+                description_string: $description_string,
+                description_format: $description_format,
+                effect_type: $effect_type,
+                hidden: $hidden,
+                stored_as_integer: $stored_as_integer,
+            };
+            
+            fn attribute_value(&self) -> Option<AttributeValue> {
+                Some(self.0.clone().into())
+            }
+
+            fn attribute_float_value(&self) -> Option<f64> {
+                None
+            }
+        }
+        
         impl From<String> for $t {
             fn from(val: String) -> Self {
                 Self(val)
@@ -47,878 +185,513 @@ macro_rules! impl_from_string_for_attr {
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct IsFestivized;
 
-impl Attribute for IsFestivized {
-    const DEFINDEX: u32 = 2053;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2053,
-        name: "is_festivized",
-        attribute_class: Some("is_festivized"),
-        description_string: Some("Festivized"),
-        description_format: Some(DescriptionFormat::ValueIsAdditive),
-        effect_type: EffectType::Unusual,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    IsFestivized,
+    2053,
+    "is_festivized",
+    Some("is_festivized"),
+    Some("Festivized"),
+    Some(DescriptionFormat::ValueIsAdditive),
+    EffectType::Unusual,
+    false,
+    false
+);
 
 /// Represents the "is_australium_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct IsAustralium;
 
-impl Attribute for IsAustralium {
-    const DEFINDEX: u32 = 2027;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2027,
-        name: "is australium item",
-        attribute_class: Some("is_australium_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Unusual,
-        hidden: true,
-        stored_as_integer: true,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    IsAustralium,
+    2027,
+    "is australium item",
+    Some("is_australium_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Unusual,
+    true,
+    true
+);
+
+/// Represents the "taunt attach particle index" attribute.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct TauntAttachParticleIndex(pub u64);
+
+impl_u64_attr!(
+    TauntAttachParticleIndex,
+    2041,
+    "taunt attach particle index",
+    None,
+    Some("★ Unusual Effect: %s1"),
+    Some(DescriptionFormat::ValueIsParticleIndex),
+    EffectType::Unusual,
+    false,
+    true
+);
+
+/// Represents the "set_attached_particle" attribute.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct SetAttachedParticle(pub u64);
+
+impl_u64_attr!(
+    SetAttachedParticle,
+    134,
+    "attach particle effect",
+    Some("set_attached_particle"),
+    Some("★ Unusual Effect: %s1"),
+    Some(DescriptionFormat::ValueIsParticleIndex),
+    EffectType::Unusual,
+    false,
+    false
+);
+
+/// Represents the "paintkit_proto_def_index" attribute.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct PaintkitProtoDefIndex(pub u64);
+
+impl_u64_attr!(
+    PaintkitProtoDefIndex,
+    834,
+    "paintkit_proto_def_index",
+    Some("paintkit_proto_def_index"),
+    None,
+    Some(DescriptionFormat::ValueIsAdditive),
+    EffectType::Neutral,
+    false,
+    true
+);
 
 /// Represents the "kill eater" attribute. This attribute is included with items that have a strange
 /// counter, regardless of quality which allows strangified non-strange items to be identified.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct KillEater;
 
-impl Attribute for KillEater {
-    const DEFINDEX: u32 = 214;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 214,
-        name: "kill eater",
-        attribute_class: Some("kill_eater"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: true,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    KillEater,
+    214,
+    "kill eater",
+    Some("kill_eater"),
+    None,
+    None,
+    EffectType::Positive,
+    true,
+    true
+);
 
-/// Represents the "is_australium_item" attribute.
+/// Represents the "tool_target_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct TradableAfterDate(pub u64);
+pub struct ToolTargetItem(pub u64);
 
-impl Attribute for TradableAfterDate {
-    const DEFINDEX: u32 = 211;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 211,
-        name: "tradable after date",
-        attribute_class: Some("tradable_after_date"),
-        description_string: Some("\nTradable After: %s1"),
-        description_format: Some(DescriptionFormat::ValueIsDate),
-        effect_type: EffectType::Negative,
-        hidden: true,
-        stored_as_integer: true,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
-
-/// Represents the "unique_craft_index" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct UniqueCraftIndex(pub u64);
-
-impl Attribute for UniqueCraftIndex {
-    const DEFINDEX: u32 = 229;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 229,
-        name: "unique craft index",
-        attribute_class: Some("unique_craft_index"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: true,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_u64_attr!(
+    ToolTargetItem,
+    2012,
+    "tool target item",
+    Some("tool_target_item"),
+    None,
+    None,
+    EffectType::ValueIsFromLookupTable,
+    true,
+    false
+);
 
 /// Represents the "supply_crate_series" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct SupplyCrateSeries(pub u64);
 
-impl Attribute for SupplyCrateSeries {
-    const DEFINDEX: u32 = 187;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 187,
-        name: "set supply crate series",
-        attribute_class: Some("supply_crate_series"),
-        description_string: Some("Crate Series #%s1"),
-        description_format: Some(DescriptionFormat::ValueIsAdditive),
-        effect_type: EffectType::Positive,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        Some(self.0 as f64)
-    }
-}
+impl_u64_attr_as_float_value!(
+    SupplyCrateSeries,
+    187,
+    "set supply crate series",
+    Some("supply_crate_series"),
+    Some("Crate Series #%s1"),
+    Some(DescriptionFormat::ValueIsAdditive),
+    EffectType::Positive,
+    false,
+    false
+);
+
+/// Represents the "series_number" attribute.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct SeriesNumber(pub u64);
+
+impl_u64_attr_as_float_value!(
+    SeriesNumber,
+    2031,
+    "series number",
+    Some("series_number"),
+    None,
+    None,
+    EffectType::ValueIsFromLookupTable,
+    true,
+    false
+);
 
 /// Represents the "custom_name_attr" attribute.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CustomNameAttr(pub String);
 
-impl Attribute for CustomNameAttr {
-    const DEFINDEX: u32 = 500;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 500,
-        name: "custom name attr",
-        attribute_class: Some("custom_name_attr"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: false,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.clone().into())
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_string_attr!(
+    CustomNameAttr,
+    500,
+    "custom name attr",
+    Some("custom_name_attr"),
+    None,
+    None,
+    EffectType::Positive,
+    true,
+    false
+);
 
 /// Represents the "custom_desc_attr" attribute.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CustomDescAttr(pub String);
 
-impl Attribute for CustomDescAttr {
-    const DEFINDEX: u32 = 501;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 501,
-        name: "custom desc attr",
-        attribute_class: Some("custom_desc_attr"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: false,
-    };
+impl_string_attr!(
+    CustomDescAttr,
+    501,
+    "custom desc attr",
+    Some("custom_desc_attr"),
+    None,
+    None,
+    EffectType::Positive,
+    true,
+    false
+);
 
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.clone().into())
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+/// Represents the "unique_craft_index" attribute.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct UniqueCraftIndex(pub u64);
+
+impl_u64_attr!(
+    UniqueCraftIndex,
+    229,
+    "unique craft index",
+    Some("unique_craft_index"),
+    None,
+    None,
+    EffectType::Positive,
+    true,
+    true
+);
+
+/// Represents the "makers_mark_id" attribute. The integer refers to the account's 32-bit SteamID
+/// of the crafter.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct MakersMarkId(pub u64);
+
+impl_u64_attr!(
+    MakersMarkId,
+    228,
+    "makers mark id",
+    Some("makers_mark_id"),
+    Some("Crafted by %s1"),
+    Some(DescriptionFormat::ValueIsAccountId),
+    EffectType::Positive,
+    true,
+    true
+);
 
 /// Represents the "gifter_account_id" attribute. The integer refers to the account's 32-bit
 /// SteamID.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct GifterAccountId(pub u64);
 
-impl Attribute for GifterAccountId {
-    const DEFINDEX: u32 = 186;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 186,
-        name: "gifter account id",
-        attribute_class: Some("gifter_account_id"),
-        description_string: Some("\nGift from: %s1"),
-        description_format: Some(DescriptionFormat::ValueIsAccountId),
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: true,
-    };
-
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_u64_attr!(
+    GifterAccountId,
+    186,
+    "gifter account id",
+    Some("gifter_account_id"),
+    Some("\nGift from: %s1"),
+    Some(DescriptionFormat::ValueIsAccountId),
+    EffectType::Positive,
+    true,
+    true
+);
 
 /// Represents the "event_date" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct EventDate(pub u64);
 
-impl Attribute for EventDate {
-    const DEFINDEX: u32 = 185;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 185,
-        name: "event date",
-        attribute_class: Some("event_date"),
-        description_string: Some("Date Received: %s1"),
-        description_format: Some(DescriptionFormat::ValueIsDate),
-        effect_type: EffectType::Neutral,
-        hidden: true,
-        stored_as_integer: true,
-    };
+impl_u64_attr!(
+    EventDate,
+    185,
+    "event date",
+    Some("event_date"),
+    Some("Date Received: %s1"),
+    Some(DescriptionFormat::ValueIsDate),
+    EffectType::Neutral,
+    true,
+    true
+);
 
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
+/// Represents the "is_australium_item" attribute.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct TradableAfterDate(pub u64);
 
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_u64_attr!(
+    TradableAfterDate,
+    211,
+    "tradable after date",
+    Some("tradable_after_date"),
+    Some("\nTradable After: %s1"),
+    Some(DescriptionFormat::ValueIsDate),
+    EffectType::Negative,
+    true,
+    true
+);
 
 /// Represents the "custom_texture_lo" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct CustomTextureLo(pub u64);
 
-impl Attribute for CustomTextureLo {
-    const DEFINDEX: u32 = 152;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 152,
-        name: "custom texture lo",
-        attribute_class: Some("custom_texture_lo"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: true,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_u64_attr!(
+    CustomTextureLo,
+    152,
+    "custom texture lo",
+    Some("custom_texture_lo"),
+    None,
+    None,
+    EffectType::Positive,
+    true,
+    true
+);
 
 /// Represents the "custom_texture_hi" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct CustomTextureHi(pub u64);
 
-impl Attribute for CustomTextureHi {
-    const DEFINDEX: u32 = 227;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 227,
-        name: "custom texture hi",
-        attribute_class: Some("custom_texture_hi"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: true,
-    };
-
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
- 
-/// Represents the "makers_mark_id" attribute. The integer refers to the account's 32-bit SteamID
-/// of the crafter.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct MakersMarkId(pub u64);
-
-impl Attribute for MakersMarkId {
-    const DEFINDEX: u32 = 228;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 228,
-        name: "makers mark id",
-        attribute_class: Some("makers_mark_id"),
-        description_string: Some("Crafted by %s1"),
-        description_format: Some(DescriptionFormat::ValueIsAccountId),
-        effect_type: EffectType::Positive,
-        hidden: true,
-        stored_as_integer: true,
-    };
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_u64_attr!(
+    CustomTextureHi,
+    227,
+    "custom texture hi",
+    Some("custom_texture_hi"),
+    None,
+    None,
+    EffectType::Positive,
+    true,
+    true
+);
 
 /// Represents the "halloween_voice_modulation" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct HalloweenVoiceModulation;
 
-impl Attribute for HalloweenVoiceModulation {
-    const DEFINDEX: u32 = 1006;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 1006,
-        name: "SPELL: Halloween voice modulation",
-        attribute_class: Some("halloween_voice_modulation"),
-        description_string: Some("Voices from Below"),
-        description_format: Some(DescriptionFormat::ValueIsAdditive),
-        effect_type: EffectType::Positive,
-        hidden: false,
-        stored_as_integer: false,
-    };
-
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    HalloweenVoiceModulation,
+    1006,
+    "SPELL: Halloween voice modulation",
+    Some("halloween_voice_modulation"),
+    Some("Voices from Below"),
+    Some(DescriptionFormat::ValueIsAdditive),
+    EffectType::Positive,
+    false,
+    false
+);
 
 /// Represents the "halloween_pumpkin_explosions" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct HalloweenPumpkinExplosions;
 
-impl Attribute for HalloweenPumpkinExplosions {
-    const DEFINDEX: u32 = 1007;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 1007,
-        name: "SPELL: Halloween pumpkin explosions",
-        attribute_class: Some("halloween_pumpkin_explosions"),
-        description_string: Some("Pumpkin Bombs"),
-        description_format: Some(DescriptionFormat::ValueIsAdditive),
-        effect_type: EffectType::Positive,
-        hidden: false,
-        stored_as_integer: false,
-    };
-
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    HalloweenPumpkinExplosions,
+    1007,
+    "SPELL: Halloween pumpkin explosions",
+    Some("halloween_pumpkin_explosions"),
+    Some("Pumpkin Bombs"),
+    Some(DescriptionFormat::ValueIsAdditive),
+    EffectType::Positive,
+    false,
+    false
+);
 
 /// Represents the "halloween_green_flames" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct HalloweenGreenFlames;
 
-impl Attribute for HalloweenGreenFlames {
-    const DEFINDEX: u32 = 1008;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 1008,
-        name: "SPELL: Halloween green flames",
-        attribute_class: Some("halloween_green_flames"),
-        description_string: Some("Halloween Fire"),
-        description_format: Some(DescriptionFormat::ValueIsAdditive),
-        effect_type: EffectType::Positive,
-        hidden: false,
-        stored_as_integer: false,
-    };
-
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    HalloweenGreenFlames,
+    1008,
+    "SPELL: Halloween green flames",
+    Some("halloween_green_flames"),
+    Some("Halloween Fire"),
+    Some(DescriptionFormat::ValueIsAdditive),
+    EffectType::Positive,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct HalloweenDeathGhosts;
 
-impl Attribute for HalloweenDeathGhosts {
-    const DEFINDEX: u32 = 1009;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 1009,
-        name: "SPELL: Halloween death ghosts",
-        attribute_class: Some("halloween_death_ghosts"),
-        description_string: Some("Exorcism"),
-        description_format: Some(DescriptionFormat::ValueIsAdditive),
-        effect_type: EffectType::Positive,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    HalloweenDeathGhosts,
+    1009,
+    "SPELL: Halloween death ghosts",
+    Some("halloween_death_ghosts"),
+    Some("Exorcism"),
+    Some(DescriptionFormat::ValueIsAdditive),
+    EffectType::Positive,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem1;
 
-impl Attribute for DynamicRecipeComponentDefinedItem1 {
-    const DEFINDEX: u32 = 2000;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2000,
-        name: "recipe component defined item 1",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem1,
+    2000,
+    "recipe component defined item 1",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem2;
 
-impl Attribute for DynamicRecipeComponentDefinedItem2 {
-    const DEFINDEX: u32 = 2001;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2001,
-        name: "recipe component defined item 2",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem2,
+    2001,
+    "recipe component defined item 2",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem3;
 
-impl Attribute for DynamicRecipeComponentDefinedItem3 {
-    const DEFINDEX: u32 = 2002;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2002,
-        name: "recipe component defined item 3",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem3,
+    2002,
+    "recipe component defined item 3",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem4;
 
-impl Attribute for DynamicRecipeComponentDefinedItem4 {
-    const DEFINDEX: u32 = 2003;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2003,
-        name: "recipe component defined item 4",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem4,
+    2003,
+    "recipe component defined item 4",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem5;
 
-impl Attribute for DynamicRecipeComponentDefinedItem5 {
-    const DEFINDEX: u32 = 2004;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2004,
-        name: "recipe component defined item 5",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem5,
+    2004,
+    "recipe component defined item 5",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem6;
 
-impl Attribute for DynamicRecipeComponentDefinedItem6 {
-    const DEFINDEX: u32 = 2005;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2005,
-        name: "recipe component defined item 6",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem6,
+    2005,
+    "recipe component defined item 6",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem7;
 
-impl Attribute for DynamicRecipeComponentDefinedItem7 {
-    const DEFINDEX: u32 = 2006;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2006,
-        name: "recipe component defined item 7",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem7,
+    2006,
+    "recipe component defined item 7",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem8;
 
-impl Attribute for DynamicRecipeComponentDefinedItem8 {
-    const DEFINDEX: u32 = 2007;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2007,
-        name: "recipe component defined item 8",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem8,
+    2007,
+    "recipe component defined item 8",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem9;
 
-impl Attribute for DynamicRecipeComponentDefinedItem9 {
-    const DEFINDEX: u32 = 2008;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2008,
-        name: "recipe component defined item 9",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem9,
+    2008,
+    "recipe component defined item 9",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct DynamicRecipeComponentDefinedItem10;
 
-impl Attribute for DynamicRecipeComponentDefinedItem10 {
-    const DEFINDEX: u32 = 2009;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2009,
-        name: "recipe component defined item 10",
-        attribute_class: Some("dynamic_recipe_component_defined_item"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
-
-/// Represents the "tool_target_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct ToolTargetItem(pub u64);
-
-impl Attribute for ToolTargetItem {
-    const DEFINDEX: u32 = 2012;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2012,
-        name: "tool target item",
-        attribute_class: Some("tool_target_item"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::ValueIsFromLookupTable,
-        hidden: true,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
-
-/// Represents the "series_number" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct SeriesNumber(pub u64);
-
-impl Attribute for SeriesNumber {
-    const DEFINDEX: u32 = 2031;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2031,
-        name: "series number",
-        attribute_class: Some("series_number"),
-        description_string: None,
-        description_format: None,
-        effect_type: EffectType::ValueIsFromLookupTable,
-        hidden: true,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
-
-/// Represents the "taunt attach particle index" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct TauntAttachParticleIndex(pub u64);
-
-impl Attribute for TauntAttachParticleIndex {
-    const DEFINDEX: u32 = 2041;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 2041,
-        name: "taunt attach particle index",
-        attribute_class: None,
-        description_string: Some("★ Unusual Effect: %s1"),
-        description_format: Some(DescriptionFormat::ValueIsParticleIndex),
-        effect_type: EffectType::Unusual,
-        hidden: false,
-        stored_as_integer: true,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
-
-/// Represents the "set_attached_particle" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct SetAttachedParticle(pub u64);
-
-impl Attribute for SetAttachedParticle {
-    const DEFINDEX: u32 = 134;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 134,
-        name: "attach particle effect",
-        attribute_class: Some("set_attached_particle"),
-        description_string: Some("★ Unusual Effect: %s1"),
-        description_format: Some(DescriptionFormat::ValueIsParticleIndex),
-        effect_type: EffectType::Unusual,
-        hidden: false,
-        stored_as_integer: false,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
-
-/// Represents the "paintkit_proto_def_index" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct PaintkitProtoDefIndex(pub u64);
-
-impl Attribute for PaintkitProtoDefIndex {
-    const DEFINDEX: u32 = 834;
-    const ATTRIBUTE: AttributeDef = AttributeDef {
-        defindex: 834,
-        name: "paintkit_proto_def_index",
-        attribute_class: Some("paintkit_proto_def_index"),
-        description_string: None,
-        description_format: Some(DescriptionFormat::ValueIsAdditive),
-        effect_type: EffectType::Neutral,
-        hidden: false,
-        stored_as_integer: true,
-    };
-    
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        Some(self.0.into())
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        None
-    }
-}
-
-// Implement conversions for u64 types
-impl_from_u64_for_attr!(TradableAfterDate);
-impl_from_u64_for_attr!(UniqueCraftIndex);
-impl_from_u64_for_attr!(SupplyCrateSeries);
-impl_from_u64_for_attr!(GifterAccountId);
-impl_from_u64_for_attr!(EventDate);
-impl_from_u64_for_attr!(CustomTextureLo);
-impl_from_u64_for_attr!(CustomTextureHi);
-impl_from_u64_for_attr!(MakersMarkId);
-impl_from_u64_for_attr!(ToolTargetItem);
-impl_from_u64_for_attr!(SeriesNumber);
-impl_from_u64_for_attr!(TauntAttachParticleIndex);
-impl_from_u64_for_attr!(SetAttachedParticle);
-impl_from_u64_for_attr!(PaintkitProtoDefIndex);
-
-// Implement conversions for String types
-impl_from_string_for_attr!(CustomNameAttr);
-impl_from_string_for_attr!(CustomDescAttr);
+impl_unit_attr!(
+    DynamicRecipeComponentDefinedItem10,
+    2009,
+    "recipe component defined item 10",
+    Some("dynamic_recipe_component_defined_item"),
+    None,
+    Some(DescriptionFormat::ValueIsFromLookupTable),
+    EffectType::Neutral,
+    false,
+    false
+);
