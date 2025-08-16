@@ -341,10 +341,10 @@ impl Attributes for StrangePart {
         "kill eater user score type 2",
         "kill eater user score type 3",
     ];
-    const ATTRIBUTE_CLASS: &[&str] = &[
-        "kill_eater_user_score_type_1",
-        "kill_eater_user_score_type_2",
-        "kill_eater_user_score_type_3",
+    const ATTRIBUTE_CLASS: &[Option<&str>] = &[
+        Some("kill_eater_user_score_type_1"),
+        Some("kill_eater_user_score_type_2"),
+        Some("kill_eater_user_score_type_3"),
     ];
     const DESCRIPTION_STRING: &[Option<&str>] = &[
         None,

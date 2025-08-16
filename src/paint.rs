@@ -141,7 +141,7 @@ impl Paint {
 impl Attribute for Paint {
     const DEFINDEX: u32 = 142;
     const NAME: &str = "set item tint RGB";
-    const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb";
+    const ATTRIBUTE_CLASS: Option<&str> = Some("set_item_tint_rgb");
     const DESCRIPTION_STRING: Option<&str> = Some("Item tint color code: %s1");
     const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsAdditive);
     const EFFECT_TYPE: EffectType = EffectType::Neutral;

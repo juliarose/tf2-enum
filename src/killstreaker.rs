@@ -44,7 +44,7 @@ pub enum Killstreaker {
 impl Attribute for Killstreaker {
     const DEFINDEX: u32 = 2013;
     const NAME: &str = "killstreak effect";
-    const ATTRIBUTE_CLASS: &str = "killstreak_effect";
+    const ATTRIBUTE_CLASS: Option<&str> = Some("killstreak_effect");
     const DESCRIPTION_STRING: Option<&str> = Some("Killstreaker: %s1");
     const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsKillstreakEffectIndex);
     const EFFECT_TYPE: EffectType = EffectType::Positive;

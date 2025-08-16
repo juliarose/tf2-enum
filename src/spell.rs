@@ -1,5 +1,11 @@
 use crate::error::TryFromSpellError;
 use crate::{Attribute, AttributeValue, Attributes, EffectType, DescriptionFormat};
+use crate::econ_attributes::{
+    HalloweenVoiceModulation,
+    HalloweenPumpkinExplosions,
+    HalloweenGreenFlames,
+    HalloweenDeathGhosts,
+};
 use std::fmt;
 use std::str::FromStr;
 use strum::{Display, EnumString, EnumIter, EnumCount};
@@ -167,13 +173,13 @@ impl Attributes for Spell {
         "SPELL: Halloween green flames",
         "SPELL: Halloween death ghosts",
     ];
-    const ATTRIBUTE_CLASS: &[&str] = &[
-        "set_item_tint_rgb_override",
-        "halloween_footstep_type",
-        "halloween_voice_modulation",
-        "halloween_pumpkin_explosions",
-        "halloween_green_flames",
-        "halloween_death_ghosts",
+    const ATTRIBUTE_CLASS: &[Option<&str>] = &[
+        Some("set_item_tint_rgb_override"),
+        Some("halloween_footstep_type"),
+        Some("halloween_voice_modulation"),
+        Some("halloween_pumpkin_explosions"),
+        Some("halloween_green_flames"),
+        Some("halloween_death_ghosts"),
     ];
     const DESCRIPTION_STRING: &[Option<&str>] = &[
         Some("%s1"),
@@ -320,6 +326,54 @@ impl From<&FootprintsSpell> for Spell {
     }
 }
 
+impl From<HalloweenVoiceModulation> for Spell {
+    fn from(_: HalloweenVoiceModulation) -> Self {
+        Spell::VoicesFromBelow
+    }
+}
+
+impl From<&HalloweenVoiceModulation> for Spell {
+    fn from(_: &HalloweenVoiceModulation) -> Self {
+        Spell::VoicesFromBelow
+    }
+}
+
+impl From<HalloweenPumpkinExplosions> for Spell {
+    fn from(_: HalloweenPumpkinExplosions) -> Self {
+        Spell::PumpkinBombs
+    }
+}
+
+impl From<&HalloweenPumpkinExplosions> for Spell {
+    fn from(_: &HalloweenPumpkinExplosions) -> Self {
+        Spell::PumpkinBombs
+    }
+}
+
+impl From<HalloweenGreenFlames> for Spell {
+    fn from(_: HalloweenGreenFlames) -> Self {
+        Spell::HalloweenFire
+    }
+}
+
+impl From<&HalloweenGreenFlames> for Spell {
+    fn from(_: &HalloweenGreenFlames) -> Self {
+        Spell::HalloweenFire
+    }
+}
+
+impl From<HalloweenDeathGhosts> for Spell {
+    fn from(_: HalloweenDeathGhosts) -> Self {
+        Spell::Exorcism
+    }
+}
+
+impl From<&HalloweenDeathGhosts> for Spell {
+    fn from(_: &HalloweenDeathGhosts) -> Self {
+        Spell::Exorcism
+    }
+}
+
 /// Paint spell.
 #[derive(
     Serialize_repr,
@@ -357,7 +411,7 @@ pub enum PaintSpell {
 impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
     const NAME: &str = "SPELL: set item tint RGB";
-    const ATTRIBUTE_CLASS: &str = "set_item_tint_rgb_override";
+    const ATTRIBUTE_CLASS: Option<&str> = Some("set_item_tint_rgb_override");
     const DESCRIPTION_STRING: Option<&str> = Some("%s1");
     const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsFromLookupTable);
     const EFFECT_TYPE: EffectType = EffectType::Positive;
@@ -439,7 +493,7 @@ pub enum FootprintsSpell {
 impl Attribute for FootprintsSpell {
     const DEFINDEX: u32 = 1005;
     const NAME: &str = "SPELL: set Halloween footstep type";
-    const ATTRIBUTE_CLASS: &str = "halloween_footstep_type";
+    const ATTRIBUTE_CLASS: Option<&str> = Some("halloween_footstep_type");
     const DESCRIPTION_STRING: Option<&str> = Some("%s1");
     const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsFromLookupTable);
     const EFFECT_TYPE: EffectType = EffectType::Positive;

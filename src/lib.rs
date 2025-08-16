@@ -29,8 +29,8 @@
 //! }
 //! ```
 
-pub mod error;
 pub mod econ_attributes;
+pub mod error;
 
 mod attribute_value;
 mod capability;

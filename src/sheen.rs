@@ -44,7 +44,7 @@ pub enum Sheen {
 impl Attribute for Sheen {
     const DEFINDEX: u32 = 2014;
     const NAME: &str = "killstreak idleeffect";
-    const ATTRIBUTE_CLASS: &str = "killstreak_idleeffect";
+    const ATTRIBUTE_CLASS: Option<&str> = Some("killstreak_idleeffect");
     const DESCRIPTION_STRING: Option<&str> = Some("Sheen: %s1");
     const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsKillstreakIdleEffectIndex);
     const EFFECT_TYPE: EffectType = EffectType::Positive;

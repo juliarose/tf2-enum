@@ -8,7 +8,7 @@ pub trait Attribute: Sized {
     /// The name.
     const NAME: &str;
     /// The attribute class.
-    const ATTRIBUTE_CLASS: &str;
+    const ATTRIBUTE_CLASS: Option<&str>;
     /// The description string.
     const DESCRIPTION_STRING: Option<&str>;
     /// The description format.
@@ -32,7 +32,7 @@ pub trait Attributes: Sized {
     /// The name.
     const NAME: &[&str];
     /// The attribute class.
-    const ATTRIBUTE_CLASS: &[&str];
+    const ATTRIBUTE_CLASS: &[Option<&str>];
     /// The description string.
     const DESCRIPTION_STRING: &[Option<&str>];
     /// The description format.

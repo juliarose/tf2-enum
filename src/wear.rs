@@ -40,7 +40,7 @@ pub enum Wear {
 impl Attribute for Wear {
     const DEFINDEX: u32 = 725;
     const NAME: &str = "set_item_texture_wear";
-    const ATTRIBUTE_CLASS: &str = "set_item_texture_wear";
+    const ATTRIBUTE_CLASS: Option<&str> = Some("set_item_texture_wear");
     const DESCRIPTION_STRING: Option<&str> = None;
     const DESCRIPTION_FORMAT: Option<DescriptionFormat> = None;
     const EFFECT_TYPE: EffectType = EffectType::Positive;
