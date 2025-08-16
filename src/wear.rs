@@ -1,4 +1,4 @@
-use crate::{Attribute, AttributeValue, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, AttributeDef, EffectType};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -39,13 +39,16 @@ pub enum Wear {
 
 impl Attribute for Wear {
     const DEFINDEX: u32 = 725;
-    const NAME: &str = "set_item_texture_wear";
-    const ATTRIBUTE_CLASS: Option<&str> = Some("set_item_texture_wear");
-    const DESCRIPTION_STRING: Option<&str> = None;
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = None;
-    const EFFECT_TYPE: EffectType = EffectType::Positive;
-    const HIDDEN: bool = true;
-    const STORED_AS_INTEGER: bool = false;
+    const ATTRIBUTE: AttributeDef = AttributeDef {
+        defindex: Self::DEFINDEX,
+        name: "set_item_texture_wear",
+        attribute_class: Some("set_item_texture_wear"),
+        description_string: None,
+        description_format: None,
+        effect_type: EffectType::Positive,
+        hidden: true,
+        stored_as_integer: false,
+    };
     
     /// Gets the attribute value.
     fn attribute_value(&self) -> Option<AttributeValue> {

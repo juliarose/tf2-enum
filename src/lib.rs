@@ -32,6 +32,7 @@
 pub mod econ_attributes;
 pub mod error;
 
+mod attribute_def;
 mod attribute_value;
 mod capability;
 mod class;
@@ -63,6 +64,7 @@ pub use num_enum::{IntoPrimitive, TryFromPrimitive};
 pub use traits::{Attribute, Attributes, AttributeSet, Colored, ItemDefindex};
 
 // Enum re-exports
+pub use attribute_def::AttributeDef;
 pub use attribute_value::AttributeValue;
 pub use capability::Capability;
 pub use class::Class;

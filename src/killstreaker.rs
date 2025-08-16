@@ -1,4 +1,4 @@
-use crate::{Attribute, AttributeValue, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -43,13 +43,16 @@ pub enum Killstreaker {
 /// killstreak_effect
 impl Attribute for Killstreaker {
     const DEFINDEX: u32 = 2013;
-    const NAME: &str = "killstreak effect";
-    const ATTRIBUTE_CLASS: Option<&str> = Some("killstreak_effect");
-    const DESCRIPTION_STRING: Option<&str> = Some("Killstreaker: %s1");
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsKillstreakEffectIndex);
-    const EFFECT_TYPE: EffectType = EffectType::Positive;
-    const HIDDEN: bool = false;
-    const STORED_AS_INTEGER: bool = false;
+    const ATTRIBUTE: AttributeDef = AttributeDef {
+        defindex: 2013,
+        name: "killstreak effect",
+        attribute_class: Some("killstreak_effect"),
+        description_string: Some("Killstreaker: %s1"),
+        description_format: Some(DescriptionFormat::ValueIsKillstreakEffectIndex),
+        effect_type: EffectType::Positive,
+        hidden: false,
+        stored_as_integer: false,
+    };
     
     /// Gets the attribute value.
     fn attribute_value(&self) -> Option<AttributeValue> {

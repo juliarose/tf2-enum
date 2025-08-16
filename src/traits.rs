@@ -1,48 +1,26 @@
-use crate::{EffectType, DescriptionFormat, AttributeValue};
+use crate::{AttributeValue, AttributeDef};
 use std::hash::Hash;
 
 /// Attribute values for an item attribute.
 pub trait Attribute: Sized {
     /// The defindex.
     const DEFINDEX: u32;
-    /// The name.
-    const NAME: &str;
-    /// The attribute class.
-    const ATTRIBUTE_CLASS: Option<&str>;
-    /// The description string.
-    const DESCRIPTION_STRING: Option<&str>;
-    /// The description format.
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat>;
-    /// The effect type.
-    const EFFECT_TYPE: EffectType;
-    /// Whether the attribute is hidden.
-    const HIDDEN: bool;
-    /// Whether the value for the attribute is stored as an integer.
-    const STORED_AS_INTEGER: bool;
+    /// The attribute definition.
+    const ATTRIBUTE: AttributeDef;
     
+    /// Gets the attribute value.
     fn attribute_value(&self) -> Option<AttributeValue>;
     
+    /// Gets the attribute float value.
     fn attribute_float_value(&self) -> Option<f64>;
 }
 
 /// Associated attribute values for a set of item attributes.
 pub trait Attributes: Sized {
-    /// The defindex.
+    /// The list of associated defindexes.
     const DEFINDEX: &[u32];
-    /// The name.
-    const NAME: &[&str];
-    /// The attribute class.
-    const ATTRIBUTE_CLASS: &[Option<&str>];
-    /// The description string.
-    const DESCRIPTION_STRING: &[Option<&str>];
-    /// The description format.
-    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>];
-    /// The effect type.
-    const EFFECT_TYPE: &[EffectType];
-    /// Whether the attribute is hidden.
-    const HIDDEN: &[bool];
-    /// Whether the value for the attribute is stored as an integer.
-    const STORED_AS_INTEGER: &[bool];
+    /// The attribute definition.
+    const ATTRIBUTES: &'static [AttributeDef];
     
     /// Gets the attribute value.
     fn attribute_value(&self) -> Option<AttributeValue> {

@@ -1,4 +1,4 @@
-use crate::{Attribute, AttributeValue, Colored, ItemDefindex, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, AttributeDef, Colored, ItemDefindex, EffectType, DescriptionFormat};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -140,13 +140,16 @@ impl Paint {
 /// set_item_tint_rgb
 impl Attribute for Paint {
     const DEFINDEX: u32 = 142;
-    const NAME: &str = "set item tint RGB";
-    const ATTRIBUTE_CLASS: Option<&str> = Some("set_item_tint_rgb");
-    const DESCRIPTION_STRING: Option<&str> = Some("Item tint color code: %s1");
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsAdditive);
-    const EFFECT_TYPE: EffectType = EffectType::Neutral;
-    const HIDDEN: bool = true;
-    const STORED_AS_INTEGER: bool = false;
+    const ATTRIBUTE: AttributeDef = AttributeDef {
+        defindex: 142,
+        name: "set item tint RGB",
+        attribute_class: Some("set_item_tint_rgb"),
+        description_string: Some("Item tint color code: %s1"),
+        description_format: Some(DescriptionFormat::ValueIsAdditive),
+        effect_type: EffectType::Neutral,
+        hidden: true,
+        stored_as_integer: false,
+    };
     
     /// Gets the attribute value.
     fn attribute_value(&self) -> Option<AttributeValue> {

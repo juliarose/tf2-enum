@@ -1,4 +1,4 @@
-use crate::{Attributes, AttributeValue, EffectType, DescriptionFormat, StrangePart, ItemLevel};
+use crate::{Attributes, AttributeValue, AttributeDef, EffectType, StrangePart, ItemLevel};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -239,40 +239,37 @@ impl Attributes for KillEaterScoreType {
         382,
         384,
     ];
-    const NAME: &[&str] = &[
-        "kill eater user score type 1",
-        "kill eater user score type 2",
-        "kill eater user score type 3",
-    ];
-    const ATTRIBUTE_CLASS: &[Option<&str>] = &[
-        Some("kill_eater_user_score_type_1"),
-        Some("kill_eater_user_score_type_2"),
-        Some("kill_eater_user_score_type_3"),
-    ];
-    const DESCRIPTION_STRING: &[Option<&str>] = &[
-        None,
-        None,
-        None,
-    ];
-    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>] = &[
-        None,
-        None,
-        None,
-    ];
-    const EFFECT_TYPE: &[EffectType] = &[
-        EffectType::Positive,
-        EffectType::Positive,
-        EffectType::Positive,
-    ];
-    const HIDDEN: &[bool] = &[
-        true,
-        true,
-        true,
-    ];
-    const STORED_AS_INTEGER: &[bool] = &[
-        false,
-        false,
-        false,
+    const ATTRIBUTES: &'static [AttributeDef] = &[
+        AttributeDef {
+            defindex: 380,
+            name: "kill eater user score type 1",
+            attribute_class: Some("kill_eater_user_score_type_1"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: false,
+        },
+        AttributeDef {
+            defindex: 382,
+            name: "kill eater user score type 2",
+            attribute_class: Some("kill_eater_user_score_type_2"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: false,
+        },
+        AttributeDef {
+            defindex: 384,
+            name: "kill eater user score type 3",
+            attribute_class: Some("kill_eater_user_score_type_3"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: false,
+        },
     ];
     
     /// Gets the attribute value.

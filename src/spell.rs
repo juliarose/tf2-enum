@@ -1,5 +1,5 @@
 use crate::error::TryFromSpellError;
-use crate::{Attribute, AttributeValue, Attributes, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, AttributeDef, Attributes, EffectType, DescriptionFormat};
 use crate::econ_attributes::{
     HalloweenVoiceModulation,
     HalloweenPumpkinExplosions,
@@ -165,61 +165,67 @@ impl Attributes for Spell {
         1008,
         1009,
     ];
-    const NAME: &[&str] = &[
-        "SPELL: set item tint RGB",
-        "SPELL: set Halloween footstep type",
-        "SPELL: Halloween voice modulation",
-        "SPELL: Halloween pumpkin explosions",
-        "SPELL: Halloween green flames",
-        "SPELL: Halloween death ghosts",
-    ];
-    const ATTRIBUTE_CLASS: &[Option<&str>] = &[
-        Some("set_item_tint_rgb_override"),
-        Some("halloween_footstep_type"),
-        Some("halloween_voice_modulation"),
-        Some("halloween_pumpkin_explosions"),
-        Some("halloween_green_flames"),
-        Some("halloween_death_ghosts"),
-    ];
-    const DESCRIPTION_STRING: &[Option<&str>] = &[
-        Some("%s1"),
-        Some("%s1"),
-        Some("Voices from Below"),
-        Some("Pumpkin Bombs"),
-        Some("Halloween Fire"),
-        Some("Exorcism"),
-    ];
-    const DESCRIPTION_FORMAT: &[Option<DescriptionFormat>] = &[
-        Some(DescriptionFormat::ValueIsFromLookupTable),
-        Some(DescriptionFormat::ValueIsFromLookupTable),
-        Some(DescriptionFormat::ValueIsAdditive),
-        Some(DescriptionFormat::ValueIsAdditive),
-        Some(DescriptionFormat::ValueIsAdditive),
-        Some(DescriptionFormat::ValueIsAdditive),
-    ];
-    const EFFECT_TYPE: &[EffectType] = &[
-        EffectType::Positive,
-        EffectType::Positive,
-        EffectType::Positive,
-        EffectType::Positive,
-        EffectType::Positive,
-        EffectType::Positive,
-    ];
-    const HIDDEN: &[bool] = &[
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-    ];
-    const STORED_AS_INTEGER: &[bool] = &[
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
+    const ATTRIBUTES: &'static [AttributeDef] = &[
+        AttributeDef {
+            defindex: 1004,
+            name: "SPELL: set item tint RGB",
+            attribute_class: Some("set_item_tint_rgb_override"),
+            description_string: Some("%s1"),
+            description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
+            effect_type: EffectType::Positive,
+            hidden: false,
+            stored_as_integer: false,
+        },
+        AttributeDef {
+            defindex: 1005,
+            name: "SPELL: set Halloween footstep type",
+            attribute_class: Some("halloween_footstep_type"),
+            description_string: Some("%s1"),
+            description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
+            effect_type: EffectType::Positive,
+            hidden: false,
+            stored_as_integer: false,
+        },
+        AttributeDef {
+            defindex: 1006,
+            name: "SPELL: Halloween voice modulation",
+            attribute_class: Some("halloween_voice_modulation"),
+            description_string: Some("Voices from Below"),
+            description_format: Some(DescriptionFormat::ValueIsAdditive),
+            effect_type: EffectType::Positive,
+            hidden: false,
+            stored_as_integer: false,
+        },
+        AttributeDef {
+            defindex: 1007,
+            name: "SPELL: Halloween pumpkin explosions",
+            attribute_class: Some("halloween_pumpkin_explosions"),
+            description_string: Some("Pumpkin Bombs"),
+            description_format: Some(DescriptionFormat::ValueIsAdditive),
+            effect_type: EffectType::Positive,
+            hidden: false,
+            stored_as_integer: false,
+        },
+        AttributeDef {
+            defindex: 1008,
+            name: "SPELL: Halloween green flames",
+            attribute_class: Some("halloween_green_flames"),
+            description_string: Some("Halloween Fire"),
+            description_format: Some(DescriptionFormat::ValueIsAdditive),
+            effect_type: EffectType::Positive,
+            hidden: false,
+            stored_as_integer: false,
+        },
+        AttributeDef {
+            defindex: 1009,
+            name: "SPELL: Halloween death ghosts",
+            attribute_class: Some("halloween_death_ghosts"),
+            description_string: Some("Exorcism"),
+            description_format: Some(DescriptionFormat::ValueIsAdditive),
+            effect_type: EffectType::Positive,
+            hidden: false,
+            stored_as_integer: false,
+        },
     ];
     
     /// Gets the attribute value.
@@ -410,13 +416,16 @@ pub enum PaintSpell {
 /// set_item_tint_rgb_override
 impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
-    const NAME: &str = "SPELL: set item tint RGB";
-    const ATTRIBUTE_CLASS: Option<&str> = Some("set_item_tint_rgb_override");
-    const DESCRIPTION_STRING: Option<&str> = Some("%s1");
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsFromLookupTable);
-    const EFFECT_TYPE: EffectType = EffectType::Positive;
-    const HIDDEN: bool = false;
-    const STORED_AS_INTEGER: bool = false;
+    const ATTRIBUTE: AttributeDef = AttributeDef {
+        defindex: 1004,
+        name: "SPELL: set item tint RGB",
+        attribute_class: Some("set_item_tint_rgb_override"),
+        description_string: Some("%s1"),
+        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
+        effect_type: EffectType::Positive,
+        hidden: false,
+        stored_as_integer: false,
+    };
     
     fn attribute_value(&self) -> Option<AttributeValue> {
         None
@@ -492,13 +501,16 @@ pub enum FootprintsSpell {
 
 impl Attribute for FootprintsSpell {
     const DEFINDEX: u32 = 1005;
-    const NAME: &str = "SPELL: set Halloween footstep type";
-    const ATTRIBUTE_CLASS: Option<&str> = Some("halloween_footstep_type");
-    const DESCRIPTION_STRING: Option<&str> = Some("%s1");
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsFromLookupTable);
-    const EFFECT_TYPE: EffectType = EffectType::Positive;
-    const HIDDEN: bool = false;
-    const STORED_AS_INTEGER: bool = false;
+    const ATTRIBUTE: AttributeDef = AttributeDef {
+        defindex: 1005,
+        name: "SPELL: set Halloween footstep type",
+        attribute_class: Some("halloween_footstep_type"),
+        description_string: Some("%s1"),
+        description_format: Some(DescriptionFormat::ValueIsFromLookupTable),
+        effect_type: EffectType::Positive,
+        hidden: false,
+        stored_as_integer: false,
+    };
     
     fn attribute_value(&self) -> Option<AttributeValue> {
         None

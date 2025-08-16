@@ -14,6 +14,7 @@
 - `NONE` const for `SpellSet` and `StrangePartSet`.
 - `as_slice`, `as_slice_mut`, `iter_mut`, `is_full` methods to `SpellSet` and `StrangePartSet`.
 - `AttributeValue` type for attribute values.
+- `AttributeDef` type for defintitions associated with multiple attributes.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.

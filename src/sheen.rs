@@ -1,4 +1,4 @@
-use crate::{Attribute, AttributeValue, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -43,13 +43,16 @@ pub enum Sheen {
 /// killstreak_idleeffect
 impl Attribute for Sheen {
     const DEFINDEX: u32 = 2014;
-    const NAME: &str = "killstreak idleeffect";
-    const ATTRIBUTE_CLASS: Option<&str> = Some("killstreak_idleeffect");
-    const DESCRIPTION_STRING: Option<&str> = Some("Sheen: %s1");
-    const DESCRIPTION_FORMAT: Option<DescriptionFormat> = Some(DescriptionFormat::ValueIsKillstreakIdleEffectIndex);
-    const EFFECT_TYPE: EffectType = EffectType::Positive;
-    const HIDDEN: bool = false;
-    const STORED_AS_INTEGER: bool = false;
+    const ATTRIBUTE: AttributeDef = AttributeDef {
+        defindex: 2014,
+        name: "killstreak idleeffect",
+        attribute_class: Some("killstreak_idleeffect"),
+        description_string: Some("Sheen: %s1"),
+        description_format: Some(DescriptionFormat::ValueIsKillstreakIdleEffectIndex),
+        effect_type: EffectType::Positive,
+        hidden: false,
+        stored_as_integer: false,
+    };
     
     /// Gets the attribute value.
     fn attribute_value(&self) -> Option<AttributeValue> {
