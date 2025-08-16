@@ -1,5 +1,8 @@
 //! Includes commonly-used non-enumerated attributes related to economy items. Included for 
 //! convenience.
+//! 
+//! While the attribute values don't change much, there is no guarantee that Valve won't update
+//! them. The defindex values, however, will always remain the same.
 
 use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
 
@@ -41,6 +44,7 @@ macro_rules! impl_unit_attr {
 }
 
 /// Macro to implement Attribute for newtypes wrapping u64.
+/// If "float_value" is present at the end of the macro call, use the second match arm.
 macro_rules! impl_u64_attr {
     (
         $t:ty,
@@ -87,10 +91,6 @@ macro_rules! impl_u64_attr {
             }
         }
     };
-}
-
-/// Macro to implement Attribute for newtypes wrapping u64.
-macro_rules! impl_u64_attr_as_float_value {
     (
         $t:ty,
         $defindex:expr,
@@ -100,7 +100,8 @@ macro_rules! impl_u64_attr_as_float_value {
         $description_format:expr,
         $effect_type:expr,
         $hidden:expr,
-        $stored_as_integer:expr
+        $stored_as_integer:expr,
+        float_value
     ) => {
         impl Attribute for $t {
             const DEFINDEX: u32 = $defindex;
@@ -121,6 +122,18 @@ macro_rules! impl_u64_attr_as_float_value {
             
             fn attribute_float_value(&self) -> Option<f64> {
                 Some(self.0 as f64)
+            }
+        }
+        
+        impl From<u64> for $t {
+            fn from(val: u64) -> Self {
+                Self(val)
+            }
+        }
+        
+        impl From<u32> for $t {
+            fn from(val: u32) -> Self {
+                Self(val as u64)
             }
         }
     };
@@ -213,6 +226,25 @@ impl_unit_attr!(
     true
 );
 
+/// Represents the "kill eater" attribute. This attribute is included with items that have a strange
+/// counter, regardless of quality which allows strangified non-strange items to be identified.
+/// 
+/// The value refers to the number of kills, or score count.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct KillEater(pub u64);
+
+impl_u64_attr!(
+    KillEater,
+    214,
+    "kill eater",
+    Some("kill_eater"),
+    None,
+    None,
+    EffectType::Positive,
+    true,
+    true
+);
+
 /// Represents the "taunt attach particle index" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct TauntAttachParticleIndex(pub u64);
@@ -261,23 +293,6 @@ impl_u64_attr!(
     true
 );
 
-/// Represents the "kill eater" attribute. This attribute is included with items that have a strange
-/// counter, regardless of quality which allows strangified non-strange items to be identified.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct KillEater;
-
-impl_unit_attr!(
-    KillEater,
-    214,
-    "kill eater",
-    Some("kill_eater"),
-    None,
-    None,
-    EffectType::Positive,
-    true,
-    true
-);
-
 /// Represents the "tool_target_item" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct ToolTargetItem(pub u64);
@@ -298,7 +313,7 @@ impl_u64_attr!(
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct SupplyCrateSeries(pub u64);
 
-impl_u64_attr_as_float_value!(
+impl_u64_attr!(
     SupplyCrateSeries,
     187,
     "set supply crate series",
@@ -307,14 +322,15 @@ impl_u64_attr_as_float_value!(
     Some(DescriptionFormat::ValueIsAdditive),
     EffectType::Positive,
     false,
-    false
+    false,
+    float_value
 );
 
 /// Represents the "series_number" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct SeriesNumber(pub u64);
 
-impl_u64_attr_as_float_value!(
+impl_u64_attr!(
     SeriesNumber,
     2031,
     "series number",
@@ -323,7 +339,8 @@ impl_u64_attr_as_float_value!(
     None,
     EffectType::ValueIsFromLookupTable,
     true,
-    false
+    false,
+    float_value
 );
 
 /// Represents the "custom_name_attr" attribute.
@@ -695,3 +712,27 @@ impl_unit_attr!(
     false,
     false
 );
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn uses_correct_value() {
+        assert!(SeriesNumber::from(1u64).attribute_float_value().is_some());
+        assert_eq!(SeriesNumber::from(1u64).attribute_float_value().unwrap(), 1.0);
+        assert!(SeriesNumber::from(1u64).attribute_value().is_none());
+        assert!(SupplyCrateSeries::from(42u32).attribute_float_value().is_some());
+        assert_eq!(SupplyCrateSeries::from(42u32).attribute_float_value().unwrap(), 42.0);
+        
+        assert!(KillEater::from(123u64).attribute_value().is_some());
+        assert_eq!(KillEater::from(123u64).attribute_value().unwrap(), AttributeValue::from(123u64));
+        
+        assert!(CustomNameAttr::from("TestName").attribute_value().is_some());
+        assert_eq!(CustomNameAttr::from("TestName").attribute_value().unwrap(), AttributeValue::from("TestName"));
+        
+        assert!(IsAustralium.attribute_value().is_none());
+        assert!(IsAustralium.attribute_float_value().is_none());
+        assert!(HalloweenVoiceModulation.attribute_value().is_none());
+    }
+}

@@ -18,6 +18,12 @@ impl From<u64> for AttributeValue {
     }
 }
 
+impl From<u32> for AttributeValue {
+    fn from(value: u32) -> Self {
+        AttributeValue::Integer(value as u64)
+    }
+}
+
 impl From<f64> for AttributeValue {
     fn from(value: f64) -> Self {
         AttributeValue::Float(value)
@@ -27,6 +33,18 @@ impl From<f64> for AttributeValue {
 impl From<String> for AttributeValue {
     fn from(value: String) -> Self {
         AttributeValue::String(value)
+    }
+}
+
+impl From<&String> for AttributeValue {
+    fn from(value: &String) -> Self {
+        AttributeValue::String(value.clone())
+    }
+}
+
+impl From<&str> for AttributeValue {
+    fn from(value: &str) -> Self {
+        AttributeValue::String(value.to_string())
     }
 }
 
