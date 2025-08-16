@@ -3,6 +3,46 @@
 
 use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
 
+/// Macro to implement From<u64> and From<u32> for attribute types that wrap a u64.
+macro_rules! impl_from_u64_for_attr {
+    ($t:ty) => {
+        impl From<u64> for $t {
+            fn from(val: u64) -> Self {
+                Self(val)
+            }
+        }
+        
+        impl From<u32> for $t {
+            fn from(val: u32) -> Self {
+                Self(val as u64)
+            }
+        }
+    };
+}
+
+/// Macro to implement From<String> and From<&str> for attribute types that wrap a String.
+macro_rules! impl_from_string_for_attr {
+    ($t:ty) => {
+        impl From<String> for $t {
+            fn from(val: String) -> Self {
+                Self(val)
+            }
+        }
+        
+        impl From<&String> for $t {
+            fn from(val: &String) -> Self {
+                Self(val.to_owned())
+            }
+        }
+        
+        impl From<&str> for $t {
+            fn from(val: &str) -> Self {
+                Self(val.to_owned())
+            }
+        }
+    };
+}
+
 /// Represents the "is_festivized" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct IsFestivized;
@@ -646,7 +686,7 @@ impl Attribute for DynamicRecipeComponentDefinedItem7 {
         hidden: false,
         stored_as_integer: false,
     };
-
+    
     fn attribute_value(&self) -> Option<AttributeValue> {
         None
     }
@@ -698,7 +738,7 @@ impl Attribute for DynamicRecipeComponentDefinedItem9 {
         hidden: false,
         stored_as_integer: false,
     };
-
+    
     fn attribute_value(&self) -> Option<AttributeValue> {
         None
     }
@@ -750,11 +790,11 @@ impl Attribute for ToolTargetItem {
         hidden: true,
         stored_as_integer: false,
     };
-
+    
     fn attribute_value(&self) -> Option<AttributeValue> {
         None
     }
-
+    
     fn attribute_float_value(&self) -> Option<f64> {
         None
     }
@@ -776,11 +816,11 @@ impl Attribute for SeriesNumber {
         hidden: true,
         stored_as_integer: false,
     };
-
+    
     fn attribute_value(&self) -> Option<AttributeValue> {
         Some(self.0.into())
     }
-
+    
     fn attribute_float_value(&self) -> Option<f64> {
         None
     }
@@ -788,9 +828,9 @@ impl Attribute for SeriesNumber {
 
 /// Represents the "taunt attach particle index" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub struct SetAttachedParticleTaunt(pub u64);
+pub struct TauntAttachParticleIndex(pub u64);
 
-impl Attribute for SetAttachedParticleTaunt {
+impl Attribute for TauntAttachParticleIndex {
     const DEFINDEX: u32 = 2041;
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 2041,
@@ -802,11 +842,11 @@ impl Attribute for SetAttachedParticleTaunt {
         hidden: false,
         stored_as_integer: true,
     };
-
+    
     fn attribute_value(&self) -> Option<AttributeValue> {
         Some(self.0.into())
     }
-
+    
     fn attribute_float_value(&self) -> Option<f64> {
         None
     }
@@ -828,16 +868,16 @@ impl Attribute for SetAttachedParticle {
         hidden: false,
         stored_as_integer: false,
     };
-
+    
     fn attribute_value(&self) -> Option<AttributeValue> {
         Some(self.0.into())
     }
-
+    
     fn attribute_float_value(&self) -> Option<f64> {
         None
     }
 }
-  
+
 /// Represents the "paintkit_proto_def_index" attribute.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct PaintkitProtoDefIndex(pub u64);
@@ -854,13 +894,31 @@ impl Attribute for PaintkitProtoDefIndex {
         hidden: false,
         stored_as_integer: true,
     };
-
+    
     fn attribute_value(&self) -> Option<AttributeValue> {
         Some(self.0.into())
     }
-
+    
     fn attribute_float_value(&self) -> Option<f64> {
         None
     }
 }
 
+// Implement conversions for u64 types
+impl_from_u64_for_attr!(TradableAfterDate);
+impl_from_u64_for_attr!(UniqueCraftIndex);
+impl_from_u64_for_attr!(SupplyCrateSeries);
+impl_from_u64_for_attr!(GifterAccountId);
+impl_from_u64_for_attr!(EventDate);
+impl_from_u64_for_attr!(CustomTextureLo);
+impl_from_u64_for_attr!(CustomTextureHi);
+impl_from_u64_for_attr!(MakersMarkId);
+impl_from_u64_for_attr!(ToolTargetItem);
+impl_from_u64_for_attr!(SeriesNumber);
+impl_from_u64_for_attr!(TauntAttachParticleIndex);
+impl_from_u64_for_attr!(SetAttachedParticle);
+impl_from_u64_for_attr!(PaintkitProtoDefIndex);
+
+// Implement conversions for String types
+impl_from_string_for_attr!(CustomNameAttr);
+impl_from_string_for_attr!(CustomDescAttr);
