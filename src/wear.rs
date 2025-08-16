@@ -1,4 +1,4 @@
-use crate::{Attribute, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, EffectType, DescriptionFormat};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -46,6 +46,23 @@ impl Attribute for Wear {
     const EFFECT_TYPE: EffectType = EffectType::Positive;
     const HIDDEN: bool = true;
     const STORED_AS_INTEGER: bool = false;
+    
+    /// Gets the attribute value.
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
+    
+    /// Gets the attribute float value.
+    fn attribute_float_value(&self) -> Option<f64> {
+        // This could be done using arithmetic but this is a little more explicit.
+        Some(match self {
+            Self::FactoryNew => 0.2,
+            Self::MinimalWear => 0.4,
+            Self::FieldTested => 0.6,
+            Self::WellWorn => 0.8,
+            Self::BattleScarred => 1.0,
+        })
+    }
 }
 
 impl TryFrom<f64> for Wear {

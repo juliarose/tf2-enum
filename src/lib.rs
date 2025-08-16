@@ -31,11 +31,13 @@
 
 pub mod error;
 
+mod attribute_value;
 mod capability;
 mod class;
 mod craft_class;
 mod craft_material_type;
 mod description_format;
+mod econ_attributes;
 mod effect_type;
 mod grade;
 mod item_level;
@@ -61,11 +63,22 @@ pub use num_enum::{IntoPrimitive, TryFromPrimitive};
 pub use traits::{Attribute, Attributes, AttributeSet, Colored, ItemDefindex};
 
 // Enum re-exports
+pub use attribute_value::AttributeValue;
 pub use capability::Capability;
 pub use class::Class;
 pub use craft_class::CraftClass;
 pub use craft_material_type::CraftMaterialType;
 pub use description_format::DescriptionFormat;
+pub use econ_attributes::{
+    IsAustralium,
+    IsFestivized,
+    KillEater,
+    SupplyCrateSeries,
+    TradableAfterDate,
+    UniqueCraftIndex,
+    CustomNameAttr,
+    CustomDescAttr,
+};
 pub use effect_type::EffectType;
 pub use grade::Grade;
 pub use item_level::{ItemLevel, Level};

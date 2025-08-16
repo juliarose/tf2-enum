@@ -53,11 +53,6 @@ pub struct StrangePartSet {
 }
 
 impl StrangePartSet {
-    /// An empty [`StrangePartSet`].
-    pub const EMPTY: Self = Self {
-        inner: [None, None, None],
-    };
-    
     /// Creates a set for strange parts.
     /// 
     /// # Examples
@@ -148,6 +143,10 @@ impl StrangePartSet {
 impl AttributeSet for StrangePartSet {
     /// Max number of items.
     const MAX_COUNT: usize = STRANGE_PART_COUNT;
+    /// An empty [`StrangePartSet`].
+    const NONE: Self = Self {
+        inner: [None, None, None],
+    };
     /// The item type.
     type Item = StrangePart;
     
@@ -243,18 +242,13 @@ impl AttributeSet for StrangePartSet {
         None
     }
     
-    /// Converts this set into a vector of strange parts.
-    fn to_vec(self) -> Vec<StrangePart> {
-        self.into()
-    }
-    
     /// Returns the inner storage as a slice.
-    fn inner(&self) -> &[Option<StrangePart>] {
+    fn as_slice(&self) -> &[Option<StrangePart>] {
         &self.inner
     }
     
     /// Returns the inner storage as a mutable slice.
-    fn inner_mut(&mut self) -> &mut [Option<StrangePart>] {
+    fn as_mut_slice(&mut self) -> &mut [Option<StrangePart>] {
         &mut self.inner
     }
 }

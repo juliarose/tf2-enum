@@ -1,4 +1,5 @@
-use crate::{EffectType, DescriptionFormat};
+use crate::{EffectType, DescriptionFormat, AttributeValue};
+use std::hash::Hash;
 
 /// Attribute values for an item attribute.
 pub trait Attribute: Sized {
@@ -18,6 +19,10 @@ pub trait Attribute: Sized {
     const HIDDEN: bool;
     /// Whether the value for the attribute is stored as an integer.
     const STORED_AS_INTEGER: bool;
+    
+    fn attribute_value(&self) -> Option<AttributeValue>;
+    
+    fn attribute_float_value(&self) -> Option<f64>;
 }
 
 /// Associated attribute values for a set of item attributes.
@@ -38,6 +43,16 @@ pub trait Attributes: Sized {
     const HIDDEN: &[bool];
     /// Whether the value for the attribute is stored as an integer.
     const STORED_AS_INTEGER: &[bool];
+    
+    /// Gets the attribute value.
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
+    
+    /// Gets the attribute float value.
+    fn attribute_float_value(&self) -> Option<f64> {
+        None
+    }
 }
 
 /// Definitions which are associated with colors.
@@ -83,7 +98,9 @@ pub trait AttributeSet: Sized + Default {
     /// Max number of items.
     const MAX_COUNT: usize;
     /// The item type.
-    type Item: PartialEq + Copy;
+    type Item: PartialEq + Copy + Eq + Clone + Hash;
+    // An empty set.
+    const NONE: Self;
     
     /// Adds an item to the first available slot.
     fn insert(&mut self, item: Self::Item) -> bool;
@@ -97,9 +114,14 @@ pub trait AttributeSet: Sized + Default {
     /// Clears the set,.
     fn clear(&mut self);
     
+    /// Gets an item from the set by index.
+    fn get(&self, index: usize) -> Option<&Self::Item> {
+        self.as_slice().get(index).and_then(|opt| opt.as_ref())
+    }
+    
     /// Returns the number of elements in the set.
     fn len(&self) -> usize {
-        self.inner()
+        self.as_slice()
             .iter()
             .filter(|x| x.is_some())
             .count()
@@ -107,23 +129,26 @@ pub trait AttributeSet: Sized + Default {
 
     /// Returns true if the set contains the given item.
     fn contains(&self, item: &Self::Item) -> bool {
-        self.inner().contains(&Some(*item))
+        self.as_slice().contains(&Some(*item))
     }
-
+    
     /// Returns true if the set is empty.
     fn is_empty(&self) -> bool {
         self.len() == 0
+    }
+    
+    /// Returns true if the set is full, i.e., it contains the maximum number of elements.
+    fn is_full(&self) -> bool {
+        self.len() == Self::MAX_COUNT
     }
     
     /// Returns the items that are in `self` but not in `other`.
     fn difference(&self, other: &Self) -> Self {
         let mut result = Self::default();
         
-        for (i, s_option) in result.inner_mut().iter_mut().enumerate() {
-            if let Some(s) = self.inner()[i] {
-                if !other.contains(&s) {
-                    *s_option = Some(s);
-                }
+        for s in self.iter() {
+            if !other.contains(s) {
+                result.insert(*s);
             }
         }
         
@@ -134,11 +159,9 @@ pub trait AttributeSet: Sized + Default {
     fn intersection(&self, other: &Self) -> Self {
         let mut result = Self::default();
         
-        for (i, s_option) in result.inner_mut().iter_mut().enumerate() {
-            if let Some(s) = self.inner()[i] {
-                if other.contains(&s) {
-                    *s_option = Some(s);
-                }
+        for s in self.iter() {
+            if other.contains(s) {
+                result.insert(*s);
             }
         }
 
@@ -168,21 +191,19 @@ pub trait AttributeSet: Sized + Default {
     }
     
     /// Returns an iterator over the set.
+    #[inline(always)]
     fn iter<'a>(&'a self) -> impl Iterator<Item = &'a Self::Item> {
-        self.inner().iter().filter_map(|opt| opt.as_ref())
+        self.as_slice().iter().filter_map(|opt| opt.as_ref())
     }
     
-    /// Returns true if the set is full, i.e., it contains the maximum number of elements.
-    fn is_full(&self) -> bool {
-        self.len() == Self::MAX_COUNT
+    /// Returns a mutable iterator over the set.
+    fn iter_mut<'a>(&'a mut self) -> impl Iterator<Item = &'a mut Self::Item> {
+        self.as_mut_slice().iter_mut().filter_map(|opt| opt.as_mut())
     }
-    
-    /// Converts this set into a vector.
-    fn to_vec(self) -> Vec<Self::Item>;
     
     /// Returns the inner storage as a slice.
-    fn inner(&self) -> &[Option<Self::Item>];
+    fn as_slice(&self) -> &[Option<Self::Item>];
     
     /// Returns the inner storage as a mutable slice.
-    fn inner_mut(&mut self) -> &mut [Option<Self::Item>];
+    fn as_mut_slice(&mut self) -> &mut [Option<Self::Item>];
 }

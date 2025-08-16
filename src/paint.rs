@@ -1,4 +1,4 @@
-use crate::{Attribute, Colored, ItemDefindex, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, Colored, ItemDefindex, EffectType, DescriptionFormat};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -147,6 +147,16 @@ impl Attribute for Paint {
     const EFFECT_TYPE: EffectType = EffectType::Neutral;
     const HIDDEN: bool = true;
     const STORED_AS_INTEGER: bool = false;
+    
+    /// Gets the attribute value.
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
+    
+    /// Gets the attribute float value.
+    fn attribute_float_value(&self) -> Option<f64> {
+        Some((*self as u32) as f64)
+    }
 }
 
 impl Colored for Paint {

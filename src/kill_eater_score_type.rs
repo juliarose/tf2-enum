@@ -1,4 +1,4 @@
-use crate::{Attributes, EffectType, DescriptionFormat, StrangePart, ItemLevel};
+use crate::{Attributes, AttributeValue, EffectType, DescriptionFormat, StrangePart, ItemLevel};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -274,6 +274,16 @@ impl Attributes for KillEaterScoreType {
         false,
         false,
     ];
+    
+    /// Gets the attribute value.
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
+    
+    /// Gets the attribute float value.
+    fn attribute_float_value(&self) -> Option<f64> {
+        Some((*self as u32) as f64)
+    }
 }
 
 impl TryFrom<StrangePart> for KillEaterScoreType {

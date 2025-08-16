@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.11.0
+## 0.11.0 (2025-08-16)
 
 ### Added
 - `PartialOrd` and `Ord` traits to `StrangePartSet` and `SpellSet`.
@@ -12,6 +12,8 @@
 - Missing `From` and `TryFrom` conversions for spell enums.
 - `is_paint_spell` and `is_footprints_spell` methods to `Spell`.
 - `NONE` const for `SpellSet` and `StrangePartSet`.
+- `as_slice`, `as_slice_mut`, `iter_mut`, `is_full` methods to `SpellSet` and `StrangePartSet`.
+- `AttributeValue` type for attribute values.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.
@@ -21,6 +23,7 @@
 
 ### Changed
 - Order of `StrangePart` variants from lowest to highest `kill_eater_score_type` defindex.
+- `SpellSet` and `StrangePartSet` now implement `AttributeSet`.
 
 ## 0.10.0 (2025-08-14)
 

@@ -1,5 +1,5 @@
 use crate::error::TryFromSpellError;
-use crate::{Attribute, Attributes, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeValue, Attributes, EffectType, DescriptionFormat};
 use std::fmt;
 use std::str::FromStr;
 use strum::{Display, EnumString, EnumIter, EnumCount};
@@ -98,20 +98,8 @@ impl Spell {
         }
     }
     
-    /// Gets the value of an attribute belonging to a group of spells.
-    /// 
-    /// Footprints and paint spells share a common attribute but have specific values that
-    /// correspond to which spell is being referenced that can be used to identify the spell.
-    /// 
-    /// # Examples
-    /// ```
-    /// use tf2_enum::Spell;
-    /// 
-    /// assert_eq!(Spell::DieJob.attribute_value(), Some(0));
-    /// assert_eq!(Spell::HeadlessHorseshoes.attribute_value(), Some(2));
-    /// assert_eq!(Spell::Exorcism.attribute_value(), None);
-    /// ```
-    pub fn attribute_value(&self) -> Option<u32> {
+    /// Gets the attribute float value a `u32`.
+    pub fn attribute_float_value_u32(&self) -> Option<u32> {
         match self {
             Self::DieJob => Some(0),
             Self::ChromaticCorruption => Some(1),
@@ -227,6 +215,28 @@ impl Attributes for Spell {
         false,
         false,
     ];
+    
+    /// Gets the attribute value.
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
+    
+    /// Gets the value of an attribute belonging to a group of spells.
+    /// 
+    /// Footprints and paint spells share a common attribute but have specific values that
+    /// correspond to which spell is being referenced that can be used to identify the spell.
+    /// 
+    /// # Examples
+    /// ```
+    /// use tf2_enum::{Spell, Attributes};
+    /// 
+    /// assert_eq!(Spell::DieJob.attribute_float_value(), Some(0.));
+    /// assert_eq!(Spell::HeadlessHorseshoes.attribute_float_value(), Some(2.));
+    /// assert_eq!(Spell::Exorcism.attribute_float_value(), None);
+    /// ```
+    fn attribute_float_value(&self) -> Option<f64> {
+        self.attribute_float_value_u32().map(|v| v as f64)
+    }
 }
 
 struct SpellVisitor;
@@ -268,7 +278,7 @@ impl TryInto<u32> for Spell {
     type Error = ();
     
     fn try_into(self) -> Result<u32, Self::Error> {
-        self.attribute_value().ok_or(())
+        self.attribute_float_value_u32().ok_or(())
     }
 }
 
@@ -353,6 +363,14 @@ impl Attribute for PaintSpell {
     const EFFECT_TYPE: EffectType = EffectType::Positive;
     const HIDDEN: bool = false;
     const STORED_AS_INTEGER: bool = false;
+    
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
+    
+    fn attribute_float_value(&self) -> Option<f64> {
+        Some((*self as u32) as f64)
+    }
 }
 
 impl TryFrom<Spell> for PaintSpell {
@@ -427,6 +445,14 @@ impl Attribute for FootprintsSpell {
     const EFFECT_TYPE: EffectType = EffectType::Positive;
     const HIDDEN: bool = false;
     const STORED_AS_INTEGER: bool = false;
+    
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
+    
+    fn attribute_float_value(&self) -> Option<f64> {
+        Some((*self as u32) as f64)
+    }
 }
 
 impl TryFrom<Spell> for FootprintsSpell {

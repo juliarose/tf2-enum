@@ -49,11 +49,6 @@ pub struct SpellSet {
 }
 
 impl SpellSet {
-    /// An empty [`SpellSet`].
-    pub const EMPTY: Self = Self {
-        inner: [None, None],
-    };
-    
     /// Creates a set for spells.
     /// 
     /// # Examples
@@ -115,6 +110,10 @@ impl SpellSet {
 impl AttributeSet for SpellSet {
     /// Max number of items.
     const MAX_COUNT: usize = SPELL_COUNT;
+    /// An empty [`SpellSet`].
+    const NONE: Self = Self {
+        inner: [None, None],
+    };
     /// The item type.
     type Item = Spell;
     
@@ -207,18 +206,13 @@ impl AttributeSet for SpellSet {
         None
     }
     
-    /// Converts this set into a vector of spells.
-    fn to_vec(self) -> Vec<Spell> {
-        self.into()
-    }
-    
     /// Returns the inner storage as a slice.
-    fn inner(&self) -> &[Option<Spell>] {
+    fn as_slice(&self) -> &[Option<Spell>] {
         &self.inner
     }
     
     /// Returns the inner storage as a mutable slice.
-    fn inner_mut(&mut self) -> &mut [Option<Spell>] {
+    fn as_mut_slice(&mut self) -> &mut [Option<Spell>] {
         &mut self.inner
     }
 }
