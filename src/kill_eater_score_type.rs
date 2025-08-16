@@ -314,4 +314,9 @@ mod tests {
         let score_type = KillEaterScoreType::Kills;
         assert_eq!(ItemLevel::from(score_type), ItemLevel::KillEaterRank);
     }
+    
+    #[test]
+    fn attribute_slices_are_equal_length() {
+        assert_eq!(KillEaterScoreType::DEFINDEX.len(), KillEaterScoreType::ATTRIBUTES.len());
+    }
 }

@@ -545,4 +545,9 @@ mod tests {
         assert_eq!(serialized, "Defender Kills");
         assert_eq!(StrangePart::from_str("Defender Kills").unwrap(), StrangePart::DefenderKills);
     }
+    
+    #[test]
+    fn attribute_slices_are_equal_length() {
+        assert_eq!(StrangePart::DEFINDEX.len(), StrangePart::ATTRIBUTES.len());
+    }
 }

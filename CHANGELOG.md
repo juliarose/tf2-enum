@@ -15,6 +15,7 @@
 - `as_slice`, `as_slice_mut`, `iter_mut`, `is_full` methods to `SpellSet` and `StrangePartSet`.
 - `AttributeValue` type for attribute values.
 - `AttributeDef` type for defintitions associated with multiple attributes.
+- Attributes related to economy items. These can be found in `econ_attributes`.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.
@@ -25,6 +26,7 @@
 ### Changed
 - Order of `StrangePart` variants from lowest to highest `kill_eater_score_type` defindex.
 - `SpellSet` and `StrangePartSet` now implement `AttributeSet`.
+- Moved extra fields for `Attribute` into `ATTRIBUTE` through [`AttributeDef`].
 
 ## 0.10.0 (2025-08-14)
 

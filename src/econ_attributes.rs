@@ -728,7 +728,7 @@ impl Attribute for DynamicRecipeComponentDefinedItem10 {
     fn attribute_value(&self) -> Option<AttributeValue> {
         None
     }
-
+    
     fn attribute_float_value(&self) -> Option<f64> {
         None
     }
@@ -837,3 +837,30 @@ impl Attribute for SetAttachedParticle {
         None
     }
 }
+  
+/// Represents the "paintkit_proto_def_index" attribute.
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+pub struct PaintkitProtoDefIndex(pub u64);
+
+impl Attribute for PaintkitProtoDefIndex {
+    const DEFINDEX: u32 = 834;
+    const ATTRIBUTE: AttributeDef = AttributeDef {
+        defindex: 834,
+        name: "paintkit_proto_def_index",
+        attribute_class: Some("paintkit_proto_def_index"),
+        description_string: None,
+        description_format: Some(DescriptionFormat::ValueIsAdditive),
+        effect_type: EffectType::Neutral,
+        hidden: false,
+        stored_as_integer: true,
+    };
+
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        Some(self.0.into())
+    }
+
+    fn attribute_float_value(&self) -> Option<f64> {
+        None
+    }
+}
+

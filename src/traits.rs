@@ -31,6 +31,10 @@ pub trait Attributes: Sized {
     fn attribute_float_value(&self) -> Option<f64> {
         None
     }
+    
+    fn by_defindex(&self, defindex: u32) -> Option<&AttributeDef> {
+        Self::ATTRIBUTES.iter().find(|attr| attr.defindex == defindex)
+    }
 }
 
 /// Definitions which are associated with colors.

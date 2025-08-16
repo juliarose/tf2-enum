@@ -601,4 +601,9 @@ mod tests {
         assert_eq!(Spell::from_str("Voices from Below").unwrap(), Spell::VoicesFromBelow);
         assert_eq!(Spell::from_str("Voices From Below").unwrap(), Spell::VoicesFromBelow);
     }
+    
+    #[test]
+    fn attribute_slices_are_equal_length() {
+        assert_eq!(Spell::DEFINDEX.len(), Spell::ATTRIBUTES.len());
+    }
 }
