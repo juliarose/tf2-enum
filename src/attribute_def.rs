@@ -38,8 +38,8 @@ mod tests {
     #[test]
     fn formats_description() {
         let sheen = Sheen::TeamShine;
-        
         let formatted = Sheen::ATTRIBUTE.description(Some(&sheen));
+        
         assert_eq!(formatted, Some("Sheen: Team Shine".into()));
     }
 }

@@ -44,8 +44,6 @@
 - Missing `EnumCount` for some definitions.
 - `defindex_is_strange_part` for `StrangePart`.
 - `defindex_is_paint` for `Paint`.
-- `BitAnd` for `SpellSet` and `StrangePartSet`, and their borrowed variants.
-- `is_subset` and `is_superset` methods to `StrangePartSet` and `SpellSet`.
 - More fields for `Attribute`.
 - More fields for `Attributes`.
 

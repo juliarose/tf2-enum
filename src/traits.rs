@@ -1,5 +1,4 @@
 use crate::{AttributeValue, AttributeDef};
-use std::hash::Hash;
 
 /// Attribute values for an item attribute.
 pub trait Attribute: Sized {
@@ -80,7 +79,7 @@ pub trait AttributeSet: Sized + Default {
     /// Max number of items.
     const MAX_COUNT: usize;
     /// The item type.
-    type Item: PartialEq + Copy + Eq + Clone + Hash;
+    type Item: PartialEq + Copy;
     // An empty set.
     const NONE: Self;
     

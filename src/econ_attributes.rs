@@ -27,7 +27,7 @@ macro_rules! impl_from_u64 {
                 Self(*val)
             }
         }
-
+        
         impl From<&u32> for $t {
             fn from(val: &u32) -> Self {
                 Self(*val as u64)
@@ -60,10 +60,10 @@ macro_rules! impl_from_u64 {
         }
     };
 }
-
-/// Macro to implement Attribute for unit-like attribute structs.
-macro_rules! impl_unit_attr {
+    
+macro_rules! impl_attr {
     (
+        unit,
         $t:ty,
         $defindex:expr,
         $name:expr,
@@ -96,12 +96,8 @@ macro_rules! impl_unit_attr {
             }
         }
     };
-}
-
-/// Macro to implement Attribute for newtypes wrapping u64.
-/// If "float_value" is present at the end of the macro call, use the second match arm.
-macro_rules! impl_u64_attr {
     (
+        u64,
         $t:ty,
         $defindex:expr,
         $name:expr,
@@ -137,6 +133,7 @@ macro_rules! impl_u64_attr {
         impl_from_u64!($t);
     };
     (
+        u64_float,
         $t:ty,
         $defindex:expr,
         $name:expr,
@@ -145,8 +142,7 @@ macro_rules! impl_u64_attr {
         $description_format:expr,
         $effect_type:expr,
         $hidden:expr,
-        $stored_as_integer:expr,
-        float_value
+        $stored_as_integer:expr
     ) => {
         impl Attribute for $t {
             const DEFINDEX: u32 = $defindex;
@@ -172,11 +168,8 @@ macro_rules! impl_u64_attr {
         
         impl_from_u64!($t);
     };
-}
-
-/// Macro to implement Attribute for newtypes wrapping String.
-macro_rules! impl_string_attr {
     (
+        string,
         $t:ty,
         $defindex:expr,
         $name:expr,
@@ -255,10 +248,11 @@ macro_rules! impl_string_attr {
 }
 
 /// Represents the "is_festivized" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct IsFestivized;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     IsFestivized,
     2053,
     "is_festivized",
@@ -271,10 +265,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "is_australium_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct IsAustralium;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     IsAustralium,
     2027,
     "is australium item",
@@ -286,14 +281,17 @@ impl_unit_attr!(
     true
 );
 
-/// Represents the "kill eater" attribute. This attribute is included with items that have a strange
-/// counter, regardless of quality which allows strangified non-strange items to be identified.
+/// Represents the "kill eater" attribute.
+/// 
+/// This attribute is included with items that have a strange counter, regardless of quality which
+/// allows strangified non-strange items to be identified.
 /// 
 /// The value refers to the number of kills, or score count.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct KillEater(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     KillEater,
     214,
     "kill eater",
@@ -306,10 +304,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "taunt attach particle index" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct TauntAttachParticleIndex(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     TauntAttachParticleIndex,
     2041,
     "taunt attach particle index",
@@ -322,10 +321,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "set_attached_particle" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct SetAttachedParticle(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     SetAttachedParticle,
     134,
     "attach particle effect",
@@ -338,10 +338,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "paintkit_proto_def_index" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct PaintkitProtoDefIndex(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     PaintkitProtoDefIndex,
     834,
     "paintkit_proto_def_index",
@@ -354,10 +355,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "tool_target_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct ToolTargetItem(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     ToolTargetItem,
     2012,
     "tool target item",
@@ -370,10 +372,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "supply_crate_series" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct SupplyCrateSeries(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64_float,
     SupplyCrateSeries,
     187,
     "set supply crate series",
@@ -382,15 +385,15 @@ impl_u64_attr!(
     Some(DescriptionFormat::ValueIsAdditive),
     EffectType::Positive,
     false,
-    false,
-    float_value
+    false
 );
 
 /// Represents the "series_number" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct SeriesNumber(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64_float,
     SeriesNumber,
     2031,
     "series number",
@@ -399,15 +402,15 @@ impl_u64_attr!(
     None,
     EffectType::ValueIsFromLookupTable,
     true,
-    false,
-    float_value
+    false
 );
 
 /// Represents the "custom_name_attr" attribute.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct CustomNameAttr(pub String);
 
-impl_string_attr!(
+impl_attr!(
+    string,
     CustomNameAttr,
     500,
     "custom name attr",
@@ -420,10 +423,11 @@ impl_string_attr!(
 );
 
 /// Represents the "custom_desc_attr" attribute.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct CustomDescAttr(pub String);
 
-impl_string_attr!(
+impl_attr!(
+    string,
     CustomDescAttr,
     501,
     "custom desc attr",
@@ -436,10 +440,11 @@ impl_string_attr!(
 );
 
 /// Represents the "unique_craft_index" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct UniqueCraftIndex(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     UniqueCraftIndex,
     229,
     "unique craft index",
@@ -453,10 +458,11 @@ impl_u64_attr!(
 
 /// Represents the "makers_mark_id" attribute. The integer refers to the account's 32-bit SteamID
 /// of the crafter.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct MakersMarkId(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     MakersMarkId,
     228,
     "makers mark id",
@@ -470,10 +476,11 @@ impl_u64_attr!(
 
 /// Represents the "gifter_account_id" attribute. The integer refers to the account's 32-bit
 /// SteamID.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct GifterAccountId(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     GifterAccountId,
     186,
     "gifter account id",
@@ -486,10 +493,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "event_date" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct EventDate(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     EventDate,
     185,
     "event date",
@@ -502,10 +510,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "is_australium_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct TradableAfterDate(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     TradableAfterDate,
     211,
     "tradable after date",
@@ -518,10 +527,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "custom_texture_lo" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct CustomTextureLo(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     CustomTextureLo,
     152,
     "custom texture lo",
@@ -534,10 +544,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "custom_texture_hi" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct CustomTextureHi(pub u64);
 
-impl_u64_attr!(
+impl_attr!(
+    u64,
     CustomTextureHi,
     227,
     "custom texture hi",
@@ -550,10 +561,11 @@ impl_u64_attr!(
 );
 
 /// Represents the "halloween_voice_modulation" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct HalloweenVoiceModulation;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     HalloweenVoiceModulation,
     1006,
     "SPELL: Halloween voice modulation",
@@ -566,10 +578,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "halloween_pumpkin_explosions" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct HalloweenPumpkinExplosions;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     HalloweenPumpkinExplosions,
     1007,
     "SPELL: Halloween pumpkin explosions",
@@ -582,10 +595,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "halloween_green_flames" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct HalloweenGreenFlames;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     HalloweenGreenFlames,
     1008,
     "SPELL: Halloween green flames",
@@ -598,10 +612,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct HalloweenDeathGhosts;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     HalloweenDeathGhosts,
     1009,
     "SPELL: Halloween death ghosts",
@@ -614,10 +629,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem1;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem1,
     2000,
     "recipe component defined item 1",
@@ -630,10 +646,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem2;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem2,
     2001,
     "recipe component defined item 2",
@@ -646,10 +663,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem3;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem3,
     2002,
     "recipe component defined item 3",
@@ -662,10 +680,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem4;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem4,
     2003,
     "recipe component defined item 4",
@@ -678,10 +697,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem5;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem5,
     2004,
     "recipe component defined item 5",
@@ -694,10 +714,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem6;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem6,
     2005,
     "recipe component defined item 6",
@@ -710,10 +731,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem7;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem7,
     2006,
     "recipe component defined item 7",
@@ -726,10 +748,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem8;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem8,
     2007,
     "recipe component defined item 8",
@@ -742,10 +765,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem9;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem9,
     2008,
     "recipe component defined item 9",
@@ -758,10 +782,11 @@ impl_unit_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem10;
 
-impl_unit_attr!(
+impl_attr!(
+    unit,
     DynamicRecipeComponentDefinedItem10,
     2009,
     "recipe component defined item 10",
@@ -794,5 +819,11 @@ mod tests {
         assert!(IsAustralium.attribute_value().is_none());
         assert!(IsAustralium.attribute_float_value().is_none());
         assert!(HalloweenVoiceModulation.attribute_value().is_none());
+    }
+    
+    #[test]
+    fn equals() {
+        assert_eq!(SupplyCrateSeries::from(1u64), SupplyCrateSeries::from(1u64));
+        assert_eq!(*SupplyCrateSeries::from(1u64).deref(), 1u64);
     }
 }
