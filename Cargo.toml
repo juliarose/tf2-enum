@@ -9,7 +9,7 @@ authors = ["Julia"]
 homepage = "https://github.com/juliarose/tf2-enum"
 repository = "https://github.com/juliarose/tf2-enum"
 license = "MIT"
-keywords = ["tf2", "steam"]
+keywords = ["tf2", "steam", "enum"]
 readme = "README.md"
 
 [dependencies]

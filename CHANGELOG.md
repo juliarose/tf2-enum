@@ -16,6 +16,7 @@
 - `AttributeValue` type for attribute values.
 - `AttributeDef` type for defintitions associated with multiple attributes.
 - Attributes related to economy items. These can be found in `econ_attributes`.
+- `TryFromPrimitive<u32>` impl for `StockWeapon`.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.
