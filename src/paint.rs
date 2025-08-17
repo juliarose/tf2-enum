@@ -137,7 +137,7 @@ impl Paint {
     }
 }
 
-/// set_item_tint_rgb
+/// Represents the "set_item_tint_rgb" attribute.
 impl Attribute for Paint {
     const DEFINDEX: u32 = 142;
     const ATTRIBUTE: AttributeDef = AttributeDef {

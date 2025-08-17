@@ -327,9 +327,8 @@ impl StrangePart {
     }
 }
 
-/// kill_eater_user_score_type_1
-/// kill_eater_user_score_type_2
-/// kill_eater_user_score_type_3
+/// Represents the "kill_eater_user_score_type_1", "kill_eater_user_score_type_2", and
+/// "kill_eater_user_score_type_3", attributes.
 impl Attributes for StrangePart {
     const DEFINDEX: &[u32] = &[
         380,

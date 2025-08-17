@@ -40,7 +40,7 @@ pub enum Killstreaker {
     HypnoBeam = 2008,
 }
 
-/// killstreak_effect
+/// Represents the "killstreak_effect" attribute.
 impl Attribute for Killstreaker {
     const DEFINDEX: u32 = 2013;
     const ATTRIBUTE: AttributeDef = AttributeDef {

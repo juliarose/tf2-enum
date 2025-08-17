@@ -40,7 +40,7 @@ pub enum Sheen {
     HotRod = 7,
 }
 
-/// killstreak_idleeffect
+/// Represents the "killstreak_idleeffect" attribute.
 impl Attribute for Sheen {
     const DEFINDEX: u32 = 2014;
     const ATTRIBUTE: AttributeDef = AttributeDef {
@@ -62,5 +62,25 @@ impl Attribute for Sheen {
     /// Gets the attribute float value.
     fn attribute_float_value(&self) -> Option<f64> {
         Some((*self as u32) as f64)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::str::FromStr;
+
+    #[test]
+    fn test_display_and_parse() {
+        assert_eq!(Sheen::from_str("Hot Rod").unwrap(), Sheen::HotRod);
+        assert_eq!(Sheen::HotRod.to_string(), "Hot Rod");
+    }
+
+    #[test]
+    fn test_serde_repr() {
+        let s = serde_json::to_string(&Sheen::MeanGreen).unwrap();
+        assert_eq!(s, "4");
+        let d: Sheen = serde_json::from_str("4").unwrap();
+        assert_eq!(d, Sheen::MeanGreen);
     }
 }

@@ -37,6 +37,7 @@ pub enum Wear {
     BattleScarred = 5,
 }
 
+/// Represents the "set_item_texture_wear" attribute.
 impl Attribute for Wear {
     const DEFINDEX: u32 = 725;
     const ATTRIBUTE: AttributeDef = AttributeDef {

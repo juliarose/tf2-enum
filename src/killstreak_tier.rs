@@ -32,7 +32,7 @@ pub enum KillstreakTier {
     Professional = 3,
 }
 
-/// killstreak_tier
+/// Represents the "killstreak_tier" attribute.
 impl Attribute for KillstreakTier {
     const DEFINDEX: u32 = 2025;
     const ATTRIBUTE: AttributeDef = AttributeDef {
