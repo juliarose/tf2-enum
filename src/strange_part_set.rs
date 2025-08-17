@@ -373,29 +373,25 @@ impl<'a> FromIterator<&'a StrangePart> for StrangePartSet {
 
 impl FromIterator<Option<StrangePart>> for StrangePartSet {
     fn from_iter<I: IntoIterator<Item = Option<StrangePart>>>(iter: I) -> Self {
-        let mut strange_parts = Self::new();
+        let mut set = Self::new();
         
-        for opt in iter {
-            if let Some(strange_part) = opt {
-                strange_parts.insert(strange_part);
-            }
+        for val in iter.into_iter().flatten() {
+            set.insert(val);
         }
         
-        strange_parts
+        set
     }
 }
 
 impl<'a> FromIterator<Option<&'a StrangePart>> for StrangePartSet {
     fn from_iter<I: IntoIterator<Item = Option<&'a StrangePart>>>(iter: I) -> Self {
-        let mut strange_parts = Self::new();
+        let mut set = Self::new();
         
-        for opt in iter {
-            if let Some(strange_part) = opt {
-                strange_parts.insert(*strange_part);
-            }
+        for val in iter.into_iter().flatten() {
+            set.insert(*val);
         }
         
-        strange_parts
+        set
     }
 }
 

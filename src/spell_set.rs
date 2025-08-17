@@ -331,29 +331,25 @@ impl<'a> FromIterator<&'a Spell> for SpellSet {
 
 impl FromIterator<Option<Spell>> for SpellSet {
     fn from_iter<I: IntoIterator<Item = Option<Spell>>>(iter: I) -> Self {
-        let mut spell_set = Self::new();
+        let mut set = Self::new();
         
-        for opt in iter {
-            if let Some(spell) = opt {
-                spell_set.insert(spell);
-            }
+        for val in iter.into_iter().flatten() {
+            set.insert(val);
         }
         
-        spell_set
+        set
     }
 }
 
 impl<'a> FromIterator<&'a Option<Spell>> for SpellSet {
     fn from_iter<I: IntoIterator<Item = &'a Option<Spell>>>(iter: I) -> Self {
-        let mut spell_set = Self::new();
+        let mut set = Self::new();
         
-        for opt in iter {
-            if let Some(spell) = opt {
-                spell_set.insert(*spell);
-            }
+        for val in iter.into_iter().flatten() {
+            set.insert(*val);
         }
         
-        spell_set
+        set
     }
 }
 

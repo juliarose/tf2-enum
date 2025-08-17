@@ -1,7 +1,7 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use tf2_enum::{ItemLevel, Level};
 
-fn loop_levels<'a>(score: i32, levels: &'a [Level]) -> &'a Level {
+fn loop_levels(score: i32, levels: &[Level]) -> &Level {
     let mut prev_level = &levels[levels.len() - 1];
     
     for i in (0..levels.len()).rev() {
@@ -15,7 +15,7 @@ fn loop_levels<'a>(score: i32, levels: &'a [Level]) -> &'a Level {
     &levels[0]
 }
 
-fn binary_search<'a>(score: i32, levels: &'a [Level]) -> &'a Level {
+fn binary_search(score: i32, levels: &[Level]) -> &Level {
     // First index where required_score > score
     let i = levels.partition_point(|lvl| lvl.required_score <= score);
     

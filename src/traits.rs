@@ -173,12 +173,12 @@ pub trait AttributeSet: Sized + Default {
     
     /// Returns an iterator over the set.
     #[inline(always)]
-    fn iter<'a>(&'a self) -> impl Iterator<Item = &'a Self::Item> {
+    fn iter(&self) -> impl Iterator<Item = &Self::Item> {
         self.as_slice().iter().filter_map(|opt| opt.as_ref())
     }
     
     /// Returns a mutable iterator over the set.
-    fn iter_mut<'a>(&'a mut self) -> impl Iterator<Item = &'a mut Self::Item> {
+    fn iter_mut(&mut self) -> impl Iterator<Item = &mut Self::Item> {
         self.as_mut_slice().iter_mut().filter_map(|opt| opt.as_mut())
     }
     

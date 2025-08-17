@@ -12,7 +12,7 @@ fn match_group(defindex: u32) -> Option<&'static str> {
         6 => Some("Shovel"),
         7 => Some("Wrench"),
         8 => Some("Bonesaw"),
-        9 | 10 | 11 | 12 => Some("Shotgun"),
+        9..=12 => Some("Shotgun"),
         13 => Some("Scattergun"),
         14 => Some("Sniper Rifle"),
         15 => Some("Minigun"),
