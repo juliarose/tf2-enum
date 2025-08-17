@@ -33,6 +33,7 @@
 
 pub mod econ_attributes;
 pub mod error;
+pub mod prelude;
 
 mod attribute_def;
 mod attribute_value;

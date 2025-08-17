@@ -20,6 +20,7 @@
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.
 - `defindex_is_paint` for `Paint`.
+- `defindex_is_stock_weapon` for `StockWeapon`.
 - `strum`, `num_enum`, `strum_macros` re-exports. Only the derived traits are re-exported.
 - `strum_macro` as a dependency, it's now included using `derive` feature for `strum`.
 

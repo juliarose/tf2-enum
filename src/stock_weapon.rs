@@ -1,6 +1,7 @@
-use crate::{Class, ItemSlot};
+use crate::{Class, ItemDefindex, ItemSlot};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString, EnumIter, EnumCount};
+use num_enum::{TryFromPrimitive, TryFromPrimitiveError};
 
 /// Stock weapons.
 #[derive(
@@ -77,9 +78,57 @@ pub enum StockWeapon {
     InvisWatch,
 }
 
+impl ItemDefindex for StockWeapon {
+    /// Gets the defindex for this item. If there are multiple, the first is returned.
+    /// 
+    /// If you want the defindex associated with inventory items, use
+    /// [`StockWeapon::econ_defindex`].
+    fn defindex(&self) -> u32 {
+        self.defindexes()
+            .first()
+            .copied()
+            .unwrap() // safety - we know there is at least one defindex
+    }
+    
+    /// Attempts to create a [`StockWeapon`] from a defindex. Excludes definitions for skinned
+    /// items.
+    fn from_defindex(defindex: u32) -> Option<Self> {
+        match defindex {
+            0 | 190 => Some(Self::Bat),
+            1 | 191 => Some(Self::Bottle),
+            2 | 192 => Some(Self::FireAxe),
+            3 | 193 => Some(Self::Kukri),
+            4 | 194 => Some(Self::Knife),
+            5 | 195 => Some(Self::Fists),
+            6 | 196 => Some(Self::Shovel),
+            7 | 197 => Some(Self::Wrench),
+            8 | 198 => Some(Self::Bonesaw),
+            9 | 10 | 11 | 12 | 199 => Some(Self::Shotgun),
+            13 | 200 => Some(Self::Scattergun),
+            14 | 201 => Some(Self::SniperRifle),
+            15 | 202 => Some(Self::Minigun),
+            16 | 203 => Some(Self::SMG),
+            17 | 204 => Some(Self::SyringeGun),
+            18 | 205 => Some(Self::RocketLauncher),
+            19 | 206 => Some(Self::GrenadeLauncher),
+            20 | 207 => Some(Self::StickybombLauncher),
+            21 | 208 => Some(Self::FlameThrower),
+            22 | 23 | 209 => Some(Self::Pistol),
+            24 | 210 => Some(Self::Revolver),
+            25 | 737 => Some(Self::ConstructionPDA),
+            26 => Some(Self::DestructionPDA),
+            27 => Some(Self::DisguiseKit),
+            28 => Some(Self::PDA),
+            29 | 211 => Some(Self::MediGun),
+            30 | 212 => Some(Self::InvisWatch),
+            _ => None,
+        }
+    }
+}
+
 impl StockWeapon {
     /// Gets the set of related defindexes of the weapon. Excludes definitions for skinned items.
-    pub fn defindex(&self) -> &'static [u32] {
+    pub fn defindexes(&self) -> &'static [u32] {
         match self {
             Self::Bat => &[0, 190],
             Self::Bottle => &[1, 191],
@@ -140,46 +189,6 @@ impl StockWeapon {
             Self::Revolver => Some(210),
             _ => None,
         }
-    }
-    
-    /// Attempts to create a [`StockWeapon`] from a defindex. Excludes definitions for skinned
-    /// items.
-    pub fn from_defindex(defindex: u32) -> Option<StockWeapon> {
-        match defindex {
-            0 | 190 => Some(Self::Bat),
-            1 | 191 => Some(Self::Bottle),
-            2 | 192 => Some(Self::FireAxe),
-            3 | 193 => Some(Self::Kukri),
-            4 | 194 => Some(Self::Knife),
-            5 | 195 => Some(Self::Fists),
-            6 | 196 => Some(Self::Shovel),
-            7 | 197 => Some(Self::Wrench),
-            8 | 198 => Some(Self::Bonesaw),
-            9 | 10 | 11 | 12 | 199 => Some(Self::Shotgun),
-            13 | 200 => Some(Self::Scattergun),
-            14 | 201 => Some(Self::SniperRifle),
-            15 | 202 => Some(Self::Minigun),
-            16 | 203 => Some(Self::SMG),
-            17 | 204 => Some(Self::SyringeGun),
-            18 | 205 => Some(Self::RocketLauncher),
-            19 | 206 => Some(Self::GrenadeLauncher),
-            20 | 207 => Some(Self::StickybombLauncher),
-            21 | 208 => Some(Self::FlameThrower),
-            22 | 23 | 209 => Some(Self::Pistol),
-            24 | 210 => Some(Self::Revolver),
-            25 | 737 => Some(Self::ConstructionPDA),
-            26 => Some(Self::DestructionPDA),
-            27 => Some(Self::DisguiseKit),
-            28 => Some(Self::PDA),
-            29 | 211 => Some(Self::MediGun),
-            30 | 212 => Some(Self::InvisWatch),
-            _ => None,
-        }
-    }
-    
-    /// Checks if the `defindex` belongs to a stock weapon.
-    pub fn defindex_is_stock_weapon(defindex: u32) -> bool {
-        Self::from_defindex(defindex).is_some()
     }
 
     /// Gets the set of classes that can use this weapon.
@@ -272,10 +281,42 @@ impl StockWeapon {
     }
 }
 
-impl TryFrom<u32> for StockWeapon {
-    type Error = ();
+// Manually implemented since TryFromPrimitive only supports mapping each variant to one number.
+impl TryFromPrimitive for StockWeapon {
+    const NAME: &str = "StockWeapon";
+    type Primitive = u32;
+    type Error = TryFromPrimitiveError<StockWeapon>;
+    
+    fn try_from_primitive(number: u32) -> Result<Self, Self::Error> {
+        Self::from_defindex(number)
+            .ok_or(TryFromPrimitiveError { number })
+    }
+}
 
+impl TryFrom<u32> for StockWeapon {
+    type Error = TryFromPrimitiveError<StockWeapon>;
+    
     fn try_from(value: u32) -> Result<Self, Self::Error> {
-        Self::from_defindex(value).ok_or(())
+        Self::try_from_primitive(value)
+    }
+}
+
+impl TryFrom<&u32> for StockWeapon {
+    type Error = TryFromPrimitiveError<StockWeapon>;
+    
+    fn try_from(value: &u32) -> Result<Self, Self::Error> {
+        Self::try_from_primitive(*value)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn tries_from_primitive() {
+        let weapon = StockWeapon::try_from(0).unwrap();
+        
+        assert_eq!(weapon, StockWeapon::Bat);
     }
 }
