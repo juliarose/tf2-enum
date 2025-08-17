@@ -29,6 +29,8 @@
 //! }
 //! ```
 
+#![warn(missing_docs)]
+
 pub mod econ_attributes;
 pub mod error;
 

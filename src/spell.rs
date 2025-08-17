@@ -33,6 +33,7 @@ use serde::de::{self, Visitor, Deserializer};
     Copy,
 )]
 #[strum(serialize_all = "title_case")]
+#[allow(missing_docs)]
 pub enum Spell {
     TeamSpiritFootprints,
     HeadlessHorseshoes,
@@ -384,6 +385,7 @@ impl From<&HalloweenDeathGhosts> for Spell {
 )]
 #[repr(u32)]
 #[strum(serialize_all = "title_case")]
+#[allow(missing_docs)]
 pub enum PaintSpell {
     DieJob = 0,
     ChromaticCorruption = 1,
@@ -462,6 +464,7 @@ impl TryFrom<&Spell> for PaintSpell {
 )]
 #[repr(u32)]
 #[strum(serialize_all = "title_case")]
+#[allow(missing_docs)]
 pub enum FootprintsSpell {
     TeamSpiritFootprints = 1,
     HeadlessHorseshoes = 2,

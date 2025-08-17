@@ -25,6 +25,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 )]
 #[repr(u32)]
 #[strum(serialize_all = "title_case")]
+#[allow(missing_docs)]
 pub enum Wear {
     FactoryNew = 1,
     MinimalWear = 2,

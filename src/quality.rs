@@ -23,6 +23,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
     Copy,
 )]
 #[repr(u32)]
+#[allow(missing_docs)]
 pub enum Quality {
     Normal = 0,
     Genuine = 1,

@@ -20,6 +20,7 @@ use strum::{Display, EnumString, EnumIter, EnumCount};
 )]
 #[strum(serialize_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
+#[allow(missing_docs)]
  pub enum DescriptionFormat {
     ValueIsAdditive,
     ValueIsPercentage,

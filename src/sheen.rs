@@ -24,6 +24,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
 )]
 #[repr(u32)]
 #[strum(serialize_all = "title_case")]
+#[allow(missing_docs)]
 pub enum Sheen {
     TeamShine = 1,
     DeadlyDaffodil = 2,
@@ -76,5 +77,14 @@ mod tests {
         assert_eq!(s, "4");
         let d: Sheen = serde_json::from_str("4").unwrap();
         assert_eq!(d, Sheen::MeanGreen);
+    }
+    
+    #[test]
+    fn accepts_attibute_argument() {
+        fn attribute_float_value<A: Attribute>(attribute: A) -> Option<f64> {
+            attribute.attribute_float_value()
+        }
+        
+        assert_eq!(attribute_float_value(Sheen::DeadlyDaffodil), Some(2.0));
     }
 }

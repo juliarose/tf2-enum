@@ -24,6 +24,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
     Copy,
 )]
 #[repr(u32)]
+#[allow(missing_docs)]
 pub enum KillEaterScoreType {
     /// "Kills" used for most Strange weapons.
     #[strum(serialize = "Kills")]

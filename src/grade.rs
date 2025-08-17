@@ -23,6 +23,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
     Copy,
 )]
 #[repr(u32)]
+#[allow(missing_docs)]
 pub enum Grade {
     Civilian = 1,
     Freelance = 2,

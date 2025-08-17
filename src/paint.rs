@@ -24,6 +24,7 @@ use serde_repr::{Serialize_repr, Deserialize_repr};
     Copy,
 )]
 #[repr(u32)]
+#[allow(missing_docs)]
 pub enum Paint {
     #[strum(serialize = "A Color Similar to Slate")]
     AColorSimilarToSlate = 0x2F4F4F,

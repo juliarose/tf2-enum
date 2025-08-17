@@ -79,6 +79,7 @@ const STR_ASSISTS: &str = "Strange Cosmetic Part: Assists";
     Copy,
 )]
 #[repr(u32)]
+#[allow(missing_docs)]
 pub enum StrangePart {
     #[strum(serialize = "Scouts Killed")]
     ScoutsKilled = 10,

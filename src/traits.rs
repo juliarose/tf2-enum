@@ -31,6 +31,7 @@ pub trait Attributes: Sized {
         None
     }
     
+    /// Gets the attribute definition for a given defindex.
     fn by_defindex(&self, defindex: u32) -> Option<&AttributeDef> {
         Self::ATTRIBUTES.iter().find(|attr| attr.defindex == defindex)
     }
@@ -75,12 +76,13 @@ pub trait ItemDefindex: Sized {
     fn from_defindex(defindex: u32) -> Option<Self>;
 }
 
+/// A fixed set of attributes.
 pub trait AttributeSet: Sized + Default {
     /// Max number of items.
     const MAX_COUNT: usize;
     /// The item type.
     type Item: PartialEq + Copy;
-    // An empty set.
+    /// An empty set.
     const NONE: Self;
     
     /// Adds an item to the first available slot.
