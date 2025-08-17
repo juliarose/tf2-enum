@@ -19,6 +19,7 @@ use strum::{Display, EnumString, EnumIter, EnumCount};
     Clone,
     Copy,
 )]
+#[allow(missing_docs)]
 pub enum StockWeapon {
     #[strum(serialize = "Bat")]
     Bat,

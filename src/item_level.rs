@@ -493,9 +493,12 @@ impl From<&KillEaterScoreType> for ItemLevel {
 /// Level belonging to an [`ItemLevel`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Level {
-  pub level: u32,
-  pub required_score: i32,
-  pub name: &'static str,
+    /// The level. In practice, this starts at 0 and increments with each level for a given rank.
+    pub level: u32,
+    /// The required score.
+    pub required_score: i32,
+    /// The name of this level.
+    pub name: &'static str,
 }
 
 impl fmt::Display for Level {
