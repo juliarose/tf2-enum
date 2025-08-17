@@ -1,4 +1,5 @@
 use crate::{AttributeValue, AttributeDef};
+use crate::error::InsertError;
 
 /// Attribute values for an item attribute.
 pub trait Attribute: Sized {
@@ -85,8 +86,13 @@ pub trait AttributeSet: Sized + Default {
     /// An empty set.
     const NONE: Self;
     
-    /// Adds an item to the first available slot.
+    /// Adds an item to the first available slot. Returns `false` if the set is full or already
+    /// contains the value.
     fn insert(&mut self, item: Self::Item) -> bool;
+    
+    /// Adds an item to the first available slot. Same as `insert`, but returns a descriptive error
+    /// to identify why the insert failed.
+    fn try_insert(&mut self, item: Self::Item) -> Result<(), InsertError>;
     
     /// Removes an item from the set. Returns whether the value was present in the set.
     fn remove(&mut self, item: &Self::Item) -> bool;

@@ -4,17 +4,17 @@
 
 ### Added
 - `PartialOrd` and `Ord` traits to `StrangePartSet` and `SpellSet`.
-- `econ_defindex` for `StockWeapon`.
-- `DescriptionFormat` and `EffectType` for traits `Attribute` and `Attributes`.
+- `NONE` const for `SpellSet` and `StrangePartSet`.
+- `as_slice`, `as_slice_mut`, `iter_mut`, `is_full`, `try_insert` methods to `SpellSet` and `StrangePartSet`.
+- `econ_defindex` method for `StockWeapon`.
+- `DescriptionFormat` and `EffectType` enums for traits `Attribute` and `Attributes`.
 - `Colored` trait for definitions associated with a color.
 - `ItemDefindex` trait for definitions associated with an item defindex.
 - `IntoEnumIterator`, `EnumCount`, `TryFromPrimitive`, `IntoPrimitive` re-exports.
 - Missing `From` and `TryFrom` conversions for spell enums.
 - `is_paint_spell` and `is_footprints_spell` methods to `Spell`.
-- `NONE` const for `SpellSet` and `StrangePartSet`.
-- `as_slice`, `as_slice_mut`, `iter_mut`, `is_full` methods to `SpellSet` and `StrangePartSet`.
-- `AttributeValue` type for attribute values.
-- `AttributeDef` type for defintitions associated with multiple attributes.
+- `AttributeValue` enum for attribute values.
+- `AttributeDef` struct for defintitions associated with multiple attributes.
 - Attributes related to economy items. These can be found in `econ_attributes`.
 - `TryFromPrimitive<u32>` impl for `StockWeapon`.
 

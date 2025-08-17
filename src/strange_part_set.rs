@@ -1,6 +1,7 @@
 //! Set for holding up to 3 strange parts.
 
 use crate::{StrangePart, AttributeSet};
+use crate::error::InsertError;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
@@ -195,17 +196,21 @@ impl AttributeSet for StrangePartSet {
     /// assert!(!strange_parts.insert(StrangePart::MedicsKilled));
     /// ```
     fn insert(&mut self, strange_part: StrangePart) -> bool {
+        self.try_insert(strange_part).is_ok()
+    }
+    
+    fn try_insert(&mut self, strange_part: Self::Item) -> Result<(), InsertError> {
         if self.contains(&strange_part) {
-            return false;
+            return Err(InsertError::Duplicate);
         }
         
         if let Some(slot) = self.inner.iter_mut().find(|slot| slot.is_none()) {
             *slot = Some(strange_part);
-            return true;
+            return Ok(());
         }
         
         // full set, insertion failed
-        false
+        Err(InsertError::Full)
     }
     
     /// Removes a strange part.

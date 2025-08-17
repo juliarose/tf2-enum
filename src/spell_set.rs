@@ -1,6 +1,7 @@
 //! Set for holding up to 2 spells.
 
 use crate::{Spell, AttributeSet};
+use crate::error::InsertError;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
@@ -155,19 +156,23 @@ impl AttributeSet for SpellSet {
     /// assert!(!spells.insert(Spell::PumpkinBombs));
     /// ```
     fn insert(&mut self, spell: Spell) -> bool {
+        self.try_insert(spell).is_ok()
+    }
+    
+    fn try_insert(&mut self, spell: Spell) -> Result<(), InsertError> {
         let attribute_defindex = spell.attribute_defindex();
         
         if self.inner.iter().flatten().any(|s| s.attribute_defindex() == attribute_defindex) {
-            return false;
+            return Err(InsertError::Duplicate);
         }
         
         if let Some(slot) = self.inner.iter_mut().find(|slot| slot.is_none()) {
             *slot = Some(spell);
-            return true;
+            return Ok(());
         }
         
         // full set, insertion failed
-        false
+        Err(InsertError::Full)
     }
     
     /// Removes a spell from the set. Returns whether the value was present in the set.
