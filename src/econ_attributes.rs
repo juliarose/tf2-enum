@@ -4,7 +4,7 @@
 //! While the attribute values don't change much, there is no guarantee that Valve won't update
 //! them. The defindex values, however, will always remain the same.
 
-use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
+use crate::{Attribute, AttributeDef, AttributeValue, Attributes, DescriptionFormat, EffectType};
 use std::ops::Deref;
 use std::borrow::Borrow;
 
@@ -797,6 +797,28 @@ impl_attr!(
     false,
     false
 );
+
+/// Represents the set of attributes for "dynamic_recipe_component_defined_item".
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+pub struct DynamicRecipeComponentDefinedItem;
+
+impl Attributes for DynamicRecipeComponentDefinedItem {
+    const DEFINDEX: &[u32] = &[
+        2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+    ];
+    const ATTRIBUTES: &'static [AttributeDef] = &[
+        DynamicRecipeComponentDefinedItem1::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem2::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem3::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem4::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem5::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem6::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem7::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem8::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem9::ATTRIBUTE,
+        DynamicRecipeComponentDefinedItem10::ATTRIBUTE,
+    ];
+}
 
 #[cfg(test)]
 mod tests {
