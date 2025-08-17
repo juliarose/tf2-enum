@@ -5,6 +5,61 @@
 //! them. The defindex values, however, will always remain the same.
 
 use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
+use std::ops::Deref;
+use std::borrow::Borrow;
+
+macro_rules! impl_from_u64 {
+    ($t:ty) => {
+        impl From<u64> for $t {
+            fn from(val: u64) -> Self {
+                Self(val)
+            }
+        }
+        
+        impl From<u32> for $t {
+            fn from(val: u32) -> Self {
+                Self(val as u64)
+            }
+        }
+
+        impl From<&u64> for $t {
+            fn from(val: &u64) -> Self {
+                Self(*val)
+            }
+        }
+
+        impl From<&u32> for $t {
+            fn from(val: &u32) -> Self {
+                Self(*val as u64)
+            }
+        }
+
+        impl std::ops::Deref for $t {
+            type Target = u64;
+            fn deref(&self) -> &Self::Target {
+                &self.0
+            }
+        }
+
+        impl AsRef<u64> for $t {
+            fn as_ref(&self) -> &u64 {
+                &self.0
+            }
+        }
+
+        impl std::borrow::Borrow<u64> for $t {
+            fn borrow(&self) -> &u64 {
+                &self.0
+            }
+        }
+
+        impl From<$t> for u64 {
+            fn from(val: $t) -> Self {
+                val.0
+            }
+        }
+    };
+}
 
 /// Macro to implement Attribute for unit-like attribute structs.
 macro_rules! impl_unit_attr {
@@ -79,17 +134,7 @@ macro_rules! impl_u64_attr {
             }
         }
         
-        impl From<u64> for $t {
-            fn from(val: u64) -> Self {
-                Self(val)
-            }
-        }
-        
-        impl From<u32> for $t {
-            fn from(val: u32) -> Self {
-                Self(val as u64)
-            }
-        }
+        impl_from_u64!($t);
     };
     (
         $t:ty,
@@ -125,17 +170,7 @@ macro_rules! impl_u64_attr {
             }
         }
         
-        impl From<u64> for $t {
-            fn from(val: u64) -> Self {
-                Self(val)
-            }
-        }
-        
-        impl From<u32> for $t {
-            fn from(val: u32) -> Self {
-                Self(val as u64)
-            }
-        }
+        impl_from_u64!($t);
     };
 }
 
@@ -189,6 +224,31 @@ macro_rules! impl_string_attr {
         impl From<&str> for $t {
             fn from(val: &str) -> Self {
                 Self(val.to_owned())
+            }
+        }
+        
+        impl Deref for $t {
+            type Target = str;
+            fn deref(&self) -> &Self::Target {
+                &self.0
+            }
+        }
+
+        impl AsRef<str> for $t {
+            fn as_ref(&self) -> &str {
+                &self.0
+            }
+        }
+
+        impl Borrow<str> for $t {
+            fn borrow(&self) -> &str {
+                &self.0
+            }
+        }
+
+        impl From<$t> for String {
+            fn from(val: $t) -> Self {
+                val.0
             }
         }
     };

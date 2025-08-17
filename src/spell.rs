@@ -32,39 +32,25 @@ use serde::de::{self, Visitor, Deserializer};
     Clone,
     Copy,
 )]
+#[strum(serialize_all = "title_case")]
 pub enum Spell {
-    #[strum(serialize = "Team Spirit Footprints")]
     TeamSpiritFootprints,
-    #[strum(serialize = "Headless Horseshoes")]
     HeadlessHorseshoes,
-    #[strum(serialize = "Corpse Gray Footprints")]
     CorpseGrayFootprints,
-    #[strum(serialize = "Violent Violet Footprints")]
     ViolentVioletFootprints,
-    #[strum(serialize = "Bruised Purple Footprints")]
     BruisedPurpleFootprints,
-    #[strum(serialize = "Gangreen Footprints")]
     GangreenFootprints,
-    #[strum(serialize = "Rotten Orange Footprints")]
     RottenOrangeFootprints,
-    #[strum(serialize = "Die Job")]
     DieJob,
-    #[strum(serialize = "Chromatic Corruption")]
     ChromaticCorruption,
-    #[strum(serialize = "Putrescent Pigmentation")]
     PutrescentPigmentation,
-    #[strum(serialize = "Spectral Spectrum")]
     SpectralSpectrum,
-    #[strum(serialize = "Sinister Staining")]
     SinisterStaining,
     // Allow conversion from "Voices From Below" but serialize as "Voices from Below".
     #[strum(serialize = "Voices From Below", serialize = "Voices from Below")]
     VoicesFromBelow,
-    #[strum(serialize = "Pumpkin Bombs")]
     PumpkinBombs,
-    #[strum(serialize = "Halloween Fire")]
     HalloweenFire,
-    #[strum(serialize = "Exorcism")]
     Exorcism,
 }
 
@@ -397,16 +383,12 @@ impl From<&HalloweenDeathGhosts> for Spell {
     Copy,
 )]
 #[repr(u32)]
+#[strum(serialize_all = "title_case")]
 pub enum PaintSpell {
-    #[strum(serialize = "Die Job")]
     DieJob = 0,
-    #[strum(serialize = "Chromatic Corruption")]
     ChromaticCorruption = 1,
-    #[strum(serialize = "Putrescent Pigmentation")]
     PutrescentPigmentation = 2,
-    #[strum(serialize = "Spectral Spectrum")]
     SpectralSpectrum = 3,
-    #[strum(serialize = "Sinister Staining")]
     SinisterStaining = 4,
 }
 
@@ -479,20 +461,14 @@ impl TryFrom<&Spell> for PaintSpell {
     Copy,
 )]
 #[repr(u32)]
+#[strum(serialize_all = "title_case")]
 pub enum FootprintsSpell {
-    #[strum(serialize = "Team Spirit Footprints")]
     TeamSpiritFootprints = 1,
-    #[strum(serialize = "Headless Horseshoes")]
     HeadlessHorseshoes = 2,
-    #[strum(serialize = "Corpse Gray Footprints")]
     CorpseGrayFootprints = 3100495,
-    #[strum(serialize = "Violent Violet Footprints")]
     ViolentVioletFootprints = 5322826,
-    #[strum(serialize = "Bruised Purple Footprints")]
     BruisedPurpleFootprints = 8208497,
-    #[strum(serialize = "Gangreen Footprints")]
     GangreenFootprints = 8421376,
-    #[strum(serialize = "Rotten Orange Footprints")]
     RottenOrangeFootprints = 13595446,
 }
 

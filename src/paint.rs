@@ -259,6 +259,12 @@ mod tests {
     use super::*;
     
     #[test]
+    fn string_conversions() {
+        assert_eq!(Paint::AColorSimilarToSlate.to_string(), "A Color Similar to Slate");
+        assert_eq!(Paint::ADeepCommitmentToPurple.to_string(), "A Deep Commitment to Purple");
+    }
+    
+    #[test]
     fn converts_to_primitive() {
         assert_eq!(16738740_u32, Paint::PinkAsHell as u32);
     }
