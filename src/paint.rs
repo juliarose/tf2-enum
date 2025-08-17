@@ -1,4 +1,13 @@
-use crate::{Attribute, AttributeValue, AttributeDef, Colored, ItemDefindex, EffectType, DescriptionFormat};
+use crate::{
+    Attribute,
+    AttributeValue,
+    AttributeDef,
+    TryFromAttributeValueU32,
+    Colored,
+    ItemDefindex,
+    EffectType,
+    DescriptionFormat,
+};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -162,6 +171,8 @@ impl Attribute for Paint {
         Some((*self as u32) as f64)
     }
 }
+
+impl TryFromAttributeValueU32 for Paint {}
 
 impl Colored for Paint {
     /// Gets the color of the [`Paint`].

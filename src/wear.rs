@@ -1,4 +1,4 @@
-use crate::{Attribute, AttributeValue, AttributeDef, EffectType};
+use crate::{Attribute, AttributeValue, TryFromAttributeValueU32, AttributeDef, EffectType};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -36,6 +36,19 @@ pub enum Wear {
     BattleScarred = 5,
 }
 
+impl Wear {
+    /// Converts the wear to a float value.
+    pub fn as_float(&self) -> f64 {
+        match self {
+            Self::FactoryNew => 0.2,
+            Self::MinimalWear => 0.4,
+            Self::FieldTested => 0.6,
+            Self::WellWorn => 0.8,
+            Self::BattleScarred => 1.0,
+        }
+    }
+}
+
 /// Represents the "set_item_texture_wear" attribute.
 impl Attribute for Wear {
     const DEFINDEX: u32 = 725;
@@ -58,13 +71,13 @@ impl Attribute for Wear {
     /// Gets the attribute float value.
     fn attribute_float_value(&self) -> Option<f64> {
         // This could be done using arithmetic but this is a little more explicit.
-        Some(match self {
-            Self::FactoryNew => 0.2,
-            Self::MinimalWear => 0.4,
-            Self::FieldTested => 0.6,
-            Self::WellWorn => 0.8,
-            Self::BattleScarred => 1.0,
-        })
+        Some(self.as_float())
+    }
+}
+
+impl TryFromAttributeValueU32 for Wear {
+    fn try_from_attribute_float_value(v: f64) -> Option<Self> {
+        Self::try_from(v).ok()
     }
 }
 

@@ -1,5 +1,13 @@
 use crate::error::TryFromSpellError;
-use crate::{Attribute, AttributeValue, AttributeDef, Attributes, EffectType, DescriptionFormat};
+use crate::{
+    Attribute,
+    AttributeDef,
+    AttributeValue,
+    TryFromAttributeValueU32,
+    Attributes,
+    DescriptionFormat,
+    EffectType,
+};
 use crate::econ_attributes::{
     HalloweenVoiceModulation,
     HalloweenPumpkinExplosions,
@@ -417,6 +425,12 @@ impl Attribute for PaintSpell {
     }
 }
 
+impl TryFromAttributeValueU32 for PaintSpell {
+    fn try_from_attribute_value(_v: AttributeValue) -> Option<Self> {
+        None
+    }
+}
+
 impl TryFrom<Spell> for PaintSpell {
     type Error = TryFromSpellError;
     
@@ -489,14 +503,12 @@ impl Attribute for FootprintsSpell {
         stored_as_integer: false,
     };
     
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
     fn attribute_float_value(&self) -> Option<f64> {
         Some((*self as u32) as f64)
     }
 }
+
+impl TryFromAttributeValueU32 for FootprintsSpell {}
 
 impl TryFrom<Spell> for FootprintsSpell {
     type Error = TryFromSpellError;

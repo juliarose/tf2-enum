@@ -9,10 +9,30 @@ pub trait Attribute: Sized {
     const ATTRIBUTE: AttributeDef;
     
     /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue>;
+    fn attribute_value(&self) -> Option<AttributeValue> {
+        None
+    }
     
     /// Gets the attribute float value.
     fn attribute_float_value(&self) -> Option<f64>;
+}
+
+/// Backwards conversion for attributes associated with an integer value.
+pub trait TryFromAttributeValueU32: Sized + TryFrom<u32> {
+    /// Attempts conversion from an attribute value.
+    #[allow(unused_variables)]
+    fn try_from_attribute_value(v: AttributeValue) -> Option<Self> {
+        None
+    }
+    
+    /// Attempts conversion from an attribute float value.
+    fn try_from_attribute_float_value(v: f64) -> Option<Self> {
+        if v.fract() != 0.0 || v.is_sign_negative() || v > (u32::MAX as f64) {
+            return None;
+        }
+        
+        Self::try_from(v as u32).ok()
+    }
 }
 
 /// Associated attribute values for a set of item attributes.
@@ -82,7 +102,7 @@ pub trait AttributeSet: Sized + Default {
     /// Max number of items.
     const MAX_COUNT: usize;
     /// The item type.
-    type Item: PartialEq + Copy;
+    type Item: PartialEq + Copy + Attributes;
     /// An empty set.
     const NONE: Self;
     

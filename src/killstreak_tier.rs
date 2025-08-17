@@ -1,4 +1,11 @@
-use crate::{Attribute, AttributeValue, AttributeDef, EffectType, DescriptionFormat};
+use crate::{
+    Attribute,
+    AttributeDef,
+    AttributeValue,
+    TryFromAttributeValueU32,
+    DescriptionFormat,
+    EffectType,
+};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
 use serde_repr::{Serialize_repr, Deserialize_repr};
@@ -57,3 +64,5 @@ impl Attribute for KillstreakTier {
         Some((*self as u32) as f64)
     }
 }
+
+impl TryFromAttributeValueU32 for KillstreakTier {}

@@ -1,4 +1,12 @@
-use crate::{Attributes, AttributeValue, AttributeDef, EffectType, StrangePart, ItemLevel};
+use crate::{
+    Attributes,
+    AttributeValue,
+    AttributeDef,
+    TryFromAttributeValueU32,
+    EffectType,
+    StrangePart,
+    ItemLevel,
+};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -282,6 +290,8 @@ impl Attributes for KillEaterScoreType {
         Some((*self as u32) as f64)
     }
 }
+
+impl TryFromAttributeValueU32 for KillEaterScoreType {}
 
 impl TryFrom<StrangePart> for KillEaterScoreType {
     type Error = TryFromPrimitiveError<Self>;

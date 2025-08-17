@@ -56,6 +56,7 @@ mod sheen;
 mod spell;
 mod spell_set;
 mod stock_weapon;
+mod serialize;
 mod strange_part;
 mod strange_part_set;
 mod traits;
@@ -64,7 +65,7 @@ mod wear;
 // Traits and utility re-exports
 pub use strum::{EnumCount, IntoEnumIterator};
 pub use num_enum::{IntoPrimitive, TryFromPrimitive};
-pub use traits::{Attribute, Attributes, AttributeSet, Colored, ItemDefindex};
+pub use traits::{Attribute, Attributes, AttributeSet, TryFromAttributeValueU32, Colored, ItemDefindex};
 
 // Enum re-exports
 pub use attribute_def::AttributeDef;

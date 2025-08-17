@@ -1,4 +1,12 @@
-use crate::{Attributes, AttributeValue, AttributeDef, KillEaterScoreType, ItemDefindex, EffectType};
+use crate::{
+    Attributes,
+    AttributeValue,
+    AttributeDef,
+    TryFromAttributeValueU32,
+    KillEaterScoreType,
+    ItemDefindex,
+    EffectType,
+};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -379,6 +387,8 @@ impl Attributes for StrangePart {
         Some((*self as u32) as f64)
     }
 }
+
+impl TryFromAttributeValueU32 for StrangePart {}
 
 impl ItemDefindex for StrangePart {
     /// Gets the `defindex` for the [`StrangePart`].

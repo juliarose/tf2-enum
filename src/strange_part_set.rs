@@ -1,10 +1,14 @@
 //! Set for holding up to 3 strange parts.
 
-use crate::{StrangePart, AttributeSet};
+use crate::{Attributes, AttributeSet, StrangePart, TryFromAttributeValueU32};
 use crate::error::InsertError;
+use crate::serialize::SerializedAttribute;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
+use serde::{Serialize, Deserialize, Serializer, Deserializer};
+use serde::ser::SerializeSeq;
+use serde::de::{SeqAccess, Visitor};
 
 const STRANGE_PART_COUNT: usize = 3;
 
@@ -458,10 +462,98 @@ impl fmt::Display for StrangePartSet {
     }
 }
 
+impl Serialize for StrangePartSet {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let parts: Vec<_> = self.into_iter().collect();
+        let mut seq = serializer.serialize_seq(Some(parts.len()))?;
+        
+        for (part, defindex) in parts.iter().zip(StrangePart::DEFINDEX.iter()) {
+            seq.serialize_element(&SerializedAttribute {
+                defindex: *defindex,
+                value: None,
+                float_value: part.attribute_float_value() ,
+            })?;
+        }
+
+        seq.end()
+    }
+}
+
+impl<'de> Deserialize<'de> for StrangePartSet {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct StrangePartSetVisitor;
+
+        impl<'de> Visitor<'de> for StrangePartSetVisitor {
+            type Value = StrangePartSet;
+
+            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                formatter.write_str("an array of maps with defindex, float_value")
+            }
+
+            fn visit_seq<A>(self, mut seq: A) -> Result<StrangePartSet, A::Error>
+            where
+                A: SeqAccess<'de>,
+            {
+                let mut set = StrangePartSet::new();
+                
+                while let Some(map) = seq.next_element::<SerializedAttribute>()? {
+                    if !<StrangePartSet as AttributeSet>::Item::DEFINDEX.contains(&map.defindex) {
+                        // Skip if defindex is not for a score type
+                        continue;
+                    }
+                    
+                    let float_value = map.float_value
+                        .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
+                    let part = <StrangePartSet as AttributeSet>::Item::try_from_attribute_float_value(float_value)
+                        .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
+                    
+                    set.insert(part);
+                }
+                
+                Ok(set)
+            }
+        }
+        
+        deserializer.deserialize_seq(StrangePartSetVisitor)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::traits::Attributes;
+    
+    #[test]
+    fn serializes() {
+        let strange_parts = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::CriticalKills),
+        ]);
+        let json = serde_json::to_string(&strange_parts).unwrap();
+        let raw = r#"[{"defindex":380,"float_value":77},{"defindex":382,"float_value":34},{"defindex":384,"float_value":33}]"#;
+        
+        assert_eq!(json, raw);
+    }
+    
+    #[test]
+    fn deserializes() {
+        let raw = r#"[{"defindex":380,"float_value":77},{"defindex":382,"float_value":34},{"defindex":384,"float_value":33}]"#;
+        let strange_parts: StrangePartSet = serde_json::from_str(raw).unwrap();
+        let expected = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::CriticalKills),
+        ]);
+
+        assert_eq!(strange_parts, expected);
+    }
     
     #[test]
     fn iterates_strange_parts() {
