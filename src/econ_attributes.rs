@@ -832,8 +832,90 @@ impl Attributes for DynamicRecipeComponentDefinedItem {
     ];
 }
 
+/// Represents the set "kill_eater", "kill_eater_2", and "kill_eater_3" attributes. The integer
+/// refers to the score count.
 pub struct KillEaterScore(pub u32);
 
+impl Attributes for KillEaterScore {
+    const DEFINDEX: &'static [u32] = &[214, 294, 494];
+    const ATTRIBUTES: &'static [AttributeDef] = &[
+        AttributeDef {
+            defindex: 214,
+            name: "kill eater",
+            attribute_class: Some("kill_eater"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: true,
+            uses_float_value: false,
+        },
+        AttributeDef {
+            defindex: 294,
+            name: "kill eater 2",
+            attribute_class: Some("kill_eater_2"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: true,
+            uses_float_value: false,
+        },
+        AttributeDef {
+            defindex: 494,
+            name: "kill eater 3",
+            attribute_class: Some("kill_eater_3"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: true,
+            uses_float_value: false,
+        },
+    ];
+}
+
+/// Refers to the "kill_eater_user_1", "kill_eater_user_2", and "kill_eater_user_3" attributes.
+pub struct KillEaterUserScore(pub u32);
+
+impl Attributes for KillEaterUserScore {
+    const DEFINDEX: &'static [u32] = &[379, 381, 383];
+    const ATTRIBUTES: &'static [AttributeDef] = &[
+        AttributeDef {
+            defindex: 379,
+            name: "kill eater user 1",
+            attribute_class: Some("kill_eater_user_1"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: true,
+            uses_float_value: false,
+        },
+        AttributeDef {
+            defindex: 381,
+            name: "kill eater user 2",
+            attribute_class: Some("kill_eater_user_2"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: true,
+            uses_float_value: false,
+        },
+        AttributeDef {
+            defindex: 383,
+            name: "kill eater user 3",
+            attribute_class: Some("kill_eater_user_3"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: true,
+            uses_float_value: false,
+        },
+    ];
+}
 
 #[cfg(test)]
 mod tests {

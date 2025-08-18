@@ -21,6 +21,7 @@
 - `TryFromPrimitive<u32>` impl for `StockWeapon`.
 - `Capability::CanUnusualify`.
 - `Serialize` and `Deserialize` derives for `Capability`.
+- The base kill eater score type attributes for `KillEaterScoreType`.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.

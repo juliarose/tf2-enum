@@ -227,6 +227,18 @@ pub enum KillEaterScoreType {
 }
 
 impl KillEaterScoreType {
+    /// The defindex values for the kill eater score types.
+    pub const DEFINDEX_SCORE_TYPES: &'static [u32] = &[
+        292,
+        293,
+        495,
+    ];
+    /// The defindex values for the kill eater user score types.
+    pub const DEFINDEX_USER_SCORE_TYPES: &'static [u32] = &[
+        380,
+        382,
+        384,
+    ];
     /// Converts this [`KillEaterScoreType`] into its related [`StrangePart`], if it exists.
     pub fn strange_part(&self) -> Option<StrangePart> {
         StrangePart::try_from(self).ok()

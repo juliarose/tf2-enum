@@ -3,7 +3,6 @@
 use crate::{
     Attribute,
     AttributeSet,
-    Attributes,
     TryFromAttributeValueU32,
     FootprintsSpell,
     PaintSpell,

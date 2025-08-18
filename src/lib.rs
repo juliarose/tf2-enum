@@ -1,11 +1,13 @@
-//! Provides enumerated types for models related to the Team Fortress 2 item schema. Other useful
-//! utilities relating to the schema are also included.
+//! Provides enumerated types for models related to the Team Fortress 2 item schema. Other
+//! utilities relating to the schema are also included, as well as related item and
+//! attribute conversion helpers. This crate provides a number of attribute utilities, mostly
+//! related to trading.
 //! 
 //! For the most part, definitions here are relatively stable and don't have any new values added
 //! or changed. However, Valve can implement changes to the item schema at any time, which may
 //! affect some of the values defined here.
 //! 
-//! Definitions for things that are often updated like items, attributes, skins, and particles are
+//! Definitions for things that are often updated like items, skins, and particles are
 //! not included.
 //! 
 //! ## Usage
