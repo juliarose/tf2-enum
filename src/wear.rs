@@ -57,6 +57,7 @@ impl Wear {
 
 impl Attribute for Wear {
     const DEFINDEX: u32 = 725;
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "set_item_texture_wear" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: Self::DEFINDEX,
@@ -67,7 +68,6 @@ impl Attribute for Wear {
         effect_type: EffectType::Positive,
         hidden: true,
         stored_as_integer: false,
-        uses_float_value: true,
     };
     
     /// Gets the attribute float value.

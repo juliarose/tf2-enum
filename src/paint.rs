@@ -149,6 +149,7 @@ impl Paint {
 
 impl Attribute for Paint {
     const DEFINDEX: u32 = 142;
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "set_item_tint_rgb" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 142,
@@ -159,7 +160,6 @@ impl Attribute for Paint {
         effect_type: EffectType::Neutral,
         hidden: true,
         stored_as_integer: false,
-        uses_float_value: true,
     };
     
     /// Gets the attribute float value.

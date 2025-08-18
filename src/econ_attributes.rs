@@ -70,6 +70,7 @@ macro_rules! impl_attr {
     ) => {
         impl Attribute for $t {
             const DEFINDEX: u32 = $defindex;
+            const USES_FLOAT_VALUE: bool = true;
             const ATTRIBUTE: AttributeDef = AttributeDef {
                 defindex: $defindex,
                 name: $name,
@@ -79,7 +80,6 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
-                uses_float_value: true,
             };
             
             // These attributes are booleans but our structs are unit types because we assume if an
@@ -103,6 +103,7 @@ macro_rules! impl_attr {
     ) => {
         impl Attribute for $t {
             const DEFINDEX: u32 = $defindex;
+            const USES_FLOAT_VALUE: bool = false;
             const ATTRIBUTE: AttributeDef = AttributeDef {
                 defindex: $defindex,
                 name: $name,
@@ -112,7 +113,6 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
-                uses_float_value: false,
             };
             
             fn attribute_value(&self) -> AttributeValue {
@@ -150,6 +150,7 @@ macro_rules! impl_attr {
     ) => {
         impl Attribute for $t {
             const DEFINDEX: u32 = $defindex;
+            const USES_FLOAT_VALUE: bool = true;
             const ATTRIBUTE: AttributeDef = AttributeDef {
                 defindex: $defindex,
                 name: $name,
@@ -159,7 +160,6 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
-                uses_float_value: true,
             };
             
             fn attribute_float_value(&self) -> Option<f32> {
@@ -183,6 +183,7 @@ macro_rules! impl_attr {
     ) => {
         impl Attribute for $t {
             const DEFINDEX: u32 = $defindex;
+            const USES_FLOAT_VALUE: bool = false;
             const ATTRIBUTE: AttributeDef = AttributeDef {
                 defindex: $defindex,
                 name: $name,
@@ -192,7 +193,6 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
-                uses_float_value: false,
             };
             
             fn attribute_value(&self) -> AttributeValue {
@@ -337,7 +337,7 @@ impl_attr!(
 pub struct SetAttachedParticle(pub u32);
 
 impl_attr!(
-    u32,
+    u32_float,
     SetAttachedParticle,
     134,
     "attach particle effect",
@@ -818,6 +818,7 @@ impl Attributes for DynamicRecipeComponentDefinedItem {
     const DEFINDEX: &[u32] = &[
         2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
     ];
+    const USES_FLOAT_VALUE: bool = true;
     const ATTRIBUTES: &'static [AttributeDef] = &[
         DynamicRecipeComponentDefinedItem1::ATTRIBUTE,
         DynamicRecipeComponentDefinedItem2::ATTRIBUTE,
@@ -838,6 +839,7 @@ pub struct KillEaterScore(pub u32);
 
 impl Attributes for KillEaterScore {
     const DEFINDEX: &'static [u32] = &[214, 294, 494];
+    const USES_FLOAT_VALUE: bool = false;
     const ATTRIBUTES: &'static [AttributeDef] = &[
         AttributeDef {
             defindex: 214,
@@ -848,7 +850,6 @@ impl Attributes for KillEaterScore {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: true,
-            uses_float_value: false,
         },
         AttributeDef {
             defindex: 294,
@@ -859,7 +860,6 @@ impl Attributes for KillEaterScore {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: true,
-            uses_float_value: false,
         },
         AttributeDef {
             defindex: 494,
@@ -870,7 +870,6 @@ impl Attributes for KillEaterScore {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: true,
-            uses_float_value: false,
         },
     ];
 }
@@ -880,6 +879,7 @@ pub struct KillEaterUserScore(pub u32);
 
 impl Attributes for KillEaterUserScore {
     const DEFINDEX: &'static [u32] = &[379, 381, 383];
+    const USES_FLOAT_VALUE: bool = false;
     const ATTRIBUTES: &'static [AttributeDef] = &[
         AttributeDef {
             defindex: 379,
@@ -890,7 +890,6 @@ impl Attributes for KillEaterUserScore {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: true,
-            uses_float_value: false,
         },
         AttributeDef {
             defindex: 381,
@@ -901,7 +900,6 @@ impl Attributes for KillEaterUserScore {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: true,
-            uses_float_value: false,
         },
         AttributeDef {
             defindex: 383,
@@ -912,7 +910,6 @@ impl Attributes for KillEaterUserScore {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: true,
-            uses_float_value: false,
         },
     ];
 }

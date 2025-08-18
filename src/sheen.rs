@@ -44,6 +44,7 @@ pub enum Sheen {
 
 impl Attribute for Sheen {
     const DEFINDEX: u32 = 2014;
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "killstreak_idleeffect" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 2014,
@@ -54,7 +55,6 @@ impl Attribute for Sheen {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
-        uses_float_value: true,
     };
     
     /// Gets the attribute float value.

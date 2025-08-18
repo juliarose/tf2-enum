@@ -136,6 +136,7 @@ impl Attributes for Spell {
         1008,
         1009,
     ];
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "set_item_tint_rgb_override", "halloween_footstep_type",
     /// "halloween_voice_modulation", "halloween_pumpkin_explosions", "halloween_green_flames",
     /// and "halloween_death_ghosts" attributes.
@@ -149,7 +150,6 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1005,
@@ -160,7 +160,6 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1006,
@@ -171,7 +170,6 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1007,
@@ -182,7 +180,6 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1008,
@@ -193,7 +190,6 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1009,
@@ -204,7 +200,6 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
-            uses_float_value: true,
         },
     ];
     
@@ -405,6 +400,7 @@ pub enum PaintSpell {
 
 impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "set_item_tint_rgb_override" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 1004,
@@ -415,7 +411,6 @@ impl Attribute for PaintSpell {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
-        uses_float_value: true,
     };
     
     fn attribute_float_value(&self) -> Option<f32> {
@@ -499,6 +494,7 @@ pub enum FootprintsSpell {
 
 impl Attribute for FootprintsSpell {
     const DEFINDEX: u32 = 1005;
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "halloween_footstep_type" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 1005,
@@ -509,7 +505,6 @@ impl Attribute for FootprintsSpell {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
-        uses_float_value: true,
     };
     
     fn attribute_float_value(&self) -> Option<f32> {

@@ -42,6 +42,7 @@ pub enum KillstreakTier {
 
 impl Attribute for KillstreakTier {
     const DEFINDEX: u32 = 2025;
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "killstreak_tier" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 2025,
@@ -52,7 +53,6 @@ impl Attribute for KillstreakTier {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
-        uses_float_value: true,
     };
     
     /// Gets the attribute float value.

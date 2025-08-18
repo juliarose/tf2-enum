@@ -258,6 +258,7 @@ impl Attributes for KillEaterScoreType {
         382,
         384,
     ];
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "kill_eater_score_type", "kill_eater_score_type_2", "kill_eater_score_type_3",
     /// "kill_eater_user_score_type_1", "kill_eater_user_score_type_2", and
     /// "kill_eater_user_score_type_3", attributes.
@@ -271,7 +272,6 @@ impl Attributes for KillEaterScoreType {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 293,
@@ -282,7 +282,6 @@ impl Attributes for KillEaterScoreType {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 495,
@@ -293,7 +292,6 @@ impl Attributes for KillEaterScoreType {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 380,
@@ -304,7 +302,6 @@ impl Attributes for KillEaterScoreType {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 382,
@@ -315,7 +312,6 @@ impl Attributes for KillEaterScoreType {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: false,
-            uses_float_value: true,
         },
         AttributeDef {
             defindex: 384,
@@ -326,7 +322,6 @@ impl Attributes for KillEaterScoreType {
             effect_type: EffectType::Positive,
             hidden: true,
             stored_as_integer: false,
-            uses_float_value: true,
         },
     ];
     

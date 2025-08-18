@@ -45,6 +45,7 @@ pub enum Killstreaker {
 
 impl Attribute for Killstreaker {
     const DEFINDEX: u32 = 2013;
+    const USES_FLOAT_VALUE: bool = true;
     /// Represents the "killstreak_effect" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 2013,
@@ -55,7 +56,6 @@ impl Attribute for Killstreaker {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
-        uses_float_value: true,
     };
     
     /// Gets the attribute float value.
