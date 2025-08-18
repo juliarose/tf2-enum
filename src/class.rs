@@ -1,5 +1,6 @@
 use crate::StockWeapon;
 use serde::{Deserialize, Serialize};
+use num_enum::{TryFromPrimitive, IntoPrimitive};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 
 /// Class.
@@ -16,29 +17,34 @@ use strum::{Display, EnumString, EnumIter, EnumCount};
     EnumString,
     EnumIter,
     EnumCount,
+    TryFromPrimitive,
+    IntoPrimitive,
     Clone,
     Copy,
 )]
+#[strum(serialize_all = "snake_case")]
+#[serde(rename_all = "snake_case")]
 #[allow(missing_docs)]
+#[repr(u32)]
 pub enum Class {
     #[serde(alias = "scout")]
-    Scout,
-    #[serde(alias = "soldier")]
-    Soldier,
-    #[serde(alias = "pyro")]
-    Pyro,
-    #[serde(alias = "demoman")]
-    Demoman,
-    #[serde(alias = "heavy")]
-    Heavy,
-    #[serde(alias = "engineer")]
-    Engineer,
-    #[serde(alias = "medic")]
-    Medic,
+    Scout = 1,
     #[serde(alias = "sniper")]
-    Sniper,
+    Sniper = 2,
+    #[serde(alias = "soldier")]
+    Soldier = 3,
+    #[serde(alias = "demoman")]
+    Demoman = 4,
+    #[serde(alias = "medic")]
+    Medic = 5,
+    #[serde(alias = "heavy")]
+    Heavy = 6,
+    #[serde(alias = "pyro")]
+    Pyro = 7,
     #[serde(alias = "spy")]
-    Spy,
+    Spy = 8,
+    #[serde(alias = "engineer")]
+    Engineer = 9,
 }
 
 impl Class {

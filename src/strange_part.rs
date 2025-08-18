@@ -1,10 +1,11 @@
+
 use crate::{
-    Attributes,
     AttributeDef,
-    TryFromAttributeValueU32,
-    KillEaterScoreType,
-    HasItemDefindex,
+    Attributes,
     EffectType,
+    HasItemDefindex,
+    KillEaterScoreType,
+    TryFromAttributeValueU32,
 };
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumString, EnumIter, EnumCount};

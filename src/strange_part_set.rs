@@ -284,7 +284,8 @@ impl AttributeSet for StrangePartSet {
         false
     }
     
-    /// Converts each element to an [`ItemAttribute`]. 
+    /// Converts each element to an [`ItemAttribute`]. This doesn't include attributes for the
+    /// score counters, only the score types.
     fn iter_attributes(&self) -> impl Iterator<Item = ItemAttribute> {
         self
             .into_iter()
