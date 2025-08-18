@@ -6,12 +6,12 @@ use serde::Serializer;
 
 /// Serializes a float into an integer when the float is a whole number.
 pub fn option_float_as_integers_when_whole<S: Serializer>(
-    value: &Option<f64>,
+    value: &Option<f32>,
     s: S,
 ) -> Result<S::Ok, S::Error> {
     match value {
-        Some(v) if v.fract() == 0.0 && (*v as u64 as f64 == *v) => s.serialize_u64(*v as u64),
-        Some(v) => s.serialize_f64(*v),
+        Some(v) if v.fract() == 0.0 && (*v as u64 as f32 == *v) => s.serialize_u64(*v as u64),
+        Some(v) => s.serialize_f32(*v),
         None => s.serialize_none(),
     }
 }

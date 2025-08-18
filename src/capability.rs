@@ -1,8 +1,11 @@
+use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 
-/// Capability. Not meant for serialization.
+/// Capability.
 #[derive(
     Debug,
+    Deserialize,
+    Serialize,
     Hash,
     Eq,
     PartialEq,
@@ -15,41 +18,33 @@ use strum::{Display, EnumString, EnumIter, EnumCount};
     Clone,
     Copy,
 )]
+#[strum(serialize_all = "snake_case")]
+#[serde(rename_all = "snake_case")]
 pub enum Capability {
-    /// Whether the item can be gift wrapped.
-    #[strum(serialize = "can gift wrap")]
-    CanGiftWrap,
-    /// Whether the item can be renamed.
-    #[strum(serialize = "nameable")]
-    Nameable,
-    /// Whether the item can have a craft number.
-    #[strum(serialize = "can craft mark")]
-    CanCraftMark,
-    /// Whether the item can have strange parts.
-    #[strum(serialize = "strange parts")]
-    StrangeParts,
-    /// Whether the item can be restored.
-    #[strum(serialize = "can be restored")]
-    CanBeRestored,
-    /// Whether the item can be strangified
-    #[strum(serialize = "can strangify")]
-    CanStrangify,
-    /// Whether the item can be card upgraded.
-    #[strum(serialize = "can card upgrade")]
-    CanCardUpgrade,
-    /// Whether the item can be consumed.
-    #[strum(serialize = "can consume")]
-    CanConsume,
-    /// Whether the item can be killstreakified.
-    #[strum(serialize = "can killstreakify")]
-    CanKillstreakify,
-    /// Whether the item can be crafted if purchased.
-    #[strum(serialize = "can craft if purchased")]
-    CanCraftIfPurchased,
     /// Whether the item can be painted.
-    #[strum(serialize = "paintable")]
     Paintable,
+    /// Whether the item can be renamed.
+    Nameable,
+    /// Whether the item can be crafted if purchased.
+    CanCraftIfPurchased,
+    /// Whether the item can be gift wrapped.
+    CanGiftWrap,
     /// Whether the item can have a craft count.
-    #[strum(serialize = "can craft count")]
     CanCraftCount,
+    /// Whether the item can have a craft number.
+    CanCraftMark,
+    /// Whether the item can be restored.
+    CanBeRestored,
+    /// Whether the item can have strange parts.
+    StrangeParts,
+    /// Whether the item can be card upgraded.
+    CanCardUpgrade,
+    /// Whether the item can be strangified
+    CanStrangify,
+    /// Whether the item can be killstreakified.
+    CanKillstreakify,
+    /// Whether the item can be consumed.
+    CanConsume,
+    /// Whether the item can be unusualified.
+    CanUnusualify,
 }

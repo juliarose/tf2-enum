@@ -9,12 +9,14 @@ pub trait Attribute: Sized {
     const ATTRIBUTE: AttributeDef;
     
     /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
+    fn attribute_value(&self) -> AttributeValue {
+        self.attribute_float_value()
+            .map(|v| v.to_bits().into())
+            .unwrap_or_default()
     }
     
     /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64>;
+    fn attribute_float_value(&self) -> Option<f32>;
 }
 
 /// Associated attribute values for a set of item attributes.
@@ -25,17 +27,19 @@ pub trait Attributes: Sized {
     const ATTRIBUTES: &'static [AttributeDef];
     
     /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
+    fn attribute_value(&self) -> AttributeValue {
+        self.attribute_float_value()
+            .map(|v| (v.to_bits() as u32).into())
+            .unwrap_or_default()
     }
     
     /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
+    fn attribute_float_value(&self) -> Option<f32> {
         None
     }
     
     /// Gets the attribute definition for a given defindex.
-    fn by_defindex(&self, defindex: u32) -> Option<&AttributeDef> {
+    fn get_attribute_def_by_defindex(defindex: u32) -> Option<&'static AttributeDef> {
         Self::ATTRIBUTES.iter().find(|attr| attr.defindex == defindex)
     }
 }
@@ -49,8 +53,8 @@ pub trait TryFromAttributeValueU32: Sized + TryFrom<u32> {
     }
     
     /// Attempts conversion from an attribute float value.
-    fn try_from_attribute_float_value(v: f64) -> Option<Self> {
-        if v.fract() != 0.0 || v.is_sign_negative() || v > (u32::MAX as f64) {
+    fn try_from_attribute_float_value(v: f32) -> Option<Self> {
+        if v.fract() != 0.0 || v.is_sign_negative() || v > (u32::MAX as f32) {
             return None;
         }
         
@@ -159,6 +163,21 @@ pub trait AttributeSet: Sized + Default {
         self.len() == Self::MAX_COUNT
     }
     
+    /// Gets the capacity of the set.
+    fn capacity(&self) -> usize {
+        Self::MAX_COUNT
+    }
+    
+    /// Gets the first item in the set.
+    fn first(&self) -> Option<&Self::Item> {
+        self.iter().next()
+    }
+    
+    /// Gets the last item in the set.
+    fn last(&self) -> Option<&Self::Item> {
+        self.iter().last()
+    }
+    
     /// Returns the items that are in `self` but not in `other`.
     fn difference(&self, other: &Self) -> Self {
         let mut result = Self::default();
@@ -216,6 +235,27 @@ pub trait AttributeSet: Sized + Default {
     /// Returns a mutable iterator over the set.
     fn iter_mut(&mut self) -> impl Iterator<Item = &mut Self::Item> {
         self.as_mut_slice().iter_mut().filter_map(|opt| opt.as_mut())
+    }
+    
+    /// Retains only the items specified by the predicate.
+    fn retain<F>(&mut self, mut f: F)
+    where
+        F: FnMut(&Self::Item) -> bool,
+    {
+        for slot in self.as_mut_slice() {
+            if let Some(ref item) = slot {
+                if !f(item) {
+                    *slot = None;
+                }
+            }
+        }
+    }
+    
+    /// Extends items from an iterator into the set.
+    fn extend<I: IntoIterator<Item = Self::Item>>(&mut self, iter: I) {
+        for item in iter {
+            self.insert(item);
+        }
     }
     
     /// Converts each element to an [`ItemAttribute`]. 

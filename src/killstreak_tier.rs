@@ -1,7 +1,6 @@
 use crate::{
     Attribute,
     AttributeDef,
-    AttributeValue,
     TryFromAttributeValueU32,
     DescriptionFormat,
     EffectType,
@@ -53,16 +52,12 @@ impl Attribute for KillstreakTier {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
+        uses_float_value: true,
     };
     
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
     /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
-        Some((*self as u32) as f64)
+    fn attribute_float_value(&self) -> Option<f32> {
+        Some((*self as u32) as f32)
     }
 }
 

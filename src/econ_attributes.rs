@@ -17,56 +17,39 @@ use crate::{
 use std::ops::Deref;
 use std::borrow::Borrow;
 
-macro_rules! impl_from_u64 {
+macro_rules! impl_from_u32 {
     ($t:ty) => {
         impl TryFromAttributeValueU32 for $t {}
         
-        impl From<u64> for $t {
-            fn from(val: u64) -> Self {
-                Self(val)
-            }
-        }
-        
         impl From<u32> for $t {
             fn from(val: u32) -> Self {
-                Self(val as u64)
-            }
-        }
-
-        impl From<&u64> for $t {
-            fn from(val: &u64) -> Self {
-                Self(*val)
+                Self(val)
             }
         }
         
         impl From<&u32> for $t {
             fn from(val: &u32) -> Self {
-                Self(*val as u64)
+                Self(*val)
             }
         }
-
+        
         impl std::ops::Deref for $t {
-            type Target = u64;
+            type Target = u32;
+            
             fn deref(&self) -> &Self::Target {
                 &self.0
             }
         }
 
-        impl AsRef<u64> for $t {
-            fn as_ref(&self) -> &u64 {
+        impl AsRef<u32> for $t {
+            fn as_ref(&self) -> &u32 {
                 &self.0
             }
         }
 
-        impl std::borrow::Borrow<u64> for $t {
-            fn borrow(&self) -> &u64 {
+        impl std::borrow::Borrow<u32> for $t {
+            fn borrow(&self) -> &u32 {
                 &self.0
-            }
-        }
-
-        impl From<$t> for u64 {
-            fn from(val: $t) -> Self {
-                val.0
             }
         }
     };
@@ -96,19 +79,18 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
+                uses_float_value: true,
             };
             
-            fn attribute_value(&self) -> Option<AttributeValue> {
-                None
-            }
-            
-            fn attribute_float_value(&self) -> Option<f64> {
-                None
+            // These attributes are booleans but our structs are unit types because we assume if an
+            //  item has attribute that this is set to true.
+            fn attribute_float_value(&self) -> Option<f32> {
+                Some(1.0)
             }
         }
     };
     (
-        u64,
+        u32,
         $t:ty,
         $defindex:expr,
         $name:expr,
@@ -130,13 +112,14 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
+                uses_float_value: false,
             };
             
-            fn attribute_value(&self) -> Option<AttributeValue> {
-                Some(self.0.into())
+            fn attribute_value(&self) -> AttributeValue {
+                self.0.into()
             }
             
-            fn attribute_float_value(&self) -> Option<f64> {
+            fn attribute_float_value(&self) -> Option<f32> {
                 None
             }
         }
@@ -151,10 +134,10 @@ macro_rules! impl_attr {
             }
         }
         
-        impl_from_u64!($t);
+        impl_from_u32!($t);
     };
     (
-        u64_float,
+        u32_float,
         $t:ty,
         $defindex:expr,
         $name:expr,
@@ -176,18 +159,15 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
+                uses_float_value: true,
             };
             
-            fn attribute_value(&self) -> Option<AttributeValue> {
-                None
-            }
-            
-            fn attribute_float_value(&self) -> Option<f64> {
-                Some(self.0 as f64)
+            fn attribute_float_value(&self) -> Option<f32> {
+                Some(self.0 as f32)
             }
         }
         
-        impl_from_u64!($t);
+        impl_from_u32!($t);
     };
     (
         string,
@@ -212,13 +192,14 @@ macro_rules! impl_attr {
                 effect_type: $effect_type,
                 hidden: $hidden,
                 stored_as_integer: $stored_as_integer,
+                uses_float_value: false,
             };
             
-            fn attribute_value(&self) -> Option<AttributeValue> {
-                Some(self.0.clone().into())
+            fn attribute_value(&self) -> AttributeValue {
+                self.0.clone().into()
             }
 
-            fn attribute_float_value(&self) -> Option<f64> {
+            fn attribute_float_value(&self) -> Option<f32> {
                 None
             }
         }
@@ -319,10 +300,10 @@ impl_attr!(
 /// 
 /// The value refers to the number of kills, or score count.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct KillEater(pub u64);
+pub struct KillEater(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     KillEater,
     214,
     "kill eater",
@@ -336,10 +317,10 @@ impl_attr!(
 
 /// Represents the "taunt attach particle index" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct TauntAttachParticleIndex(pub u64);
+pub struct TauntAttachParticleIndex(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     TauntAttachParticleIndex,
     2041,
     "taunt attach particle index",
@@ -353,10 +334,10 @@ impl_attr!(
 
 /// Represents the "set_attached_particle" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct SetAttachedParticle(pub u64);
+pub struct SetAttachedParticle(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     SetAttachedParticle,
     134,
     "attach particle effect",
@@ -370,10 +351,10 @@ impl_attr!(
 
 /// Represents the "paintkit_proto_def_index" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct PaintkitProtoDefIndex(pub u64);
+pub struct PaintkitProtoDefIndex(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     PaintkitProtoDefIndex,
     834,
     "paintkit_proto_def_index",
@@ -387,10 +368,10 @@ impl_attr!(
 
 /// Represents the "tool_target_item" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct ToolTargetItem(pub u64);
+pub struct ToolTargetItem(pub u32);
 
 impl_attr!(
-    u64,
+    u32_float,
     ToolTargetItem,
     2012,
     "tool target item",
@@ -404,10 +385,10 @@ impl_attr!(
 
 /// Represents the "supply_crate_series" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct SupplyCrateSeries(pub u64);
+pub struct SupplyCrateSeries(pub u32);
 
 impl_attr!(
-    u64_float,
+    u32_float,
     SupplyCrateSeries,
     187,
     "set supply crate series",
@@ -421,10 +402,10 @@ impl_attr!(
 
 /// Represents the "series_number" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct SeriesNumber(pub u64);
+pub struct SeriesNumber(pub u32);
 
 impl_attr!(
-    u64_float,
+    u32_float,
     SeriesNumber,
     2031,
     "series number",
@@ -472,10 +453,10 @@ impl_attr!(
 
 /// Represents the "unique_craft_index" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct UniqueCraftIndex(pub u64);
+pub struct UniqueCraftIndex(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     UniqueCraftIndex,
     229,
     "unique craft index",
@@ -490,10 +471,10 @@ impl_attr!(
 /// Represents the "makers_mark_id" attribute. The integer refers to the account's 32-bit SteamID
 /// of the crafter.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct MakersMarkId(pub u64);
+pub struct MakersMarkId(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     MakersMarkId,
     228,
     "makers mark id",
@@ -508,10 +489,10 @@ impl_attr!(
 /// Represents the "gifter_account_id" attribute. The integer refers to the account's 32-bit
 /// SteamID.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct GifterAccountId(pub u64);
+pub struct GifterAccountId(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     GifterAccountId,
     186,
     "gifter account id",
@@ -525,10 +506,10 @@ impl_attr!(
 
 /// Represents the "event_date" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct EventDate(pub u64);
+pub struct EventDate(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     EventDate,
     185,
     "event date",
@@ -542,10 +523,10 @@ impl_attr!(
 
 /// Represents the "is_australium_item" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct TradableAfterDate(pub u64);
+pub struct TradableAfterDate(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     TradableAfterDate,
     211,
     "tradable after date",
@@ -559,10 +540,10 @@ impl_attr!(
 
 /// Represents the "custom_texture_lo" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct CustomTextureLo(pub u64);
+pub struct CustomTextureLo(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     CustomTextureLo,
     152,
     "custom texture lo",
@@ -576,10 +557,10 @@ impl_attr!(
 
 /// Represents the "custom_texture_hi" attribute.
 #[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct CustomTextureHi(pub u64);
+pub struct CustomTextureHi(pub u32);
 
 impl_attr!(
-    u64,
+    u32,
     CustomTextureHi,
     227,
     "custom texture hi",
@@ -857,26 +838,27 @@ mod tests {
     
     #[test]
     fn uses_correct_value() {
-        assert!(SeriesNumber::from(1u64).attribute_float_value().is_some());
-        assert_eq!(SeriesNumber::from(1u64).attribute_float_value().unwrap(), 1.0);
-        assert!(SeriesNumber::from(1u64).attribute_value().is_none());
+        assert!(SeriesNumber::from(1u32).attribute_float_value().is_some());
+        assert_eq!(SeriesNumber::from(1u32).attribute_float_value().unwrap(), 1.0);
         assert!(SupplyCrateSeries::from(42u32).attribute_float_value().is_some());
         assert_eq!(SupplyCrateSeries::from(42u32).attribute_float_value().unwrap(), 42.0);
-        
-        assert!(KillEater::from(123u64).attribute_value().is_some());
-        assert_eq!(KillEater::from(123u64).attribute_value().unwrap(), AttributeValue::from(123u64));
-        
-        assert!(CustomNameAttr::from("TestName").attribute_value().is_some());
-        assert_eq!(CustomNameAttr::from("TestName").attribute_value().unwrap(), AttributeValue::from("TestName"));
-        
-        assert!(IsAustralium.attribute_value().is_none());
-        assert!(IsAustralium.attribute_float_value().is_none());
-        assert!(HalloweenVoiceModulation.attribute_value().is_none());
+        assert_eq!(KillEater::from(123u32).attribute_value(), AttributeValue::from(123u32));
+        assert_eq!(CustomNameAttr::from("TestName").attribute_value(), AttributeValue::from("TestName"));
     }
     
     #[test]
     fn equals() {
-        assert_eq!(SupplyCrateSeries::from(1u64), SupplyCrateSeries::from(1u64));
-        assert_eq!(*SupplyCrateSeries::from(1u64).deref(), 1u64);
+        assert_eq!(SupplyCrateSeries::from(1u32), SupplyCrateSeries::from(1u32));
+        assert_eq!(*SupplyCrateSeries::from(1u32).deref(), 1u32);
+    }
+    
+    #[test]
+    fn gets_attribute_values() {
+        let series_number = SeriesNumber::from(2u32);
+        let series_number_value_float = series_number.attribute_float_value().unwrap();
+        let series_number_value = series_number.attribute_value();
+        
+        assert_eq!(series_number_value_float, 2.0);
+        assert_eq!(series_number_value, AttributeValue::from(series_number_value_float.to_bits()));
     }
 }

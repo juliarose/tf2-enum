@@ -1,6 +1,5 @@
 use crate::{
     Attribute,
-    AttributeValue,
     TryFromAttributeValueU32,
     AttributeDef,
     EffectType,
@@ -45,7 +44,7 @@ pub enum Wear {
 
 impl Wear {
     /// Converts the wear to a float value.
-    pub fn as_float(&self) -> f64 {
+    pub fn as_float(&self) -> f32 {
         match self {
             Self::FactoryNew => 0.2,
             Self::MinimalWear => 0.4,
@@ -68,22 +67,18 @@ impl Attribute for Wear {
         effect_type: EffectType::Positive,
         hidden: true,
         stored_as_integer: false,
+        uses_float_value: true,
     };
     
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
     /// Gets the attribute float value.
-    fn attribute_float_value(&self) -> Option<f64> {
+    fn attribute_float_value(&self) -> Option<f32> {
         // This could be done using arithmetic but this is a little more explicit.
         Some(self.as_float())
     }
 }
 
 impl TryFromAttributeValueU32 for Wear {
-    fn try_from_attribute_float_value(v: f64) -> Option<Self> {
+    fn try_from_attribute_float_value(v: f32) -> Option<Self> {
         Self::try_from(v).ok()
     }
 }

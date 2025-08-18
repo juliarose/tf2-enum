@@ -21,7 +21,8 @@ use serde::de::{SeqAccess, Visitor};
 const SPELL_COUNT: usize = 2;
 
 /// Contains up to 2 spells. Although the underlying data structure is an array, this structure
-/// behaves like a set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
+/// behaves like a set. Most methods mimic those of [`HashSet`](std::collections::HashSet),
+/// with a few differences.
 /// 
 /// This struct solves the following problems:
 /// - An item can only hold up to 2 spells.
@@ -30,7 +31,8 @@ const SPELL_COUNT: usize = 2;
 /// - Hashing is order-agnostic.
 /// - The type is `Copy`, allowing for cheap and easy duplication.
 /// 
-/// Most methods require pulling in the [`AttributeSet`] trait.
+/// Most methods are implemented under the [`AttributeSet`] trait, make sure to import it to make
+/// use of them.
 /// 
 /// # Examples
 /// ```
@@ -569,8 +571,8 @@ mod tests {
         spell_set.insert(Spell::Exorcism);
         spell_set.insert(Spell::HeadlessHorseshoes);
         let serialized = serde_json::to_string(&spell_set).unwrap();
-        
-        assert_eq!(serialized, r#"[{"defindex":1009},{"defindex":1005,"float_value":2}]"#);
+                
+        assert_eq!(serialized, r#"[{"defindex":1009,"value":1065353216,"float_value":1},{"defindex":1005,"value":1073741824,"float_value":2}]"#);
     }
     
     #[test]

@@ -11,8 +11,9 @@ use serde::de::{SeqAccess, Visitor};
 
 const STRANGE_PART_COUNT: usize = 3;
 
-/// Contains up to 3 strange parts. Although the underlying data structure is an array, this structure
-/// behaves like a set. Most methods mimic those of [`HashSet`](std::collections::HashSet).
+/// Contains up to 3 strange parts. Although the underlying data structure is an array, this
+/// structure behaves like a set. Most methods mimic those of
+/// [`HashSet`](std::collections::HashSet), with a few differences.
 /// 
 /// This struct solves the following problems:
 /// - An item can only hold up to 3 strange parts.
@@ -21,7 +22,8 @@ const STRANGE_PART_COUNT: usize = 3;
 /// - Hashing is order-agnostic.
 /// - The type is `Copy`, allowing for cheap and easy duplication.
 /// 
-/// Most methods require pulling in the [`AttributeSet`] trait.
+/// Most methods are implemented under the [`AttributeSet`] trait, make sure to import it to make
+/// use of them.
 /// 
 /// # Examples
 /// ```
@@ -580,17 +582,18 @@ mod tests {
     fn serializes() {
         let strange_parts = StrangePartSet::from([
             Some(StrangePart::TauntKills),
-            Some(StrangePart::KillsWhileExplosiveJumping),
-            Some(StrangePart::CriticalKills),
+            None,
+            None,
         ]);
         let json = serde_json::to_string(&strange_parts).unwrap();
-        let raw = r#"[{"defindex":380,"float_value":77},{"defindex":382,"float_value":34},{"defindex":384,"float_value":33}]"#;
+        let expected = r#"[{"defindex":380,"value":1117388800,"float_value":77}]"#;
         
-        assert_eq!(json, raw);
+        assert_eq!(json, expected);
     }
     
     #[test]
     fn deserializes() {
+        // It doesn't need the "value" field to deserialize.
         let raw = r#"[{"defindex":380,"float_value":77},{"defindex":382,"float_value":34},{"defindex":384,"float_value":33}]"#;
         let strange_parts: StrangePartSet = serde_json::from_str(raw).unwrap();
         let expected = StrangePartSet::from([
@@ -797,6 +800,18 @@ mod tests {
     }
     
     #[test]
+    fn gets_first_and_last() {
+        let strange_parts = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::CriticalKills),
+        ]);
+
+        assert_eq!(strange_parts.first(), Some(&StrangePart::TauntKills));
+        assert_eq!(strange_parts.last(), Some(&StrangePart::CriticalKills));
+    }
+    
+    #[test]
     fn stringify() {
         let strange_parts = StrangePartSet::from([
             Some(StrangePart::TauntKills),
@@ -805,6 +820,19 @@ mod tests {
         ]);
         
         assert_eq!(strange_parts.to_string(), "Taunt Kills, Kills While Explosive-Jumping, Critical Kills");
+    }
+    
+    #[test]
+    fn retains() {
+        let mut strange_parts = StrangePartSet::from([
+            Some(StrangePart::TauntKills),
+            Some(StrangePart::KillsWhileExplosiveJumping),
+            Some(StrangePart::Assists),
+        ]);
+        
+        strange_parts.retain(|part| part.is_cosmetic_part());
+        
+        assert_eq!(strange_parts.first(), Some(&StrangePart::Assists));
     }
     
     #[test]

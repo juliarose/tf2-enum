@@ -19,6 +19,9 @@ pub struct AttributeDef {
     pub hidden: bool,
     /// Indicates whether the attribute's value is stored as an integer.
     pub stored_as_integer: bool,
+    /// Not part of the schema - this is just a marker to specify which attribute field is
+    /// meaningful to us in obtaining the attribute's value.
+    pub uses_float_value: bool,
 }
 
 impl AttributeDef {

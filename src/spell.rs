@@ -99,25 +99,6 @@ impl Spell {
             Self::Exorcism => Self::DEFINDEX_EXORCISM,
         }
     }
-    
-    /// Gets the attribute float value a `u32`.
-    pub fn attribute_float_value_u32(&self) -> Option<u32> {
-        match self {
-            Self::DieJob => Some(0),
-            Self::ChromaticCorruption => Some(1),
-            Self::PutrescentPigmentation => Some(2),
-            Self::SpectralSpectrum => Some(3),
-            Self::SinisterStaining => Some(4),
-            Self::TeamSpiritFootprints => Some(1),
-            Self::HeadlessHorseshoes => Some(2),
-            Self::CorpseGrayFootprints => Some(3100495),
-            Self::ViolentVioletFootprints => Some(5322826),
-            Self::BruisedPurpleFootprints => Some(8208497),
-            Self::GangreenFootprints => Some(8421376),
-            Self::RottenOrangeFootprints => Some(13595446),
-            _ => None,
-        }
-    }
 
     /// Checks if this spell is a paint spell.
     pub fn is_paint_spell(&self) -> bool {
@@ -168,6 +149,7 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
+            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1005,
@@ -178,6 +160,7 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
+            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1006,
@@ -188,6 +171,7 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
+            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1007,
@@ -198,6 +182,7 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
+            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1008,
@@ -208,6 +193,7 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
+            uses_float_value: true,
         },
         AttributeDef {
             defindex: 1009,
@@ -218,13 +204,9 @@ impl Attributes for Spell {
             effect_type: EffectType::Positive,
             hidden: false,
             stored_as_integer: false,
+            uses_float_value: true,
         },
     ];
-    
-    /// Gets the attribute value.
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
     
     /// Gets the value of an attribute belonging to a group of spells.
     /// 
@@ -237,18 +219,26 @@ impl Attributes for Spell {
     /// 
     /// assert_eq!(Spell::DieJob.attribute_float_value(), Some(0.));
     /// assert_eq!(Spell::HeadlessHorseshoes.attribute_float_value(), Some(2.));
-    /// assert_eq!(Spell::Exorcism.attribute_float_value(), None);
+    /// // 1 means true in this context
+    /// assert_eq!(Spell::Exorcism.attribute_float_value(), Some(1.));
     /// ```
-    fn attribute_float_value(&self) -> Option<f64> {
-        self.attribute_float_value_u32().map(|v| v as f64)
-    }
-}
-
-impl TryInto<u32> for Spell {
-    type Error = ();
-    
-    fn try_into(self) -> Result<u32, Self::Error> {
-        self.attribute_float_value_u32().ok_or(())
+    fn attribute_float_value(&self) -> Option<f32> {
+        Some(match self {
+            Self::DieJob => 0.0,
+            Self::ChromaticCorruption => 1.0,
+            Self::PutrescentPigmentation => 2.0,
+            Self::SpectralSpectrum => 3.0,
+            Self::SinisterStaining => 4.0,
+            Self::TeamSpiritFootprints => 1.0,
+            Self::HeadlessHorseshoes => 2.0,
+            Self::CorpseGrayFootprints => 3100495.0,
+            Self::ViolentVioletFootprints => 5322826.0,
+            Self::BruisedPurpleFootprints => 8208497.0,
+            Self::GangreenFootprints => 8421376.0,
+            Self::RottenOrangeFootprints => 13595446.0,
+            // bool - "has a spell"
+            _ => 1.0,
+        })
     }
 }
 
@@ -425,14 +415,11 @@ impl Attribute for PaintSpell {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
+        uses_float_value: true,
     };
     
-    fn attribute_value(&self) -> Option<AttributeValue> {
-        None
-    }
-    
-    fn attribute_float_value(&self) -> Option<f64> {
-        Some((*self as u32) as f64)
+    fn attribute_float_value(&self) -> Option<f32> {
+        Some((*self as u32) as f32)
     }
 }
 
@@ -522,10 +509,11 @@ impl Attribute for FootprintsSpell {
         effect_type: EffectType::Positive,
         hidden: false,
         stored_as_integer: false,
+        uses_float_value: true,
     };
     
-    fn attribute_float_value(&self) -> Option<f64> {
-        Some((*self as u32) as f64)
+    fn attribute_float_value(&self) -> Option<f32> {
+        Some((*self as u32) as f32)
     }
 }
 

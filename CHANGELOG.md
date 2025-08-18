@@ -6,7 +6,7 @@
 - `ItemAttribute` container struct for attributes.
 - `PartialOrd` and `Ord` traits to `StrangePartSet` and `SpellSet`.
 - `NONE` const for `SpellSet` and `StrangePartSet`.
-- `as_slice`, `as_slice_mut`, `iter_mut`, `iter_attributes`, `is_full`, `try_insert`, `insert_or_replace_last`, `replace`, methods to `SpellSet` and `StrangePartSet`.
+- `as_slice`, `as_slice_mut`, `iter_mut`, `iter_attributes`, `is_full`, `try_insert`, `insert_or_replace_last`, `replace`, `first`, `last`, `capacity` methods to `SpellSet` and `StrangePartSet` through `AttributeSet`.
 - `econ_defindex` method for `StockWeapon`.
 - `DescriptionFormat` and `EffectType` enums for traits `Attribute` and `Attributes`.
 - `Colored` trait for definitions associated with a color.
@@ -19,6 +19,8 @@
 - `AttributeDef` struct for defintitions associated with multiple attributes.
 - Attributes related to economy items. These can be found in `econ_attributes`.
 - `TryFromPrimitive<u32>` impl for `StockWeapon`.
+- `Capability::CanUnusualify`.
+- `Serialize` and `Deserialize` derives for `Capability`.
 
 ### Removed
 - `defindex_is_strange_part` for `StrangePart`.
@@ -30,7 +32,9 @@
 ### Changed
 - Order of `StrangePart` variants from lowest to highest `kill_eater_score_type` defindex.
 - `SpellSet` and `StrangePartSet` now implement `AttributeSet`.
-- Moved extra fields for `Attribute` into `ATTRIBUTE` through [`AttributeDef`].
+- Moved extra fields for `Attribute` into `ATTRIBUTE` through `AttributeDef`.
+- `attribute_value` methods now return `AttributeValue` instead of `Option<AttributeValue>`.
+- Attribute integers and floats from 64 bit to 32 bit.
 
 ## 0.10.0 (2025-08-14)
 

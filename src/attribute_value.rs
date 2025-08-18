@@ -5,27 +5,29 @@ use serde::{Deserialize, Serialize};
 #[serde(untagged)]
 pub enum AttributeValue {
     /// Represents an integer attribute value.
-    Integer(u64),
+    Integer(u32),
     /// Represents a float attribute value.
-    Float(f64),
+    Float(f32),
     /// Represents a string attribute value.
     String(String),
+    /// No value.
+    None,
 }
 
-impl From<u64> for AttributeValue {
-    fn from(value: u64) -> Self {
-        AttributeValue::Integer(value)
+impl Default for AttributeValue {
+    fn default() -> Self {
+        AttributeValue::None
     }
 }
 
 impl From<u32> for AttributeValue {
     fn from(value: u32) -> Self {
-        AttributeValue::Integer(value as u64)
+        AttributeValue::Integer(value)
     }
 }
 
-impl From<f64> for AttributeValue {
-    fn from(value: f64) -> Self {
+impl From<f32> for AttributeValue {
+    fn from(value: f32) -> Self {
         AttributeValue::Float(value)
     }
 }
