@@ -127,9 +127,6 @@ impl Spell {
     }
 }
 
-/// Represents the "set_item_tint_rgb_override", "halloween_footstep_type",
-/// "halloween_voice_modulation", "halloween_pumpkin_explosions", "halloween_green_flames",
-/// and "halloween_death_ghosts" attributes.
 impl Attributes for Spell {
     const DEFINDEX: &[u32] = &[
         1004,
@@ -139,6 +136,9 @@ impl Attributes for Spell {
         1008,
         1009,
     ];
+    /// Represents the "set_item_tint_rgb_override", "halloween_footstep_type",
+    /// "halloween_voice_modulation", "halloween_pumpkin_explosions", "halloween_green_flames",
+    /// and "halloween_death_ghosts" attributes.
     const ATTRIBUTES: &'static [AttributeDef] = &[
         AttributeDef {
             defindex: 1004,
@@ -403,9 +403,9 @@ pub enum PaintSpell {
     SinisterStaining = 4,
 }
 
-/// Represents the "set_item_tint_rgb_override" attribute.
 impl Attribute for PaintSpell {
     const DEFINDEX: u32 = 1004;
+    /// Represents the "set_item_tint_rgb_override" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 1004,
         name: "SPELL: set item tint RGB",
@@ -497,9 +497,9 @@ pub enum FootprintsSpell {
     RottenOrangeFootprints = 13595446,
 }
 
-/// Represents the "halloween_footstep_type" attribute.
 impl Attribute for FootprintsSpell {
     const DEFINDEX: u32 = 1005;
+    /// Represents the "halloween_footstep_type" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 1005,
         name: "SPELL: set Halloween footstep type",

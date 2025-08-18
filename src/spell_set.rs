@@ -513,16 +513,10 @@ impl<'de> Deserialize<'de> for SpellSet {
                 let mut set = Self::Value::new();
                 
                 while let Some(map) = seq.next_element::<ItemAttribute>()? {
-                    if !<Self::Value as AttributeSet>::Item::DEFINDEX.contains(&map.defindex) {
-                        // Skip if defindex is not for a score type
-                        continue;
-                    }
-                    
-                    let float_value = map.float_value
-                        .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
-                    
                     match map.defindex {
                         FootprintsSpell::DEFINDEX => {
+                            let float_value = map.float_value
+                                .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
                             let part = FootprintsSpell::try_from_attribute_float_value(float_value)
                                 .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
                             
@@ -530,6 +524,8 @@ impl<'de> Deserialize<'de> for SpellSet {
                             continue;
                         },
                         PaintSpell::DEFINDEX => {
+                            let float_value = map.float_value
+                                .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
                             let part = PaintSpell::try_from_attribute_float_value(float_value)
                                 .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
                             

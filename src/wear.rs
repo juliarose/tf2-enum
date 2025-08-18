@@ -55,9 +55,9 @@ impl Wear {
     }
 }
 
-/// Represents the "set_item_texture_wear" attribute.
 impl Attribute for Wear {
     const DEFINDEX: u32 = 725;
+    /// Represents the "set_item_texture_wear" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: Self::DEFINDEX,
         name: "set_item_texture_wear",

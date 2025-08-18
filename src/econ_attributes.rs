@@ -832,6 +832,9 @@ impl Attributes for DynamicRecipeComponentDefinedItem {
     ];
 }
 
+pub struct KillEaterScore(pub u32);
+
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -335,14 +335,14 @@ impl StrangePart {
     }
 }
 
-/// Represents the "kill_eater_user_score_type_1", "kill_eater_user_score_type_2", and
-/// "kill_eater_user_score_type_3", attributes.
 impl Attributes for StrangePart {
     const DEFINDEX: &[u32] = &[
         380,
         382,
         384,
     ];
+    /// Represents the "kill_eater_user_score_type_1", "kill_eater_user_score_type_2", and
+    /// "kill_eater_user_score_type_3", attributes.
     const ATTRIBUTES: &'static [AttributeDef] = &[
         AttributeDef {
             defindex: 380,

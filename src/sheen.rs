@@ -42,9 +42,9 @@ pub enum Sheen {
     HotRod = 7,
 }
 
-/// Represents the "killstreak_idleeffect" attribute.
 impl Attribute for Sheen {
     const DEFINDEX: u32 = 2014;
+    /// Represents the "killstreak_idleeffect" attribute.
     const ATTRIBUTE: AttributeDef = AttributeDef {
         defindex: 2014,
         name: "killstreak idleeffect",

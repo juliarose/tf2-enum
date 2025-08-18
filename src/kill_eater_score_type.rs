@@ -237,16 +237,52 @@ impl KillEaterScoreType {
         self.into()
     }
 }
-
-/// Represents the "kill_eater_user_score_type_1", "kill_eater_user_score_type_2", and
-/// "kill_eater_user_score_type_3", attributes.
 impl Attributes for KillEaterScoreType {
     const DEFINDEX: &[u32] = &[
+        292,
+        293,
+        495,
         380,
         382,
         384,
     ];
+    /// Represents the "kill_eater_score_type", "kill_eater_score_type_2", "kill_eater_score_type_3",
+    /// "kill_eater_user_score_type_1", "kill_eater_user_score_type_2", and
+    /// "kill_eater_user_score_type_3", attributes.
     const ATTRIBUTES: &'static [AttributeDef] = &[
+        AttributeDef {
+            defindex: 292,
+            name: "kill eater score type",
+            attribute_class: Some("kill_eater_score_type"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: false,
+            uses_float_value: true,
+        },
+        AttributeDef {
+            defindex: 293,
+            name: "kill eater score type 2",
+            attribute_class: Some("kill_eater_score_type_2"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: false,
+            uses_float_value: true,
+        },
+        AttributeDef {
+            defindex: 495,
+            name: "kill eater score type 3",
+            attribute_class: Some("kill_eater_score_type_3"),
+            description_string: None,
+            description_format: None,
+            effect_type: EffectType::Positive,
+            hidden: true,
+            stored_as_integer: false,
+            uses_float_value: true,
+        },
         AttributeDef {
             defindex: 380,
             name: "kill eater user score type 1",
