@@ -1,4 +1,11 @@
-use crate::{Attribute, AttributeValue, TryFromAttributeValueU32, AttributeDef, EffectType};
+use crate::{
+    Attribute,
+    AttributeValue,
+    TryFromAttributeValueU32,
+    AttributeDef,
+    EffectType,
+    ItemAttribute,
+};
 use crate::error::TryFromPrimitiveError;
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -110,5 +117,15 @@ impl TryFrom<&f32> for Wear {
     
     fn try_from(float_value: &f32) -> Result<Wear, Self::Error> {
         Wear::try_from(*float_value)
+    }
+}
+
+impl From<Wear> for ItemAttribute {
+    fn from(val: Wear) -> Self {
+        ItemAttribute {
+            defindex: Wear::DEFINDEX,
+            value: val.attribute_value(),
+            float_value: val.attribute_float_value(),
+        }
     }
 }

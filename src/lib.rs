@@ -1,4 +1,5 @@
-//! Provides enumerated types for models related to the Team Fortress 2 item schema.
+//! Provides enumerated types for models related to the Team Fortress 2 item schema. Other useful
+//! utilities relating to the schema are also included.
 //! 
 //! For the most part, definitions here are relatively stable and don't have any new values added
 //! or changed. However, Valve can implement changes to the item schema at any time, which may
@@ -44,6 +45,7 @@ mod craft_material_type;
 mod description_format;
 mod effect_type;
 mod grade;
+mod item_attribute;
 mod item_level;
 mod item_slot;
 mod kill_eater_score_type;
@@ -65,7 +67,7 @@ mod wear;
 // Traits and utility re-exports
 pub use strum::{EnumCount, IntoEnumIterator};
 pub use num_enum::{IntoPrimitive, TryFromPrimitive};
-pub use traits::{Attribute, Attributes, AttributeSet, TryFromAttributeValueU32, Colored, ItemDefindex};
+pub use traits::{Attribute, Attributes, AttributeSet, TryFromAttributeValueU32, Colored, HasItemDefindex};
 
 // Enum re-exports
 pub use attribute_def::AttributeDef;
@@ -77,6 +79,7 @@ pub use craft_material_type::CraftMaterialType;
 pub use description_format::DescriptionFormat;
 pub use effect_type::EffectType;
 pub use grade::Grade;
+pub use item_attribute::ItemAttribute;
 pub use item_level::{ItemLevel, Level};
 pub use item_slot::ItemSlot;
 pub use kill_eater_score_type::KillEaterScoreType;

@@ -3,13 +3,15 @@
 ## 0.11.0 (2025-08-16)
 
 ### Added
+- `ItemAttribute` container struct for attributes.
 - `PartialOrd` and `Ord` traits to `StrangePartSet` and `SpellSet`.
 - `NONE` const for `SpellSet` and `StrangePartSet`.
-- `as_slice`, `as_slice_mut`, `iter_mut`, `is_full`, `try_insert` methods to `SpellSet` and `StrangePartSet`.
+- `as_slice`, `as_slice_mut`, `iter_mut`, `iter_attributes`, `is_full`, `try_insert` methods to `SpellSet` and `StrangePartSet`.
 - `econ_defindex` method for `StockWeapon`.
 - `DescriptionFormat` and `EffectType` enums for traits `Attribute` and `Attributes`.
 - `Colored` trait for definitions associated with a color.
-- `ItemDefindex` trait for definitions associated with an item defindex.
+- `TryFromAttributeValueU32` trait for definitions associated with an attribute value.
+- `HasItemDefindex` trait for definitions associated with an item defindex.
 - `IntoEnumIterator`, `EnumCount`, `TryFromPrimitive`, `IntoPrimitive` re-exports.
 - Missing `From` and `TryFrom` conversions for spell enums.
 - `is_paint_spell` and `is_footprints_spell` methods to `Spell`.

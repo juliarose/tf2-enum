@@ -5,6 +5,7 @@ use crate::{
     TryFromAttributeValueU32,
     EffectType,
     DescriptionFormat,
+    ItemAttribute,
 };
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -69,3 +70,13 @@ impl Attribute for Killstreaker {
 }
 
 impl TryFromAttributeValueU32 for Killstreaker {}
+
+impl From<Killstreaker> for ItemAttribute {
+    fn from(val: Killstreaker) -> Self {
+        ItemAttribute {
+            defindex: Killstreaker::DEFINDEX,
+            value: val.attribute_value(),
+            float_value: val.attribute_float_value(),
+        }
+    }
+}

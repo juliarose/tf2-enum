@@ -2,7 +2,7 @@
 
 use crate::{Attributes, AttributeSet, StrangePart, TryFromAttributeValueU32};
 use crate::error::InsertError;
-use crate::serialize::SerializedAttribute;
+use crate::ItemAttribute;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
@@ -251,6 +251,18 @@ impl AttributeSet for StrangePartSet {
         None
     }
     
+    /// Converts each element to an [`ItemAttribute`]. 
+    fn iter_attributes(&self) -> impl Iterator<Item = ItemAttribute> {
+        self
+            .into_iter()
+            .zip(StrangePart::DEFINDEX.iter())
+            .map(|(part, defindex)| ItemAttribute {
+                defindex: *defindex,
+                value: part.attribute_value(),
+                float_value: part.attribute_float_value(),
+            })
+    }
+    
     /// Returns the inner storage as a slice.
     fn as_slice(&self) -> &[Option<StrangePart>] {
         &self.inner
@@ -467,14 +479,13 @@ impl Serialize for StrangePartSet {
     where
         S: Serializer,
     {
-        let parts: Vec<_> = self.into_iter().collect();
-        let mut seq = serializer.serialize_seq(Some(parts.len()))?;
+        let mut seq = serializer.serialize_seq(Some(self.len()))?;
         
-        for (part, defindex) in parts.iter().zip(StrangePart::DEFINDEX.iter()) {
-            seq.serialize_element(&SerializedAttribute {
+        for (part, defindex) in self.iter().zip(StrangePart::DEFINDEX.iter()) {
+            seq.serialize_element(&ItemAttribute {
                 defindex: *defindex,
                 value: None,
-                float_value: part.attribute_float_value() ,
+                float_value: part.attribute_float_value(),
             })?;
         }
 
@@ -488,22 +499,22 @@ impl<'de> Deserialize<'de> for StrangePartSet {
         D: Deserializer<'de>,
     {
         struct StrangePartSetVisitor;
-
+        
         impl<'de> Visitor<'de> for StrangePartSetVisitor {
             type Value = StrangePartSet;
 
             fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
                 formatter.write_str("an array of maps with defindex, float_value")
             }
-
-            fn visit_seq<A>(self, mut seq: A) -> Result<StrangePartSet, A::Error>
+            
+            fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
             where
                 A: SeqAccess<'de>,
             {
-                let mut set = StrangePartSet::new();
+                let mut set = Self::Value::new();
                 
-                while let Some(map) = seq.next_element::<SerializedAttribute>()? {
-                    if !<StrangePartSet as AttributeSet>::Item::DEFINDEX.contains(&map.defindex) {
+                while let Some(map) = seq.next_element::<ItemAttribute>()? {
+                    if !<Self::Value as AttributeSet>::Item::DEFINDEX.contains(&map.defindex) {
                         // Skip if defindex is not for a score type
                         continue;
                     }

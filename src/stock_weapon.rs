@@ -1,4 +1,4 @@
-use crate::{Class, ItemDefindex, ItemSlot};
+use crate::{Class, HasItemDefindex, ItemSlot};
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, TryFromPrimitiveError};
@@ -78,7 +78,7 @@ pub enum StockWeapon {
     InvisWatch,
 }
 
-impl ItemDefindex for StockWeapon {
+impl HasItemDefindex for StockWeapon {
     /// Gets the defindex for this item. If there are multiple, the first is returned.
     /// 
     /// If you want the defindex associated with inventory items, use

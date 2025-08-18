@@ -13,7 +13,7 @@
 
 pub use crate::{
     // Traits
-    Attribute, Attributes, AttributeSet, Colored, ItemDefindex,
+    Attribute, Attributes, AttributeSet, Colored, HasItemDefindex,
     // Enums and types
     Class, FootprintsSpell, Grade, ItemLevel, ItemSlot, KillEaterScoreType, KillstreakTier,
     Killstreaker, Origin, Paint, PaintSpell, Quality, Sheen, Spell, StrangePart, Wear,

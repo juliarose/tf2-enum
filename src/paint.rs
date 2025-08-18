@@ -4,9 +4,10 @@ use crate::{
     AttributeDef,
     TryFromAttributeValueU32,
     Colored,
-    ItemDefindex,
+    HasItemDefindex,
     EffectType,
     DescriptionFormat,
+    ItemAttribute,
 };
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -174,6 +175,16 @@ impl Attribute for Paint {
 
 impl TryFromAttributeValueU32 for Paint {}
 
+impl From<Paint> for ItemAttribute {
+    fn from(val: Paint) -> Self {
+        ItemAttribute {
+            defindex: Paint::DEFINDEX,
+            value: val.attribute_value(),
+            float_value: val.attribute_float_value(),
+        }
+    }
+}
+
 impl Colored for Paint {
     /// Gets the color of the [`Paint`].
     fn color(&self) -> u32 {
@@ -193,7 +204,7 @@ impl Colored for Paint {
     }
 }
 
-impl ItemDefindex for Paint {
+impl HasItemDefindex for Paint {
     /// Gets the `defindex` related to this [`Paint`].
     fn defindex(&self) -> u32 {
         match self {

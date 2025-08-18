@@ -12,6 +12,7 @@ use crate::{
     TryFromAttributeValueU32,
     DescriptionFormat,
     EffectType,
+    ItemAttribute,
 };
 use std::ops::Deref;
 use std::borrow::Borrow;
@@ -140,6 +141,16 @@ macro_rules! impl_attr {
             }
         }
         
+        impl From<$t> for ItemAttribute {
+            fn from(val: $t) -> Self {
+                ItemAttribute {
+                    defindex: <$t as Attribute>::DEFINDEX,
+                    value: val.attribute_value(),
+                    float_value: val.attribute_float_value(),
+                }
+            }
+        }
+        
         impl_from_u64!($t);
     };
     (
@@ -209,6 +220,16 @@ macro_rules! impl_attr {
 
             fn attribute_float_value(&self) -> Option<f64> {
                 None
+            }
+        }
+        
+        impl From<$t> for ItemAttribute {
+            fn from(val: $t) -> Self {
+                ItemAttribute {
+                    defindex: <$t as Attribute>::DEFINDEX,
+                    value: val.attribute_value(),
+                    float_value: val.attribute_float_value(),
+                }
             }
         }
         

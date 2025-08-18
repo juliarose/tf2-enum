@@ -4,7 +4,7 @@ use crate::{
     AttributeDef,
     TryFromAttributeValueU32,
     KillEaterScoreType,
-    ItemDefindex,
+    HasItemDefindex,
     EffectType,
 };
 use crate::error::TryFromPrimitiveError;
@@ -390,7 +390,7 @@ impl Attributes for StrangePart {
 
 impl TryFromAttributeValueU32 for StrangePart {}
 
-impl ItemDefindex for StrangePart {
+impl HasItemDefindex for StrangePart {
     /// Gets the `defindex` for the [`StrangePart`].
     fn defindex(&self) -> u32 {
         match self {

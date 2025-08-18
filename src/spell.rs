@@ -3,10 +3,11 @@ use crate::{
     Attribute,
     AttributeDef,
     AttributeValue,
-    TryFromAttributeValueU32,
     Attributes,
     DescriptionFormat,
     EffectType,
+    ItemAttribute,
+    TryFromAttributeValueU32,
 };
 use crate::econ_attributes::{
     HalloweenVoiceModulation,
@@ -243,41 +244,6 @@ impl Attributes for Spell {
     }
 }
 
-struct SpellVisitor;
-
-impl<'de> Visitor<'de> for SpellVisitor {
-    type Value = Spell;
-    
-    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("a string")
-    }
-    
-    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-    where
-        E: de::Error,
-    {
-        Spell::from_str(value).map_err(serde::de::Error::custom)
-    }
-}
-
-impl<'de> Deserialize<'de> for Spell {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        deserializer.deserialize_any(SpellVisitor)
-    }
-}
-
-impl Serialize for Spell {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        serializer.serialize_str(&self.to_string())
-    }
-}
-
 impl TryInto<u32> for Spell {
     type Error = ();
     
@@ -372,6 +338,51 @@ impl From<&HalloweenDeathGhosts> for Spell {
     }
 }
 
+impl From<Spell> for ItemAttribute {
+    fn from(val: Spell) -> Self {
+        ItemAttribute {
+            defindex: val.attribute_defindex(),
+            value: val.attribute_value(),
+            float_value: val.attribute_float_value(),
+        }
+    }
+}
+
+struct SpellVisitor;
+
+impl<'de> Visitor<'de> for SpellVisitor {
+    type Value = Spell;
+    
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("a string")
+    }
+    
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        Spell::from_str(value).map_err(serde::de::Error::custom)
+    }
+}
+
+impl<'de> Deserialize<'de> for Spell {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_any(SpellVisitor)
+    }
+}
+
+impl Serialize for Spell {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&self.to_string())
+    }
+}
+
 /// Paint spell.
 #[derive(
     Serialize_repr,
@@ -457,6 +468,16 @@ impl TryFrom<&Spell> for PaintSpell {
     }
 }
 
+impl From<PaintSpell> for ItemAttribute {
+    fn from(val: PaintSpell) -> Self {
+        ItemAttribute {
+            defindex: PaintSpell::DEFINDEX,
+            value: val.attribute_value(),
+            float_value: val.attribute_float_value(),
+        }
+    }
+}
+
 /// Footprints spell.
 #[derive(
     Serialize_repr,
@@ -535,6 +556,16 @@ impl TryFrom<&Spell> for FootprintsSpell {
     
     fn try_from(value: &Spell) -> Result<Self, Self::Error> {
         Self::try_from(*value)
+    }
+}
+
+impl From<FootprintsSpell> for ItemAttribute {
+    fn from(val: FootprintsSpell) -> Self {
+        ItemAttribute {
+            defindex: PaintSpell::DEFINDEX,
+            value: val.attribute_value(),
+            float_value: val.attribute_float_value(),
+        }
     }
 }
 

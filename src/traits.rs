@@ -1,4 +1,4 @@
-use crate::{AttributeValue, AttributeDef};
+use crate::{AttributeDef, AttributeValue, ItemAttribute};
 use crate::error::InsertError;
 
 /// Attribute values for an item attribute.
@@ -15,24 +15,6 @@ pub trait Attribute: Sized {
     
     /// Gets the attribute float value.
     fn attribute_float_value(&self) -> Option<f64>;
-}
-
-/// Backwards conversion for attributes associated with an integer value.
-pub trait TryFromAttributeValueU32: Sized + TryFrom<u32> {
-    /// Attempts conversion from an attribute value.
-    #[allow(unused_variables)]
-    fn try_from_attribute_value(v: AttributeValue) -> Option<Self> {
-        None
-    }
-    
-    /// Attempts conversion from an attribute float value.
-    fn try_from_attribute_float_value(v: f64) -> Option<Self> {
-        if v.fract() != 0.0 || v.is_sign_negative() || v > (u32::MAX as f64) {
-            return None;
-        }
-        
-        Self::try_from(v as u32).ok()
-    }
 }
 
 /// Associated attribute values for a set of item attributes.
@@ -55,6 +37,24 @@ pub trait Attributes: Sized {
     /// Gets the attribute definition for a given defindex.
     fn by_defindex(&self, defindex: u32) -> Option<&AttributeDef> {
         Self::ATTRIBUTES.iter().find(|attr| attr.defindex == defindex)
+    }
+}
+
+/// Backwards conversion for attributes associated with an integer value.
+pub trait TryFromAttributeValueU32: Sized + TryFrom<u32> {
+    /// Attempts conversion from an attribute value.
+    #[allow(unused_variables)]
+    fn try_from_attribute_value(v: AttributeValue) -> Option<Self> {
+        None
+    }
+    
+    /// Attempts conversion from an attribute float value.
+    fn try_from_attribute_float_value(v: f64) -> Option<Self> {
+        if v.fract() != 0.0 || v.is_sign_negative() || v > (u32::MAX as f64) {
+            return None;
+        }
+        
+        Self::try_from(v as u32).ok()
     }
 }
 
@@ -89,7 +89,7 @@ pub trait Colored: Sized {
 }
 
 /// Definitions which are associated with an item defindex.
-pub trait ItemDefindex: Sized {
+pub trait HasItemDefindex: Sized {
     /// Gets the `defindex`.
     fn defindex(&self) -> u32;
     
@@ -209,6 +209,9 @@ pub trait AttributeSet: Sized + Default {
     fn iter_mut(&mut self) -> impl Iterator<Item = &mut Self::Item> {
         self.as_mut_slice().iter_mut().filter_map(|opt| opt.as_mut())
     }
+    
+    /// Converts each element to an [`ItemAttribute`]. 
+    fn iter_attributes(&self) -> impl Iterator<Item = ItemAttribute>;
     
     /// Returns the inner storage as a slice.
     fn as_slice(&self) -> &[Option<Self::Item>];

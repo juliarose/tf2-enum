@@ -1,10 +1,11 @@
 use crate::{
     Attribute,
-    AttributeValue,
     AttributeDef,
-    TryFromAttributeValueU32,
-    EffectType,
+    AttributeValue,
     DescriptionFormat,
+    EffectType,
+    ItemAttribute,
+    TryFromAttributeValueU32,
 };
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -68,6 +69,16 @@ impl Attribute for Sheen {
 }
 
 impl TryFromAttributeValueU32 for Sheen {}
+
+impl From<Sheen> for ItemAttribute {
+    fn from(val: Sheen) -> Self {
+        ItemAttribute {
+            defindex: Sheen::DEFINDEX,
+            value: val.attribute_value(),
+            float_value: val.attribute_float_value(),
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {

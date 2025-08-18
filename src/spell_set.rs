@@ -1,10 +1,22 @@
 //! Set for holding up to 2 spells.
 
-use crate::{Spell, AttributeSet};
+use crate::{
+    Attribute,
+    AttributeSet,
+    Attributes,
+    TryFromAttributeValueU32,
+    FootprintsSpell,
+    PaintSpell,
+    Spell,
+};
 use crate::error::InsertError;
+use crate::ItemAttribute;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
+use serde::{Serialize, Deserialize, Serializer, Deserializer};
+use serde::ser::SerializeSeq;
+use serde::de::{SeqAccess, Visitor};
 
 const SPELL_COUNT: usize = 2;
 
@@ -211,6 +223,13 @@ impl AttributeSet for SpellSet {
         None
     }
     
+    /// Converts each element to an [`ItemAttribute`]. 
+    fn iter_attributes(&self) -> impl Iterator<Item = ItemAttribute> {
+        self
+            .into_iter()
+            .map(ItemAttribute::from)
+    }
+    
     /// Returns the inner storage as a slice.
     fn as_slice(&self) -> &[Option<Spell>] {
         &self.inner
@@ -415,11 +434,104 @@ impl fmt::Display for SpellSet {
         Ok(())
     }
 }
+
+impl Serialize for SpellSet {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut seq = serializer.serialize_seq(Some(self.len()))?;
+        
+        for part in self.iter_attributes() {
+            seq.serialize_element(&part)?;
+        }
+        
+        seq.end()
+    }
+}
+
+impl<'de> Deserialize<'de> for SpellSet {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct StrangePartSetVisitor;
+        
+        impl<'de> Visitor<'de> for StrangePartSetVisitor {
+            type Value = SpellSet;
+
+            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                formatter.write_str("an array of maps with defindex, float_value")
+            }
+            
+            fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
+            where
+                A: SeqAccess<'de>,
+            {
+                let mut set = Self::Value::new();
+                
+                while let Some(map) = seq.next_element::<ItemAttribute>()? {
+                    if !<Self::Value as AttributeSet>::Item::DEFINDEX.contains(&map.defindex) {
+                        // Skip if defindex is not for a score type
+                        continue;
+                    }
+                    
+                    let float_value = map.float_value
+                        .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
+                    
+                    match map.defindex {
+                        FootprintsSpell::DEFINDEX => {
+                            let part = FootprintsSpell::try_from_attribute_float_value(float_value)
+                                .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
+                            
+                            set.insert(part.into());
+                            continue;
+                        },
+                        PaintSpell::DEFINDEX => {
+                            let part = PaintSpell::try_from_attribute_float_value(float_value)
+                                .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
+                            
+                            set.insert(part.into());
+                            continue;
+                        },
+                        Spell::DEFINDEX_EXORCISM => {
+                            set.insert(Spell::Exorcism);
+                        },
+                        Spell::DEFINDEX_HALLOWEEN_FIRE => {
+                            set.insert(Spell::HalloweenFire);
+                        },
+                        Spell::DEFINDEX_VOICES_FROM_BELOW => {
+                            set.insert(Spell::VoicesFromBelow);
+                        },
+                        Spell::DEFINDEX_PUMPKIN_BOMBS => {
+                            set.insert(Spell::PumpkinBombs);
+                        },
+                        _ => continue,
+                    }
+                }
+                
+                Ok(set)
+            }
+        }
+        
+        deserializer.deserialize_seq(StrangePartSetVisitor)
+    }
+}
     
 #[cfg(test)]
 mod tests {
     use super::*;
     use std::collections::HashSet;
+    
+    #[test]
+    fn serializes() {
+        let mut spell_set = SpellSet::new();
+        spell_set.insert(Spell::Exorcism);
+        spell_set.insert(Spell::HeadlessHorseshoes);
+        let serialized = serde_json::to_string(&spell_set).unwrap();
+        
+        assert_eq!(serialized, r#"[{"defindex":1009},{"defindex":1005,"float_value":2}]"#);
+    }
     
     #[test]
     fn base_methods() {

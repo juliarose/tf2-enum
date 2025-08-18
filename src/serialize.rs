@@ -1,20 +1,9 @@
 //! Serialization utilities.
 
-use crate::AttributeValue;
-use serde::{Serialize, Deserialize, Serializer};
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SerializedAttribute {
-    pub defindex: u32,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub value: Option<AttributeValue>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(serialize_with = "option_float_as_integers_when_whole")]
-    pub float_value: Option<f64>,
-}
+use serde::Serializer;
 
 /// Serializes a float into an integer when the float is a whole number.
-fn option_float_as_integers_when_whole<S: Serializer>(
+pub fn option_float_as_integers_when_whole<S: Serializer>(
     value: &Option<f64>,
     s: S,
 ) -> Result<S::Ok, S::Error> {
