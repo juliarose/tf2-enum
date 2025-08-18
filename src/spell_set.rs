@@ -8,14 +8,14 @@ use crate::{
     FootprintsSpell,
     PaintSpell,
     Spell,
+    ItemAttribute,
 };
 use crate::error::InsertError;
-use crate::ItemAttribute;
+use crate::serialize;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
 use serde::{Serialize, Deserialize, Serializer, Deserializer};
-use serde::ser::SerializeSeq;
 use serde::de::{SeqAccess, Visitor};
 
 const SPELL_COUNT: usize = 2;
@@ -440,13 +440,7 @@ impl Serialize for SpellSet {
     where
         S: Serializer,
     {
-        let mut seq = serializer.serialize_seq(Some(self.len()))?;
-        
-        for part in self.iter_attributes() {
-            seq.serialize_element(&part)?;
-        }
-        
-        seq.end()
+        serialize::serialize_attribute_set(self, serializer)
     }
 }
 

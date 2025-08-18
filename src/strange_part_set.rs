@@ -1,13 +1,12 @@
 //! Set for holding up to 3 strange parts.
 
-use crate::{Attributes, AttributeSet, StrangePart, TryFromAttributeValueU32};
+use crate::{Attributes, AttributeSet, TryFromAttributeValueU32, StrangePart, ItemAttribute};
 use crate::error::InsertError;
-use crate::ItemAttribute;
+use crate::serialize;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
 use serde::{Serialize, Deserialize, Serializer, Deserializer};
-use serde::ser::SerializeSeq;
 use serde::de::{SeqAccess, Visitor};
 
 const STRANGE_PART_COUNT: usize = 3;
@@ -479,17 +478,7 @@ impl Serialize for StrangePartSet {
     where
         S: Serializer,
     {
-        let mut seq = serializer.serialize_seq(Some(self.len()))?;
-        
-        for (part, defindex) in self.iter().zip(StrangePart::DEFINDEX.iter()) {
-            seq.serialize_element(&ItemAttribute {
-                defindex: *defindex,
-                value: None,
-                float_value: part.attribute_float_value(),
-            })?;
-        }
-
-        seq.end()
+        serialize::serialize_attribute_set(self, serializer)
     }
 }
 
