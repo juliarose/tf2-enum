@@ -29,7 +29,7 @@ pub trait Attributes: Sized {
     /// Gets the attribute value.
     fn attribute_value(&self) -> AttributeValue {
         self.attribute_float_value()
-            .map(|v| (v.to_bits() as u32).into())
+            .map(|v| v.to_bits().into())
             .unwrap_or_default()
     }
     

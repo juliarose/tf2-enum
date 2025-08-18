@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 /// A value for an attribute.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
+#[derive(Default)]
 pub enum AttributeValue {
     /// Represents an integer attribute value.
     Integer(u32),
@@ -11,14 +12,10 @@ pub enum AttributeValue {
     /// Represents a string attribute value.
     String(String),
     /// No value.
+    #[default]
     None,
 }
 
-impl Default for AttributeValue {
-    fn default() -> Self {
-        AttributeValue::None
-    }
-}
 
 impl From<u32> for AttributeValue {
     fn from(value: u32) -> Self {
