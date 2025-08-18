@@ -56,7 +56,7 @@ const SPELL_COUNT: usize = 2;
 ///     println!("{}", spell);
 /// }
 /// ```
-#[derive(Debug, Default, Clone, Copy, Eq, PartialOrd, Ord)]
+#[derive(Default, Clone, Copy, Eq, PartialOrd, Ord)]
 pub struct SpellSet {
     inner: [Option<Spell>; SPELL_COUNT]
 }
@@ -187,6 +187,21 @@ impl AttributeSet for SpellSet {
         Err(InsertError::Full)
     }
     
+    fn insert_or_replace_last(&mut self, spell: Spell) -> bool {
+        if self.contains(&spell) {
+            return false;
+        }
+        
+        if let Some(slot) = self.inner.iter_mut().find(|slot| slot.is_none()) {
+            *slot = Some(spell);
+            return true;
+        }
+        
+        // replace the last item
+        self.inner[Self::MAX_COUNT - 1] = Some(spell);
+        true
+    }
+    
     /// Removes a spell from the set. Returns whether the value was present in the set.
     /// 
     /// # Examples
@@ -221,6 +236,22 @@ impl AttributeSet for SpellSet {
         }
         
         None
+    }
+    
+    /// Replaces a spell in the set with a new spell. `false` if the spell was not present.
+    fn replace(&mut self, spell: &Spell, new_spell: Spell) -> bool {
+        if !self.contains(spell) {
+            return false;
+        }
+        
+        for s in self.inner.iter_mut() {
+            if *s == Some(*spell) {
+                *s = Some(new_spell);
+                return true;
+            }
+        }
+        
+        false
     }
     
     /// Converts each element to an [`ItemAttribute`]. 
@@ -432,6 +463,21 @@ impl fmt::Display for SpellSet {
         }
         
         Ok(())
+    }
+}
+
+impl fmt::Debug for SpellSet {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str("{")?;
+        let mut first = true;
+        for part in self {
+            if !first {
+                f.write_str(", ")?;
+            }
+            write!(f, "{:?}", part as u32)?;
+            first = false;
+        }
+        f.write_str("}")
     }
 }
 

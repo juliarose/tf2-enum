@@ -110,9 +110,13 @@ pub trait AttributeSet: Sized + Default {
     /// contains the value.
     fn insert(&mut self, item: Self::Item) -> bool;
     
-    /// Adds an item to the first available slot. Same as `insert`, but returns a descriptive error
-    /// to identify why the insert failed.
+    /// Same as `insert`, but returns a [`std::result::Result`] with descriptive error to identify
+    /// why the insert failed.
     fn try_insert(&mut self, item: Self::Item) -> Result<(), InsertError>;
+    
+    /// Adds an item to the first available slot. Replaces the last item in the set if the set is
+    /// full. Returns `false` if the set already contains the value.
+    fn insert_or_replace_last(&mut self, item: Self::Item) -> bool;
     
     /// Removes an item from the set. Returns whether the value was present in the set.
     fn remove(&mut self, item: &Self::Item) -> bool;
@@ -120,7 +124,10 @@ pub trait AttributeSet: Sized + Default {
     /// Removes and returns the item in the set, if any, that is equal to the given one.
     fn take(&mut self, item: &Self::Item) -> Option<Self::Item>;
     
-    /// Clears the set,.
+    /// Replaces an item in the set with a new item. `false` if the item was not present.
+    fn replace(&mut self, item: &Self::Item, new_item: Self::Item) -> bool;
+    
+    /// Clears the set.
     fn clear(&mut self);
     
     /// Gets an item from the set by index.
@@ -130,6 +137,7 @@ pub trait AttributeSet: Sized + Default {
     
     /// Returns the number of elements in the set.
     fn len(&self) -> usize {
+        // The sets are small so iteration is fine.
         self.as_slice()
             .iter()
             .filter(|x| x.is_some())

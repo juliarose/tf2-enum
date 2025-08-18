@@ -48,10 +48,10 @@ const STRANGE_PART_COUNT: usize = 3;
 /// 
 /// // Iterate over strange parts.
 /// for strange_part in strange_parts {
-///     println!("{strange_part}");
+///     println!("{}", strange_part.strange_part_name());
 /// }
 /// ```
-#[derive(Debug, Default, Clone, Copy, Eq, PartialOrd, Ord)]
+#[derive(Default, Clone, Copy, Eq, PartialOrd, Ord)]
 pub struct StrangePartSet {
     inner: [Option<StrangePart>; STRANGE_PART_COUNT],
 }
@@ -202,7 +202,7 @@ impl AttributeSet for StrangePartSet {
         self.try_insert(strange_part).is_ok()
     }
     
-    fn try_insert(&mut self, strange_part: Self::Item) -> Result<(), InsertError> {
+    fn try_insert(&mut self, strange_part: StrangePart) -> Result<(), InsertError> {
         if self.contains(&strange_part) {
             return Err(InsertError::Duplicate);
         }
@@ -214,6 +214,21 @@ impl AttributeSet for StrangePartSet {
         
         // full set, insertion failed
         Err(InsertError::Full)
+    }
+    
+    fn insert_or_replace_last(&mut self, strange_part: StrangePart) -> bool {
+        if self.contains(&strange_part) {
+            return false;
+        }
+        
+        if let Some(slot) = self.inner.iter_mut().find(|slot| slot.is_none()) {
+            *slot = Some(strange_part);
+            return true;
+        }
+        
+        // replace the last item
+        self.inner[Self::MAX_COUNT - 1] = Some(strange_part);
+        true
     }
     
     /// Removes a strange part.
@@ -248,6 +263,23 @@ impl AttributeSet for StrangePartSet {
         }
         
         None
+    }
+    
+    /// Replaces a strange part in the set with a new strange part. `false` if the strange part was
+    /// not present.
+    fn replace(&mut self, strange_part: &StrangePart, new_strange_part: StrangePart) -> bool {
+        if !self.contains(strange_part) {
+            return false;
+        }
+        
+        for s in self.inner.iter_mut() {
+            if *s == Some(*strange_part) {
+                *s = Some(new_strange_part);
+                return true;
+            }
+        }
+        
+        false
     }
     
     /// Converts each element to an [`ItemAttribute`]. 
@@ -473,6 +505,21 @@ impl fmt::Display for StrangePartSet {
     }
 }
 
+impl fmt::Debug for StrangePartSet {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str("{")?;
+        let mut first = true;
+        for part in self {
+            if !first {
+                f.write_str(", ")?;
+            }
+            write!(f, "{:?}", part as u32)?;
+            first = false;
+        }
+        f.write_str("}")
+    }
+}
+
 impl Serialize for StrangePartSet {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -551,8 +598,117 @@ mod tests {
             Some(StrangePart::KillsWhileExplosiveJumping),
             Some(StrangePart::CriticalKills),
         ]);
-
+        
         assert_eq!(strange_parts, expected);
+    }
+    
+    #[test]
+    fn deserializes_backpack() {
+        // These are attributes from a Strange Flame Thrower with 3 parts.
+        // The deserializer extracts these while ignoring all other attributes.
+        let raw = r#"[
+            {
+                "defindex": 189,
+                "value": 1093664768,
+                "float_value": 11
+            },
+            {
+                "defindex": 214,
+                "value": 1847,
+                "float_value": 2.58819826360793713e-42
+            },
+            {
+                "defindex": 379,
+                "value": 1085,
+                "float_value": 1.52040883379242652e-42
+            },
+            {
+                "defindex": 380,
+                "value": 1101004800,
+                "float_value": 20
+            },
+            {
+                "defindex": 381,
+                "value": 91,
+                "float_value": 1.27518160253558353e-43
+            },
+            {
+                "defindex": 382,
+                "value": 1106771968,
+                "float_value": 31
+            },
+            {
+                "defindex": 383,
+                "value": 457,
+                "float_value": 6.40393398196441401e-43
+            },
+            {
+                "defindex": 384,
+                "value": 1107296256,
+                "float_value": 32
+            },
+            {
+                "defindex": 719,
+                "value": "models/weapons/c_models/stattrack.mdl"
+            },
+            {
+                "defindex": 731,
+                "value": 1065353216,
+                "float_value": 1
+            },
+            {
+                "defindex": 841,
+                "value": 0,
+                "float_value": 0
+            },
+            {
+                "defindex": 843,
+                "value": 1091043328,
+                "float_value": 8.5
+            },
+            {
+                "defindex": 865,
+                "value": 1112014848,
+                "float_value": 50
+            },
+            {
+                "defindex": 844,
+                "value": 1159274496,
+                "float_value": 2450
+            },
+            {
+                "defindex": 839,
+                "value": 1077097267,
+                "float_value": 2.79999995231628418
+            },
+            {
+                "defindex": 862,
+                "value": 1058642330,
+                "float_value": 0.60000002384185791
+            },
+            {
+                "defindex": 863,
+                "value": 1036831949,
+                "float_value": 0.100000001490116119
+            },
+            {
+                "defindex": 783,
+                "value": 1101004800,
+                "float_value": 20
+            },
+            {
+                "defindex": 724,
+                "value": 1065353216,
+                "float_value": 1
+            },
+            {
+                "defindex": 796,
+                "value": "10 0 -10"
+            }
+        ]"#;
+        let strange_parts = serde_json::from_str::<StrangePartSet>(raw).unwrap();
+        
+        assert_eq!(strange_parts.to_string(), "Projectiles Reflected, Posthumous Kills, Teammates Extinguished");
     }
     
     #[test]
