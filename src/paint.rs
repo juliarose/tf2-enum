@@ -1,7 +1,7 @@
 use crate::{
     Attribute,
     AttributeDef,
-    TryFromAttributeValueU32,
+    TryFromIntAttributeValue,
     Colored,
     HasItemDefindex,
     EffectType,
@@ -168,7 +168,7 @@ impl Attribute for Paint {
     }
 }
 
-impl TryFromAttributeValueU32 for Paint {}
+impl TryFromIntAttributeValue for Paint {}
 
 impl From<Paint> for ItemAttribute {
     fn from(val: Paint) -> Self {

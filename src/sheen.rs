@@ -4,7 +4,7 @@ use crate::{
     DescriptionFormat,
     EffectType,
     ItemAttribute,
-    TryFromAttributeValueU32,
+    TryFromIntAttributeValue,
 };
 use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, IntoPrimitive};
@@ -63,7 +63,7 @@ impl Attribute for Sheen {
     }
 }
 
-impl TryFromAttributeValueU32 for Sheen {}
+impl TryFromIntAttributeValue for Sheen {}
 
 impl From<Sheen> for ItemAttribute {
     fn from(val: Sheen) -> Self {

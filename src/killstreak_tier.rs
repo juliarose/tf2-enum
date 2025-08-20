@@ -1,7 +1,7 @@
 use crate::{
     Attribute,
     AttributeDef,
-    TryFromAttributeValueU32,
+    TryFromIntAttributeValue,
     DescriptionFormat,
     EffectType,
     ItemAttribute,
@@ -61,7 +61,7 @@ impl Attribute for KillstreakTier {
     }
 }
 
-impl TryFromAttributeValueU32 for KillstreakTier {}
+impl TryFromIntAttributeValue for KillstreakTier {}
 
 impl From<KillstreakTier> for ItemAttribute {
     fn from(val: KillstreakTier) -> Self {

@@ -9,7 +9,7 @@ use crate::{
     AttributeDef,
     AttributeValue,
     Attributes,
-    TryFromAttributeValueU32,
+    TryFromIntAttributeValue,
     DescriptionFormat,
     EffectType,
     ItemAttribute,
@@ -19,7 +19,7 @@ use std::borrow::Borrow;
 
 macro_rules! impl_from_u32 {
     ($t:ty) => {
-        impl TryFromAttributeValueU32 for $t {}
+        impl TryFromIntAttributeValue for $t {}
         
         impl From<u32> for $t {
             fn from(val: u32) -> Self {

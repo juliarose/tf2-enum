@@ -69,7 +69,7 @@ mod wear;
 // Traits and utility re-exports
 pub use strum::{EnumCount, IntoEnumIterator};
 pub use num_enum::{IntoPrimitive, TryFromPrimitive};
-pub use traits::{Attribute, Attributes, AttributeSet, TryFromAttributeValueU32, Colored, HasItemDefindex};
+pub use traits::{Attribute, Attributes, AttributeSet, TryFromIntAttributeValue, Colored, HasItemDefindex};
 
 // Enum re-exports
 pub use attribute_def::AttributeDef;

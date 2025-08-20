@@ -1,6 +1,6 @@
 //! Set for holding up to 3 strange parts.
 
-use crate::{Attributes, AttributeSet, TryFromAttributeValueU32, StrangePart, ItemAttribute};
+use crate::{Attributes, AttributeSet, TryFromIntAttributeValue, StrangePart, ItemAttribute};
 use crate::error::InsertError;
 use crate::serialize;
 use std::fmt;

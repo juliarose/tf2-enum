@@ -22,8 +22,6 @@ use strum::{Display, EnumString, EnumIter, EnumCount};
     Clone,
     Copy,
 )]
-#[strum(serialize_all = "snake_case")]
-#[serde(rename_all = "snake_case")]
 #[allow(missing_docs)]
 #[repr(u32)]
 pub enum Class {

@@ -1,6 +1,6 @@
 use crate::{
     Attribute,
-    TryFromAttributeValueU32,
+    TryFromIntAttributeValue,
     AttributeDef,
     EffectType,
     ItemAttribute,
@@ -77,7 +77,7 @@ impl Attribute for Wear {
     }
 }
 
-impl TryFromAttributeValueU32 for Wear {
+impl TryFromIntAttributeValue for Wear {
     fn try_from_attribute_float_value(v: f32) -> Option<Self> {
         Self::try_from(v).ok()
     }

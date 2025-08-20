@@ -7,7 +7,7 @@ use crate::{
     DescriptionFormat,
     EffectType,
     ItemAttribute,
-    TryFromAttributeValueU32,
+    TryFromIntAttributeValue,
 };
 use crate::econ_attributes::{
     HalloweenVoiceModulation,
@@ -99,7 +99,28 @@ impl Spell {
             Self::Exorcism => Self::DEFINDEX_EXORCISM,
         }
     }
-
+    
+    /// Gets the attribute ID used to identify this spell. This will only return a value for
+    /// footprints spells and paint spells.
+    pub fn attribute_id(&self) -> Option<u32> {
+        match self {
+            Self::DieJob => Some(0),
+            Self::ChromaticCorruption => Some(1),
+            Self::PutrescentPigmentation => Some(2),
+            Self::SpectralSpectrum => Some(3),
+            Self::SinisterStaining => Some(4),
+            Self::TeamSpiritFootprints => Some(1),
+            Self::HeadlessHorseshoes => Some(2),
+            Self::CorpseGrayFootprints => Some(3100495),
+            Self::ViolentVioletFootprints => Some(5322826),
+            Self::BruisedPurpleFootprints => Some(8208497),
+            Self::GangreenFootprints => Some(8421376),
+            Self::RottenOrangeFootprints => Some(13595446),
+            // bool - "has a spell"
+            _ => None,
+        }
+    }
+    
     /// Checks if this spell is a paint spell.
     pub fn is_paint_spell(&self) -> bool {
         matches!(
@@ -418,7 +439,7 @@ impl Attribute for PaintSpell {
     }
 }
 
-impl TryFromAttributeValueU32 for PaintSpell {
+impl TryFromIntAttributeValue for PaintSpell {
     fn try_from_attribute_value(_v: AttributeValue) -> Option<Self> {
         None
     }
@@ -512,7 +533,7 @@ impl Attribute for FootprintsSpell {
     }
 }
 
-impl TryFromAttributeValueU32 for FootprintsSpell {}
+impl TryFromIntAttributeValue for FootprintsSpell {}
 
 impl TryFrom<Spell> for FootprintsSpell {
     type Error = TryFromSpellError;

@@ -91,7 +91,7 @@ pub trait Attributes: Sized {
 }
 
 /// Backwards conversion for attributes associated with an integer value.
-pub trait TryFromAttributeValueU32: Sized + TryFrom<u32> {
+pub trait TryFromIntAttributeValue: Sized + TryFrom<u32> {
     /// Attempts conversion from an attribute value.
     #[allow(unused_variables)]
     fn try_from_attribute_value(v: AttributeValue) -> Option<Self> {
@@ -122,20 +122,24 @@ pub trait Colored: Sized {
     }
     
     /// Attempts to convert a hexadecimal color string.
-    fn from_color_str(color: &str) -> Option<Self> {
-        let len = color.len();
-        let mut color = color;
-        
-        if len == 7 && color.starts_with('#') {
-            color = &color[1..len];
-        } else if len != 6 {
-            return None;
-        }
-        
-        let color = u32::from_str_radix(color, 16).ok()?;
-        
-        Self::from_color(color)
+    fn from_color_str<S: AsRef<str>>(color: S) -> Option<Self> {
+        Self::from_color(extract_color(color.as_ref())?)
     }
+}
+
+// Compilation optimization.
+// See: <https://matklad.github.io/2021/07/09/inline-in-rust.html>
+fn extract_color(s: &str) -> Option<u32> {
+    let len = s.len();
+    let mut color = s;
+    
+    if len == 7 && color.starts_with('#') {
+        color = &color[1..len];
+    } else if len != 6 {
+        return None;
+    }
+    
+    u32::from_str_radix(color, 16).ok()
 }
 
 /// Definitions which are associated with an item defindex.

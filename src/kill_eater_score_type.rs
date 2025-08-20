@@ -1,7 +1,7 @@
 use crate::{
     Attributes,
     AttributeDef,
-    TryFromAttributeValueU32,
+    TryFromIntAttributeValue,
     EffectType,
     StrangePart,
     ItemLevel,
@@ -331,7 +331,7 @@ impl Attributes for KillEaterScoreType {
     }
 }
 
-impl TryFromAttributeValueU32 for KillEaterScoreType {}
+impl TryFromIntAttributeValue for KillEaterScoreType {}
 
 impl TryFrom<StrangePart> for KillEaterScoreType {
     type Error = TryFromPrimitiveError<Self>;
