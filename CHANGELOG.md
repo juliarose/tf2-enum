@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.11.0 (2025-08-16)
+## 0.11.0 (2025-08-20)
 
 ### Added
 - `ItemAttribute` container struct for attributes.
@@ -37,6 +37,7 @@
 - Moved extra fields for `Attribute` into `ATTRIBUTE` through `AttributeDef`.
 - `attribute_value` methods now return `AttributeValue` instead of `Option<AttributeValue>`.
 - Attribute integers and floats from 64 bit to 32 bit.
+- `attribute_value` to `attribute_id` for `Spell` so it does not conflict with the trait method.
 
 ## 0.10.0 (2025-08-14)
 
