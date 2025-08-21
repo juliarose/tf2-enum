@@ -3,6 +3,7 @@
 use crate::Spell;
 use std::fmt;
 
+pub use strum::ParseError;
 pub use num_enum::TryFromPrimitiveError;
 
 /// An error when attempting to convert a spell into a sub-set of spells (footprints or paint).

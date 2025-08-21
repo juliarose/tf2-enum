@@ -83,7 +83,7 @@ macro_rules! impl_attr {
             };
             
             // These attributes are booleans but our structs are unit types because we assume if an
-            //  item has attribute that this is set to true.
+            // item has attribute that this is set to true.
             fn attribute_float_value(&self) -> Option<f32> {
                 Some(1.0)
             }
@@ -810,7 +810,7 @@ impl_attr!(
     false
 );
 
-/// Represents the set of attributes for "dynamic_recipe_component_defined_item".
+/// Represents the "dynamic_recipe_component_defined_item" attributes.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem;
 
@@ -842,7 +842,7 @@ impl Attributes for DynamicRecipeComponentDefinedItem {
     ];
 }
 
-/// Represents the set "kill_eater", "kill_eater_2", and "kill_eater_3" attributes. The integer
+/// Represents the "kill_eater", "kill_eater_2", and "kill_eater_3" attributes. The integer
 /// refers to the score count.
 pub struct KillEaterScore(pub u32);
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.0 (2025-08-21)
+
+### Added
+- Added `ParseError` re-export from `strum`.
+
 ## 0.12.0 (2025-08-21)
 
 ### Added
