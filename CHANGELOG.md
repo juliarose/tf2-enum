@@ -12,6 +12,7 @@
 
 ### Changed
 - For deserializing into `SpellSet` and `AttributeSet`, if multiple attributes have the same defindex, only the first is used.
+- `#[inline(always)]` to `#[inline]` for `AttributeSet::iter`.
 
 ## 0.11.0 (2025-08-20)
 

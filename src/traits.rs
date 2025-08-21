@@ -1,5 +1,6 @@
 use crate::{AttributeDef, AttributeValue, ItemAttribute};
 use crate::error::InsertError;
+use std::fmt;
 
 /// Attribute values for an item attribute.
 pub trait Attribute: Sized {
@@ -120,6 +121,7 @@ pub trait Colored: Sized {
     fn from_color(color: u32) -> Option<Self>;
     
     /// Converts this into a hexademical color string in the format "#FFFFFF".
+    #[inline]
     fn color_string(&self) -> String {
         format!("#{:06X}", self.color())
     }
@@ -128,21 +130,6 @@ pub trait Colored: Sized {
     fn from_color_str<S: AsRef<str>>(color: S) -> Option<Self> {
         Self::from_color(extract_color(color.as_ref())?)
     }
-}
-
-// Compilation optimization.
-// See: <https://matklad.github.io/2021/07/09/inline-in-rust.html>
-fn extract_color(s: &str) -> Option<u32> {
-    let len = s.len();
-    let mut color = s;
-    
-    if len == 7 && color.starts_with('#') {
-        color = &color[1..len];
-    } else if len != 6 {
-        return None;
-    }
-    
-    u32::from_str_radix(color, 16).ok()
 }
 
 /// Definitions which are associated with an item defindex.
@@ -280,7 +267,7 @@ pub trait AttributeSet: Sized + Default {
     }
     
     /// Returns an iterator over the set.
-    #[inline(always)]
+    #[inline]
     fn iter(&self) -> impl Iterator<Item = &Self::Item> {
         self.as_slice().iter().filter_map(|opt| opt.as_ref())
     }
@@ -319,4 +306,19 @@ pub trait AttributeSet: Sized + Default {
     
     /// Returns the inner storage as a mutable slice.
     fn as_mut_slice(&mut self) -> &mut [Option<Self::Item>];
+}
+
+// Compilation optimization.
+// See: <https://matklad.github.io/2021/07/09/inline-in-rust.html>
+fn extract_color(s: &str) -> Option<u32> {
+    let len = s.len();
+    let mut color = s;
+    
+    if len == 7 && color.starts_with('#') {
+        color = &color[1..len];
+    } else if len != 6 {
+        return None;
+    }
+    
+    u32::from_str_radix(color, 16).ok()
 }
