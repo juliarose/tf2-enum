@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.12.0 (2025-08-20)
+## 0.12.0 (2025-08-21)
 
 ### Added
 - Added `PartialOrd` for `AttributeValue`.
