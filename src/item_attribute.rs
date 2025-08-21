@@ -2,7 +2,7 @@
 
 use crate::AttributeValue;
 use crate::serialize::option_float_as_integers_when_whole;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 /// Container type for item attributes.
 #[derive(Debug, Clone, Serialize, Deserialize)]

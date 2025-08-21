@@ -1,27 +1,27 @@
 use crate::error::TryFromSpellError;
 use crate::{
     Attribute,
+    Attributes,
     AttributeDef,
     AttributeValue,
-    Attributes,
     DescriptionFormat,
     EffectType,
     ItemAttribute,
     TryFromIntAttributeValue,
 };
 use crate::econ_attributes::{
-    HalloweenVoiceModulation,
-    HalloweenPumpkinExplosions,
-    HalloweenGreenFlames,
     HalloweenDeathGhosts,
+    HalloweenGreenFlames,
+    HalloweenPumpkinExplosions,
+    HalloweenVoiceModulation,
 };
 use std::fmt;
 use std::str::FromStr;
-use strum::{Display, EnumString, EnumIter, EnumCount};
-use num_enum::{TryFromPrimitive, IntoPrimitive};
-use serde_repr::{Serialize_repr, Deserialize_repr};
-use serde::{Serialize, Deserialize, Serializer};
-use serde::de::{self, Visitor, Deserializer};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+use serde::de::{self, Deserializer, Visitor};
+use serde::{Deserialize, Serialize, Serializer};
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use strum::{Display, EnumCount, EnumIter, EnumString};
 
 /// Spell.
 /// 
@@ -391,22 +391,22 @@ impl Serialize for Spell {
 
 /// Paint spell.
 #[derive(
-    Serialize_repr,
-    Deserialize_repr,
     Debug,
-    Hash,
+    Clone,
+    Copy,
     Eq,
     PartialEq,
     Ord,
     PartialOrd,
+    Hash,
     Display,
+    Serialize_repr,
+    Deserialize_repr,
     EnumString,
     EnumIter,
     EnumCount,
     TryFromPrimitive,
     IntoPrimitive,
-    Clone,
-    Copy,
 )]
 #[repr(u32)]
 #[strum(serialize_all = "title_case")]
@@ -483,22 +483,22 @@ impl From<PaintSpell> for ItemAttribute {
 
 /// Footprints spell.
 #[derive(
-    Serialize_repr,
-    Deserialize_repr,
     Debug,
-    Hash,
+    Clone,
+    Copy,
     Eq,
     PartialEq,
     Ord,
     PartialOrd,
+    Hash,
     Display,
+    Serialize_repr,
+    Deserialize_repr,
     EnumString,
     EnumIter,
     EnumCount,
     TryFromPrimitive,
     IntoPrimitive,
-    Clone,
-    Copy,
 )]
 #[repr(u32)]
 #[strum(serialize_all = "title_case")]

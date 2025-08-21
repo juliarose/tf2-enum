@@ -1,36 +1,36 @@
 use crate::{
     Attribute,
     AttributeDef,
-    TryFromIntAttributeValue,
     Colored,
-    HasItemDefindex,
-    EffectType,
     DescriptionFormat,
+    EffectType,
+    HasItemDefindex,
     ItemAttribute,
+    TryFromIntAttributeValue,
 };
-use strum::{Display, EnumString, EnumIter, EnumCount};
-use num_enum::{TryFromPrimitive, IntoPrimitive};
-use serde_repr::{Serialize_repr, Deserialize_repr};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use strum::{Display, EnumCount, EnumIter, EnumString};
 
 /// Paint. `repr` values are mapped to the corresponding color. For team paints this is the color
 /// for RED team.
 #[derive(
-    Serialize_repr,
-    Deserialize_repr,
     Debug,
-    Hash,
+    Clone,
+    Copy,
     Eq,
     PartialEq,
     Ord,
     PartialOrd,
+    Hash,
     Display,
+    Serialize_repr,
+    Deserialize_repr,
     EnumString,
     EnumIter,
     EnumCount,
     TryFromPrimitive,
     IntoPrimitive,
-    Clone,
-    Copy,
 )]
 #[repr(u32)]
 #[allow(missing_docs)]

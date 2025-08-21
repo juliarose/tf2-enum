@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// A value for an attribute.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize, Deserialize)]
 #[serde(untagged)]
 #[derive(Default)]
 pub enum AttributeValue {
@@ -15,7 +15,6 @@ pub enum AttributeValue {
     #[default]
     None,
 }
-
 
 impl From<u32> for AttributeValue {
     fn from(value: u32) -> Self {

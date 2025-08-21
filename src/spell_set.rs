@@ -3,18 +3,18 @@
 use crate::{
     Attribute,
     AttributeSet,
-    TryFromIntAttributeValue,
     FootprintsSpell,
+    ItemAttribute,
     PaintSpell,
     Spell,
-    ItemAttribute,
+    TryFromIntAttributeValue,
 };
 use crate::error::InsertError;
 use crate::serialize;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
-use serde::{Serialize, Deserialize, Serializer, Deserializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde::de::{SeqAccess, Visitor};
 
 const SPELL_COUNT: usize = 2;

@@ -4,6 +4,7 @@
 
 ### Fixed
 - Some minor doc issues.
+- `rust-version` not using the correct MSRV.
 - Lifetime annotations for static string constants causing issues with older Rust versions.
 
 ## 0.11.0 (2025-08-20)

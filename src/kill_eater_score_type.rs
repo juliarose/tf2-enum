@@ -1,15 +1,15 @@
 use crate::{
     Attributes,
     AttributeDef,
-    TryFromIntAttributeValue,
     EffectType,
-    StrangePart,
     ItemLevel,
+    StrangePart,
+    TryFromIntAttributeValue,
 };
 use crate::error::TryFromPrimitiveError;
-use strum::{Display, EnumIter, EnumCount};
-use num_enum::{TryFromPrimitive, IntoPrimitive};
-use serde_repr::{Serialize_repr, Deserialize_repr};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use strum::{Display, EnumCount, EnumIter};
 
 /// Kill eater score type. Conversion from strings is not supported due to multiple variants
 /// having the same string representation. They can still be formatted into strings.

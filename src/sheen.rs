@@ -6,28 +6,28 @@ use crate::{
     ItemAttribute,
     TryFromIntAttributeValue,
 };
-use strum::{Display, EnumString, EnumIter, EnumCount};
-use num_enum::{TryFromPrimitive, IntoPrimitive};
-use serde_repr::{Serialize_repr, Deserialize_repr};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use strum::{Display, EnumCount, EnumIter, EnumString};
 
 /// Sheen.
 #[derive(
-    Serialize_repr,
-    Deserialize_repr,
     Debug,
-    Hash,
+    Clone,
+    Copy,
     Eq,
     PartialEq,
     Ord,
     PartialOrd,
+    Hash,
     Display,
+    Serialize_repr,
+    Deserialize_repr,
     EnumString,
     EnumIter,
     EnumCount,
     TryFromPrimitive,
     IntoPrimitive,
-    Clone,
-    Copy,
 )]
 #[repr(u32)]
 #[strum(serialize_all = "title_case")]

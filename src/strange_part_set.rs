@@ -1,12 +1,18 @@
 //! Set for holding up to 3 strange parts.
 
-use crate::{Attributes, AttributeSet, TryFromIntAttributeValue, StrangePart, ItemAttribute};
+use crate::{
+    Attributes,
+    AttributeSet,
+    ItemAttribute,
+    StrangePart,
+    TryFromIntAttributeValue,
+};
 use crate::error::InsertError;
 use crate::serialize;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
-use serde::{Serialize, Deserialize, Serializer, Deserializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use serde::de::{SeqAccess, Visitor};
 
 const STRANGE_PART_COUNT: usize = 3;

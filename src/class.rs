@@ -1,7 +1,7 @@
 use crate::StockWeapon;
 use serde::{Deserialize, Serialize};
-use num_enum::{TryFromPrimitive, IntoPrimitive};
-use strum::{Display, EnumString, EnumIter, EnumCount};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+use strum::{Display, EnumCount, EnumIter, EnumString};
 
 /// Class.
 #[derive(

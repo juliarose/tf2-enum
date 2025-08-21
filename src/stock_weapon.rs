@@ -1,24 +1,24 @@
 use crate::{Class, HasItemDefindex, ItemSlot};
-use serde::{Deserialize, Serialize};
-use strum::{Display, EnumString, EnumIter, EnumCount};
 use num_enum::{TryFromPrimitive, TryFromPrimitiveError};
+use serde::{Deserialize, Serialize};
+use strum::{Display, EnumCount, EnumIter, EnumString};
 
 /// Stock weapons.
 #[derive(
     Debug,
-    Deserialize,
-    Serialize,
-    Hash,
+    Clone,
+    Copy,
     Eq,
     PartialEq,
     Ord,
     PartialOrd,
+    Hash,
     Display,
+    Deserialize,
+    Serialize,
     EnumString,
     EnumIter,
     EnumCount,
-    Clone,
-    Copy,
 )]
 #[allow(missing_docs)]
 pub enum StockWeapon {

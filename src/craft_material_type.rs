@@ -1,22 +1,22 @@
 use serde::{Deserialize, Serialize};
-use strum::{Display, EnumString, EnumIter, EnumCount};
+use strum::{Display, EnumCount, EnumIter, EnumString};
 
 /// Craft material type.
 #[derive(
     Debug,
-    Deserialize,
-    Serialize,
-    Hash,
+    Clone,
+    Copy,
     Eq,
     PartialEq,
     Ord,
     PartialOrd,
+    Hash,
     Display,
+    Deserialize,
+    Serialize,
     EnumString,
     EnumIter,
     EnumCount,
-    Clone,
-    Copy,
 )]
 #[strum(serialize_all = "snake_case")]
 #[serde(rename_all = "snake_case")]

@@ -1,4 +1,4 @@
-use crate::{EffectType, DescriptionFormat};
+use crate::{DescriptionFormat, EffectType};
 
 /// Represents the definition of an attribute in the schema.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

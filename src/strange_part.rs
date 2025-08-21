@@ -1,16 +1,16 @@
 
 use crate::{
-    AttributeDef,
     Attributes,
+    AttributeDef,
     EffectType,
     HasItemDefindex,
     KillEaterScoreType,
     TryFromIntAttributeValue,
 };
 use crate::error::TryFromPrimitiveError;
-use strum::{Display, EnumString, EnumIter, EnumCount};
-use num_enum::{TryFromPrimitive, IntoPrimitive};
-use serde_repr::{Serialize_repr, Deserialize_repr};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use strum::{Display, EnumCount, EnumIter, EnumString};
 
 // Avoid repeating strings
 const STR_SCOUTS_KILLED: &str = "Strange Part: Scouts Killed";
@@ -69,22 +69,22 @@ const STR_ASSISTS: &str = "Strange Cosmetic Part: Assists";
 /// Strange part. `repr` values are mapped to their `kill_eater_score_type` attribute value. Strings
 /// are the name of the `kill_eater_score_type`, **not** the name of the strange part.
 #[derive(
-    Serialize_repr,
-    Deserialize_repr,
     Debug,
-    Hash,
+    Clone,
+    Copy,
     Eq,
     PartialEq,
     Ord,
     PartialOrd,
+    Hash,
     Display,
+    Serialize_repr,
+    Deserialize_repr,
     EnumString,
     EnumIter,
     EnumCount,
     TryFromPrimitive,
     IntoPrimitive,
-    Clone,
-    Copy,
 )]
 #[repr(u32)]
 #[allow(missing_docs)]

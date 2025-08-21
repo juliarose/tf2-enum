@@ -6,16 +6,16 @@
 
 use crate::{
     Attribute,
+    Attributes,
     AttributeDef,
     AttributeValue,
-    Attributes,
-    TryFromIntAttributeValue,
     DescriptionFormat,
     EffectType,
     ItemAttribute,
+    TryFromIntAttributeValue,
 };
-use std::ops::Deref;
 use std::borrow::Borrow;
+use std::ops::Deref;
 
 macro_rules! impl_from_u32 {
     ($t:ty) => {
