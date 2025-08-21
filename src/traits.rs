@@ -1,6 +1,5 @@
 use crate::{AttributeDef, AttributeValue, ItemAttribute};
 use crate::error::InsertError;
-use std::fmt;
 
 /// Attribute values for an item attribute.
 pub trait Attribute: Sized {
@@ -13,7 +12,7 @@ pub trait Attribute: Sized {
     /// This is a marker to specify which attribute field is meaningful to us in obtaining the
     /// attribute's value.
     /// 
-    /// # Kill count example
+    /// # Kill Count Example
     /// ```json
     /// {
     ///     "defindex": 214,
@@ -33,7 +32,7 @@ pub trait Attribute: Sized {
     /// assert_eq!(float_value.to_bits(), value);
     /// ```
     /// 
-    /// # Sheen example
+    /// # Sheen Example
     /// ```json
     /// {
     ///     "defindex": 2014,
@@ -180,6 +179,7 @@ pub trait AttributeSet: Sized + Default {
     }
     
     /// Returns the number of elements in the set.
+    #[inline]
     fn len(&self) -> usize {
         // The sets are small so iteration is fine.
         self.as_slice()
@@ -194,16 +194,19 @@ pub trait AttributeSet: Sized + Default {
     }
     
     /// Returns true if the set is empty.
+    #[inline]
     fn is_empty(&self) -> bool {
         self.len() == 0
     }
     
     /// Returns true if the set is full, i.e., it contains the maximum number of elements.
+    #[inline]
     fn is_full(&self) -> bool {
         self.len() == Self::MAX_COUNT
     }
     
     /// Gets the capacity of the set.
+    #[inline]
     fn capacity(&self) -> usize {
         Self::MAX_COUNT
     }

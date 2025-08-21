@@ -44,6 +44,7 @@ pub enum Wear {
 
 impl Wear {
     /// Converts the wear to a float value.
+    #[inline]
     pub fn as_float(&self) -> f32 {
         match self {
             Self::FactoryNew => 0.2,
