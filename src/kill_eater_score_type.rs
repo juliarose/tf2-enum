@@ -14,8 +14,8 @@ use strum::{Display, EnumCount, EnumIter};
 /// Kill eater score type. Conversion from strings is not supported due to multiple variants
 /// having the same string representation. They can still be formatted into strings.
 #[derive(
-    Serialize_repr,
     Deserialize_repr,
+    Serialize_repr,
     Debug,
     Hash,
     Eq,

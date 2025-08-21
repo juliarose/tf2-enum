@@ -1,11 +1,17 @@
 # Changelog
 
-## 0.11.1 (2025-08-20)
+## 0.12.0 (2025-08-20)
+
+### Added
+- Added `PartialOrd` for `AttributeValue`.
 
 ### Fixed
 - Some minor doc issues.
 - `rust-version` not using the correct MSRV.
 - Lifetime annotations for static string constants causing issues with older Rust versions.
+
+### Changed
+- For deserializing into `SpellSet` and `AttributeSet`, if multiple attributes have the same defindex, only the first is used.
 
 ## 0.11.0 (2025-08-20)
 

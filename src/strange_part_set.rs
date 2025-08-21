@@ -9,11 +9,12 @@ use crate::{
 };
 use crate::error::InsertError;
 use crate::serialize;
+use std::collections::HashSet;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use serde::de::{SeqAccess, Visitor};
+use serde::de::{self, SeqAccess, Visitor};
 
 const STRANGE_PART_COUNT: usize = 3;
 
@@ -557,6 +558,7 @@ impl<'de> Deserialize<'de> for StrangePartSet {
                 A: SeqAccess<'de>,
             {
                 let mut set = Self::Value::new();
+                let mut defindex_map = HashSet::new();
                 
                 while let Some(map) = seq.next_element::<ItemAttribute>()? {
                     if !<Self::Value as AttributeSet>::Item::DEFINDEX.contains(&map.defindex) {
@@ -564,10 +566,23 @@ impl<'de> Deserialize<'de> for StrangePartSet {
                         continue;
                     }
                     
+                    if defindex_map.contains(&map.defindex) {
+                        // Skip if defindex is already in the set
+                        continue;
+                    }
+                    
+                    defindex_map.insert(map.defindex);
+                    
                     let float_value = map.float_value
-                        .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
-                    let part = <StrangePartSet as AttributeSet>::Item::try_from_attribute_float_value(float_value)
-                        .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
+                        .ok_or_else(|| de::Error::missing_field(
+                            "float_value"
+                        ))?;
+                    let part = <Self::Value as AttributeSet>::Item::try_from_attribute_float_value(
+                            float_value
+                        )
+                        .ok_or_else(|| de::Error::custom(
+                            "cannot convert from float_value"
+                        ))?;
                     
                     set.insert(part);
                 }
@@ -718,7 +733,10 @@ mod tests {
         ]"#;
         let strange_parts = serde_json::from_str::<StrangePartSet>(raw).unwrap();
         
-        assert_eq!(strange_parts.to_string(), "Projectiles Reflected, Posthumous Kills, Teammates Extinguished");
+        assert_eq!(
+            strange_parts.to_string(),
+            "Projectiles Reflected, Posthumous Kills, Teammates Extinguished"
+        );
     }
     
     #[test]

@@ -12,8 +12,8 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use strum::{Display, EnumCount, EnumIter, EnumString};
 
-/// Paint. `repr` values are mapped to the corresponding color. For team paints this is the color
-/// for RED team.
+/// Paint. `repr` values are mapped to the corresponding hexadecimal color (represented as a u32).
+/// For team paints, this is the color for RED team.
 #[derive(
     Debug,
     Clone,
@@ -24,8 +24,8 @@ use strum::{Display, EnumCount, EnumIter, EnumString};
     PartialOrd,
     Hash,
     Display,
-    Serialize_repr,
     Deserialize_repr,
+    Serialize_repr,
     EnumString,
     EnumIter,
     EnumCount,

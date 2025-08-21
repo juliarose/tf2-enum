@@ -11,11 +11,12 @@ use crate::{
 };
 use crate::error::InsertError;
 use crate::serialize;
+use std::collections::HashSet;
 use std::fmt;
 use std::hash::{Hash, Hasher};
 use std::ops::{BitAnd, Sub};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use serde::de::{SeqAccess, Visitor};
+use serde::de::{self, SeqAccess, Visitor};
 
 const SPELL_COUNT: usize = 2;
 
@@ -510,23 +511,39 @@ impl<'de> Deserialize<'de> for SpellSet {
                 A: SeqAccess<'de>,
             {
                 let mut set = Self::Value::new();
+                let mut defindex_map = HashSet::new();
                 
                 while let Some(map) = seq.next_element::<ItemAttribute>()? {
+                    if defindex_map.contains(&map.defindex) {
+                        // Skip if defindex is already in the set
+                        continue;
+                    }
+                    
+                    defindex_map.insert(map.defindex);
+                    
                     match map.defindex {
                         FootprintsSpell::DEFINDEX => {
                             let float_value = map.float_value
-                                .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
-                            let part = FootprintsSpell::try_from_attribute_float_value(float_value)
-                                .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
+                                .ok_or_else(|| de::Error::missing_field("float_value"))?;
+                            let part = FootprintsSpell::try_from_attribute_float_value(
+                                    float_value
+                                )
+                                .ok_or_else(|| de::Error::custom(
+                                    "cannot convert from float_value"
+                                ))?;
                             
                             set.insert(part.into());
                             continue;
                         },
                         PaintSpell::DEFINDEX => {
                             let float_value = map.float_value
-                                .ok_or_else(|| serde::de::Error::missing_field("float_value"))?;
-                            let part = PaintSpell::try_from_attribute_float_value(float_value)
-                                .ok_or_else(|| serde::de::Error::custom("cannot convert from float_value"))?;
+                                .ok_or_else(|| de::Error::missing_field("float_value"))?;
+                            let part = PaintSpell::try_from_attribute_float_value(
+                                    float_value
+                                )
+                                .ok_or_else(|| de::Error::custom(
+                                    "cannot convert from float_value"
+                                ))?;
                             
                             set.insert(part.into());
                             continue;

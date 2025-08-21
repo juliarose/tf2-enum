@@ -260,7 +260,7 @@ macro_rules! impl_attr {
 }
 
 /// Represents the "is_festivized" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct IsFestivized;
 
 impl_attr!(
@@ -277,7 +277,7 @@ impl_attr!(
 );
 
 /// Represents the "is_australium_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct IsAustralium;
 
 impl_attr!(
@@ -299,7 +299,7 @@ impl_attr!(
 /// allows strangified non-strange items to be identified.
 /// 
 /// The value refers to the number of kills, or score count.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct KillEater(pub u32);
 
 impl_attr!(
@@ -316,7 +316,7 @@ impl_attr!(
 );
 
 /// Represents the "taunt attach particle index" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct TauntAttachParticleIndex(pub u32);
 
 impl_attr!(
@@ -333,7 +333,7 @@ impl_attr!(
 );
 
 /// Represents the "set_attached_particle" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct SetAttachedParticle(pub u32);
 
 impl_attr!(
@@ -350,7 +350,7 @@ impl_attr!(
 );
 
 /// Represents the "paintkit_proto_def_index" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct PaintkitProtoDefIndex(pub u32);
 
 impl_attr!(
@@ -367,7 +367,7 @@ impl_attr!(
 );
 
 /// Represents the "tool_target_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct ToolTargetItem(pub u32);
 
 impl_attr!(
@@ -384,7 +384,7 @@ impl_attr!(
 );
 
 /// Represents the "supply_crate_series" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct SupplyCrateSeries(pub u32);
 
 impl_attr!(
@@ -401,7 +401,7 @@ impl_attr!(
 );
 
 /// Represents the "series_number" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct SeriesNumber(pub u32);
 
 impl_attr!(
@@ -452,7 +452,7 @@ impl_attr!(
 );
 
 /// Represents the "unique_craft_index" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct UniqueCraftIndex(pub u32);
 
 impl_attr!(
@@ -470,7 +470,7 @@ impl_attr!(
 
 /// Represents the "makers_mark_id" attribute. The integer refers to the account's 32-bit SteamID
 /// of the crafter.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct MakersMarkId(pub u32);
 
 impl_attr!(
@@ -488,7 +488,7 @@ impl_attr!(
 
 /// Represents the "gifter_account_id" attribute. The integer refers to the account's 32-bit
 /// SteamID.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct GifterAccountId(pub u32);
 
 impl_attr!(
@@ -505,7 +505,7 @@ impl_attr!(
 );
 
 /// Represents the "event_date" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct EventDate(pub u32);
 
 impl_attr!(
@@ -522,7 +522,7 @@ impl_attr!(
 );
 
 /// Represents the "is_australium_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct TradableAfterDate(pub u32);
 
 impl_attr!(
@@ -539,7 +539,7 @@ impl_attr!(
 );
 
 /// Represents the "custom_texture_lo" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct CustomTextureLo(pub u32);
 
 impl_attr!(
@@ -556,7 +556,7 @@ impl_attr!(
 );
 
 /// Represents the "custom_texture_hi" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct CustomTextureHi(pub u32);
 
 impl_attr!(
@@ -573,7 +573,7 @@ impl_attr!(
 );
 
 /// Represents the "halloween_voice_modulation" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct HalloweenVoiceModulation;
 
 impl_attr!(
@@ -590,7 +590,7 @@ impl_attr!(
 );
 
 /// Represents the "halloween_pumpkin_explosions" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct HalloweenPumpkinExplosions;
 
 impl_attr!(
@@ -607,7 +607,7 @@ impl_attr!(
 );
 
 /// Represents the "halloween_green_flames" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct HalloweenGreenFlames;
 
 impl_attr!(
@@ -624,7 +624,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct HalloweenDeathGhosts;
 
 impl_attr!(
@@ -641,7 +641,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem1;
 
 impl_attr!(
@@ -658,7 +658,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem2;
 
 impl_attr!(
@@ -675,7 +675,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem3;
 
 impl_attr!(
@@ -692,7 +692,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem4;
 
 impl_attr!(
@@ -709,7 +709,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem5;
 
 impl_attr!(
@@ -726,7 +726,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem6;
 
 impl_attr!(
@@ -743,7 +743,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem7;
 
 impl_attr!(
@@ -760,7 +760,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem8;
 
 impl_attr!(
@@ -777,7 +777,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem9;
 
 impl_attr!(
@@ -794,7 +794,7 @@ impl_attr!(
 );
 
 /// Represents the "dynamic_recipe_component_defined_item" attribute.
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem10;
 
 impl_attr!(
@@ -811,7 +811,7 @@ impl_attr!(
 );
 
 /// Represents the set of attributes for "dynamic_recipe_component_defined_item".
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DynamicRecipeComponentDefinedItem;
 
 impl Attributes for DynamicRecipeComponentDefinedItem {

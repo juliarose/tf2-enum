@@ -1,9 +1,8 @@
 use serde::{Deserialize, Serialize};
 
 /// A value for an attribute.
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, PartialEq, PartialOrd, Serialize, Deserialize)]
 #[serde(untagged)]
-#[derive(Default)]
 pub enum AttributeValue {
     /// Represents an integer attribute value.
     Integer(u32),
