@@ -1,6 +1,6 @@
 //! Provides enumerated types for models related to the Team Fortress 2 item schema. Other
 //! utilities relating to the schema are also included, as well as related item and
-//! attribute conversion helpers. This crate provides a number of attribute utilities, mostly
+//! attribute conversion helpers. This crate provides a number of additional attributes mostly
 //! related to trading.
 //! 
 //! For the most part, definitions here are relatively stable and don't have any new values added
@@ -69,7 +69,14 @@ mod wear;
 // Traits and utility re-exports
 pub use strum::{EnumCount, IntoEnumIterator};
 pub use num_enum::{IntoPrimitive, TryFromPrimitive};
-pub use traits::{Attribute, Attributes, AttributeSet, TryFromIntAttributeValue, Colored, HasItemDefindex};
+pub use traits::{
+    Attribute,
+    Attributes,
+    AttributeSet,
+    TryFromIntAttributeValue,
+    Colored,
+    HasItemDefindex
+};
 
 // Enum re-exports
 pub use attribute_def::AttributeDef;

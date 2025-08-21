@@ -250,7 +250,7 @@ impl KillEaterScoreType {
     }
 }
 impl Attributes for KillEaterScoreType {
-    const DEFINDEX: &[u32] = &[
+    const DEFINDEX: &'static [u32] = &[
         292,
         293,
         495,

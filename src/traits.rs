@@ -7,16 +7,18 @@ pub trait Attribute: Sized {
     const DEFINDEX: u32;
     /// The attribute definition.
     const ATTRIBUTE: AttributeDef;
-    /// Not part of the schema - this is a marker to specify which attribute field is meaningful to
-    /// us in obtaining the attribute's value.
+    /// **Not part of the schema.**
     /// 
-    /// # Kill eaters example
+    /// This is a marker to specify which attribute field is meaningful to us in obtaining the
+    /// attribute's value.
+    /// 
+    /// # Kill count example
     /// ```json
     /// {
     ///     "defindex": 214,
     ///     "value": 918,
     ///     "float_value": 1.28639199025018207e-42
-    /// },
+    /// }
     /// ```
     /// This is the "kill_eater" attribute. "918" refers to the number of kills. The `float_value`
     /// field is the same number as a 32-bit float.
@@ -30,7 +32,7 @@ pub trait Attribute: Sized {
     /// assert_eq!(float_value.to_bits(), value);
     /// ```
     /// 
-    /// # Sheens example
+    /// # Sheen example
     /// ```json
     /// {
     ///     "defindex": 2014,
@@ -39,8 +41,9 @@ pub trait Attribute: Sized {
     /// }
     /// ```
     /// This is the "killstreak_idleeffect" attribute. "6" refers to the associated sheen (
-    /// [`crate::Sheen::VillainousViolet`]), but is stored in the `float_value` field, unlike
-    /// "kill_eater". The `value` field is the same number as a 32-bit float.
+    /// [`Sheen::VillainousViolet`][`crate::Sheen::VillainousViolet`]), but is stored in the
+    /// `float_value` field, unlike "kill_eater". The `value` field is the same number as a 32-bit
+    /// float.
     /// 
     /// While both values refer to the same value, and internally the attribute's value is its
     /// `float_value`, there are many cases where the `float_value` doesn't mean anything to us
@@ -66,7 +69,7 @@ pub trait Attribute: Sized {
 /// Associated attribute values for a set of item attributes.
 pub trait Attributes: Sized {
     /// The list of associated defindexes.
-    const DEFINDEX: &[u32];
+    const DEFINDEX: &'static [u32];
     /// The attribute definition.
     const ATTRIBUTES: &'static [AttributeDef];
     /// See [`Attribute::USES_FLOAT_VALUE`]. This applies to all attributes in the set.

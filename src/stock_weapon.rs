@@ -283,7 +283,7 @@ impl StockWeapon {
 
 // Manually implemented since TryFromPrimitive only supports mapping each variant to one number.
 impl TryFromPrimitive for StockWeapon {
-    const NAME: &str = "StockWeapon";
+    const NAME: &'static str = "StockWeapon";
     type Primitive = u32;
     type Error = TryFromPrimitiveError<StockWeapon>;
     

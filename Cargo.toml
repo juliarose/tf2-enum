@@ -3,7 +3,7 @@ name = "tf2-enum"
 version = "0.11.0"
 edition = "2021"
 # MSRV
-rust-version = "1.70.0"
+rust-version = "1.75.0"
 description = "Provides enumerated types for models related to the Team Fortress 2 item schema."
 authors = ["Julia"]
 homepage = "https://github.com/juliarose/tf2-enum"

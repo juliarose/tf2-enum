@@ -149,7 +149,7 @@ impl Spell {
 }
 
 impl Attributes for Spell {
-    const DEFINDEX: &[u32] = &[
+    const DEFINDEX: &'static [u32] = &[
         1004,
         1005,
         1006,

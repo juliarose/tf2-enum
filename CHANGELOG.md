@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1 (2025-08-20)
+
+### Fixed
+- Some minor doc issues.
+- Lifetime annotations for static string constants causing issues with older Rust versions.
+
 ## 0.11.0 (2025-08-20)
 
 ### Added

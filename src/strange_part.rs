@@ -337,7 +337,7 @@ impl StrangePart {
 }
 
 impl Attributes for StrangePart {
-    const DEFINDEX: &[u32] = &[
+    const DEFINDEX: &'static [u32] = &[
         380,
         382,
         384,

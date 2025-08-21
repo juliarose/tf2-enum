@@ -815,8 +815,17 @@ impl_attr!(
 pub struct DynamicRecipeComponentDefinedItem;
 
 impl Attributes for DynamicRecipeComponentDefinedItem {
-    const DEFINDEX: &[u32] = &[
-        2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+    const DEFINDEX: &'static [u32] = &[
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
     ];
     const USES_FLOAT_VALUE: bool = true;
     const ATTRIBUTES: &'static [AttributeDef] = &[
@@ -838,7 +847,11 @@ impl Attributes for DynamicRecipeComponentDefinedItem {
 pub struct KillEaterScore(pub u32);
 
 impl Attributes for KillEaterScore {
-    const DEFINDEX: &'static [u32] = &[214, 294, 494];
+    const DEFINDEX: &'static [u32] = &[
+        214,
+        294,
+        494,
+    ];
     const USES_FLOAT_VALUE: bool = false;
     const ATTRIBUTES: &'static [AttributeDef] = &[
         AttributeDef {
@@ -874,11 +887,15 @@ impl Attributes for KillEaterScore {
     ];
 }
 
-/// Refers to the "kill_eater_user_1", "kill_eater_user_2", and "kill_eater_user_3" attributes.
+/// Represents the "kill_eater_user_1", "kill_eater_user_2", and "kill_eater_user_3" attributes.
 pub struct KillEaterUserScore(pub u32);
 
 impl Attributes for KillEaterUserScore {
-    const DEFINDEX: &'static [u32] = &[379, 381, 383];
+    const DEFINDEX: &'static [u32] = &[
+        379,
+        381,
+        383,
+    ];
     const USES_FLOAT_VALUE: bool = false;
     const ATTRIBUTES: &'static [AttributeDef] = &[
         AttributeDef {

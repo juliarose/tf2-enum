@@ -27,17 +27,15 @@ impl AttributeDef {
     where
         F: std::fmt::Display,
     {
-        if let Some(description_string) = self.description_string {
-            if let Some(value) = value {
-                return description_string
-                    .replace("%s1", &value.to_string())
-                    .into();
-            } else {
-                return Some(description_string.into());
-            }   
-        }
+        let description_string = self.description_string.as_ref()?;
         
-        None
+        if let Some(value) = value {
+            return description_string
+                .replace("%s1", &value.to_string())
+                .into();
+        }
+            
+        Some(description_string.to_string())
     }
 }
 
