@@ -20,6 +20,7 @@ use strum::{Display, EnumCount, EnumIter, EnumString};
     EnumIter,
     EnumCount,
 )]
+#[non_exhaustive]
 #[allow(missing_docs)]
 pub enum ItemLevel {
     #[strum(serialize = "KillEaterRank")]

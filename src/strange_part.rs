@@ -87,6 +87,7 @@ const STR_ASSISTS: &str = "Strange Cosmetic Part: Assists";
     IntoPrimitive,
 )]
 #[repr(u32)]
+#[non_exhaustive]
 #[allow(missing_docs)]
 pub enum StrangePart {
     #[strum(serialize = "Scouts Killed")]
@@ -198,6 +199,13 @@ pub enum StrangePart {
 }
 
 impl StrangePart {
+    /// The defindex for the kill eater user score type 1.
+    pub const DEFINDEX_KILL_EATER_USER_SCORE_TYPE_1: u32 = 380;
+    /// The defindex for the kill eater user score type 2.
+    pub const DEFINDEX_KILL_EATER_USER_SCORE_TYPE_2: u32 = 382;
+    /// The defindex for the kill eater user score type 3.
+    pub const DEFINDEX_KILL_EATER_USER_SCORE_TYPE_3: u32 = 384;
+    
     /// Gets the `kill_eater_score_type` attribute value for this [`StrangePart`].
     pub fn score_type(&self) -> u32 {
         u32::from(*self)

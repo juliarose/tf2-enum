@@ -8,6 +8,7 @@ use crate::{
     ItemAttribute,
     TryFromIntAttributeValue,
 };
+use crate::econ_attributes::SetItemTintRgb2;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use strum::{Display, EnumCount, EnumIter, EnumString};
@@ -132,6 +133,49 @@ impl Paint {
         }
     }
     
+    /// Attempts to convert from the `set_item_tint_rgb_1` attribute value. This is color for team
+    /// RED. Returns the same value as `TryFrom<u32> for Paint`.
+    pub fn from_set_item_tint_rgb_1(color: u32) -> Option<Self> {
+        Self::try_from(color).ok()
+    }
+    
+    /// Attempts to convert from the `set_item_tint_rgb_2` attribute value. This is color for team
+    /// BLU.
+    pub fn from_set_item_tint_rgb_2(color: u32) -> Option<Self> {
+        match color {
+            0x2F4F4F => Some(Self::AColorSimilarToSlate),
+            0x7D4071 => Some(Self::ADeepCommitmentToPurple),
+            0x141414 => Some(Self::ADistinctiveLackOfHue),
+            0xBCDDB3 => Some(Self::AMannsMint),
+            0x2D2D24 => Some(Self::AfterEight),
+            0x7E7E7E => Some(Self::AgedMoustacheGrey),
+            0xE6E6E6 => Some(Self::AnExtraordinaryAbundanceOfTinge),
+            0xE7B53B => Some(Self::AustraliumGold),
+            0xD8BED8 => Some(Self::ColorNo216190216),
+            0xE9967A => Some(Self::DarkSalmonInjustice),
+            0x808000 => Some(Self::DrablyOlive),
+            0x729E42 => Some(Self::IndubitablyGreen),
+            0xCF7336 => Some(Self::MannCoOrange),
+            0xA57545 => Some(Self::Muskelmannbraun),
+            0x51384A => Some(Self::NobleHattersViolet),
+            0xC5AF91 => Some(Self::PeculiarlyDrabTincture),
+            0xFF69B4 => Some(Self::PinkAsHell),
+            0x694D3A => Some(Self::RadiganConagherBrown),
+            0x32CD32 => Some(Self::TheBitterTasteOfDefeatAndLime),
+            0xF0E68C => Some(Self::TheColorOfAGentlemannsBusinessPants),
+            0x7C6C57 => Some(Self::YeOldeRusticColour),
+            0x424F3B => Some(Self::ZepheniahsGreed),
+            0x28394D => Some(Self::AnAirOfDebonair),
+            0x18233D => Some(Self::BalaclavasAreForever),
+            0xB88035 => Some(Self::CreamSpirit),
+            0x384248 => Some(Self::OperatorsOveralls),
+            0x5885A2 => Some(Self::TeamSpirit),
+            0x256D8D => Some(Self::TheValueOfTeamwork),
+            0x839FA3 => Some(Self::WaterloggedLabCoat),
+            _ => None,
+        }
+    }
+    
     /// Determines if this paint is a team-colored paint.
     pub fn is_team_paint(&self) -> bool {
         matches!(
@@ -177,6 +221,14 @@ impl From<Paint> for ItemAttribute {
             value: val.attribute_value(),
             float_value: val.attribute_float_value(),
         }
+    }
+}
+
+impl TryFrom<SetItemTintRgb2> for Paint {
+    type Error = ();
+
+    fn try_from(attr: SetItemTintRgb2) -> Result<Self, Self::Error> {
+        Self::from_set_item_tint_rgb_2(attr.0).ok_or(())
     }
 }
 

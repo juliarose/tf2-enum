@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::fmt;
 
 /// A value for an attribute.
 #[derive(Debug, Default, Clone, PartialEq, PartialOrd, Serialize, Deserialize)]
@@ -13,6 +14,23 @@ pub enum AttributeValue {
     /// No value.
     #[default]
     None,
+}
+
+impl std::fmt::Display for AttributeValue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            AttributeValue::Integer(v) => write!(f, "{v}"),
+            AttributeValue::Float(v) => {
+                if v.fract() == 0.0 {
+                    write!(f, "{:.0}", v)
+                } else {
+                    write!(f, "{}", v)
+                }
+            },
+            AttributeValue::String(v) => write!(f, "{v}"),
+            AttributeValue::None => write!(f, ""),
+        }
+    }
 }
 
 impl From<u32> for AttributeValue {
@@ -62,5 +80,18 @@ mod tests {
         assert_eq!(int_json, r#"42"#);
         assert_eq!(float_json, r#"3.14"#);
         assert_eq!(string_json, r#""Hello""#);
+    }
+    
+    #[test]
+    fn displays() {
+        let int_value = AttributeValue::Integer(42);
+        let float_value = AttributeValue::Float(3.14);
+        let string_value = AttributeValue::String("Hello".into());
+        let integer_float_value = AttributeValue::Float(42.0);
+        
+        assert_eq!(int_value.to_string(), "42");
+        assert_eq!(float_value.to_string(), "3.14");
+        assert_eq!(string_value.to_string(), "Hello");
+        assert_eq!(integer_float_value.to_string(), "42");
     }
 }

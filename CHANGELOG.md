@@ -1,14 +1,27 @@
 # Changelog
 
+## 0.14.0 (2025-08-21)
+
+### Added
+- `GCItemSort` enum.
+- `Flags` enum.
+- `Rarity` enum.
+- `HolidayRestriction` enum.
+- `DropType` enum.
+- `AlwaysTradable`, `CannotTrade`, `NeverCraftable`, `ExpirationDate` to `econ_attributes`.
+- More robust DEFINDEX consts to types that implement `Attributes`.
+- `from_set_item_tint_rgb_1` and `from_set_item_tint_rgb_2` to `Paint`.
+- `#[non_exhaustive]` for enumerated types where it makes the most sense, like `Capability`.
+
 ## 0.13.0 (2025-08-21)
 
 ### Added
-- Added `ParseError` re-export from `strum`.
+- `ParseError` re-export from `strum`.
 
 ## 0.12.0 (2025-08-21)
 
 ### Added
-- Added `PartialOrd` for `AttributeValue`.
+- `PartialOrd` for `AttributeValue`.
 
 ### Fixed
 - Some minor doc issues.

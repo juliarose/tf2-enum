@@ -1,9 +1,24 @@
-use crate::Colored;
+use crate::{Rarity, Colored};
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use strum::{Display, EnumCount, EnumIter, EnumString};
 
-/// Grade.
+/// Grade. The repr values for each variant aren't associated with anything from the schema. Use
+/// [`Rarity`] if you need internal values. Instead, [`Grade`] is used for display purposes and each
+/// variant is ranked from lowest to highest tier.
+/// 
+/// The types can be neatly-converted from one another.
+/// 
+/// # Examples
+/// ```
+/// use tf2_enum::{Grade, Rarity};
+/// 
+/// assert_eq!(Grade::from(Rarity::Ancient), Grade::Elite);
+/// 
+/// let rarity: Rarity = Grade::Elite.into();
+/// 
+/// assert_eq!(rarity, Rarity::Ancient);
+/// ```
 #[derive(
     Debug,
     Clone,
@@ -63,6 +78,19 @@ impl Colored for Grade {
             0xD32CE6 => Some(Self::Assassin),
             0xEB4B4B => Some(Self::Elite),
             _ => None,
+        }
+    }
+}
+
+impl From<Rarity> for Grade {
+    fn from(rarity: Rarity) -> Self {
+        match rarity {
+            Rarity::Common => Self::Civilian,
+            Rarity::Uncommon => Self::Freelance,
+            Rarity::Rare => Self::Mercenary,
+            Rarity::Mythical => Self::Commando,
+            Rarity::Legendary => Self::Assassin,
+            Rarity::Ancient => Self::Elite,
         }
     }
 }

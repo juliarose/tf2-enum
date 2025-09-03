@@ -21,6 +21,7 @@ use strum::{Display, EnumCount, EnumIter, EnumString};
 )]
 #[strum(serialize_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
+#[non_exhaustive]
 #[allow(missing_docs)]
 pub enum ItemSlot {
     Melee,

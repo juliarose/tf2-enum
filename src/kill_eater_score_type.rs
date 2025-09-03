@@ -31,6 +31,7 @@ use strum::{Display, EnumCount, EnumIter};
     Copy,
 )]
 #[repr(u32)]
+#[non_exhaustive]
 #[allow(missing_docs)]
 pub enum KillEaterScoreType {
     /// "Kills" used for most Strange weapons.
@@ -227,6 +228,18 @@ pub enum KillEaterScoreType {
 }
 
 impl KillEaterScoreType {
+    /// The defindex for the kill eater score type.
+    pub const DEFINDEX_KILL_EATER_SCORE_TYPE: u32 = 292;
+    /// The defindex for the kill eater score type 2.
+    pub const DEFINDEX_KILL_EATER_SCORE_TYPE_2: u32 = 293;
+    /// The defindex for the kill eater score type 3.
+    pub const DEFINDEX_KILL_EATER_SCORE_TYPE_3: u32 = 495;
+    /// The defindex for the kill eater user score type 1.
+    pub const DEFINDEX_KILL_EATER_USER_SCORE_TYPE_1: u32 = 380;
+    /// The defindex for the kill eater user score type 2.
+    pub const DEFINDEX_KILL_EATER_USER_SCORE_TYPE_2: u32 = 382;
+    /// The defindex for the kill eater user score type 3.
+    pub const DEFINDEX_KILL_EATER_USER_SCORE_TYPE_3: u32 = 384;
     /// The defindex values for the kill eater score types.
     pub const DEFINDEX_SCORE_TYPES: &'static [u32] = &[
         292,
@@ -249,6 +262,7 @@ impl KillEaterScoreType {
         self.into()
     }
 }
+
 impl Attributes for KillEaterScoreType {
     const DEFINDEX: &'static [u32] = &[
         292,
@@ -259,9 +273,9 @@ impl Attributes for KillEaterScoreType {
         384,
     ];
     const USES_FLOAT_VALUE: bool = true;
-    /// Represents the "kill_eater_score_type", "kill_eater_score_type_2", "kill_eater_score_type_3",
-    /// "kill_eater_user_score_type_1", "kill_eater_user_score_type_2", and
-    /// "kill_eater_user_score_type_3", attributes.
+    /// Represents the "kill_eater_score_type", "kill_eater_score_type_2",
+    /// "kill_eater_score_type_3", "kill_eater_user_score_type_1", "kill_eater_user_score_type_2",
+    /// and "kill_eater_user_score_type_3", attributes.
     const ATTRIBUTES: &'static [AttributeDef] = &[
         AttributeDef {
             defindex: 292,

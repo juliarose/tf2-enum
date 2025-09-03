@@ -31,6 +31,10 @@
 //!     println!("{quality}");
 //! }
 //! ```
+//! 
+//! If you are using [sqlx](https://crates.io/crates/sqlx) (v0.8) with PostgreSQL, you can enable
+//! the `sqlx-postgres` feature. This adds the appropriate bindings for Postgres databases for
+//! enums.
 
 #![warn(missing_docs)]
 
@@ -45,8 +49,12 @@ mod class;
 mod craft_class;
 mod craft_material_type;
 mod description_format;
+mod drop_type;
 mod effect_type;
+mod flags;
+mod gc_item_sort;
 mod grade;
+mod holiday_restriction;
 mod item_attribute;
 mod item_level;
 mod item_slot;
@@ -56,11 +64,12 @@ mod killstreaker;
 mod origin;
 mod paint;
 mod quality;
+mod rarity;
 mod sheen;
+mod serialize;
 mod spell;
 mod spell_set;
 mod stock_weapon;
-mod serialize;
 mod strange_part;
 mod strange_part_set;
 mod traits;
@@ -86,8 +95,12 @@ pub use class::Class;
 pub use craft_class::CraftClass;
 pub use craft_material_type::CraftMaterialType;
 pub use description_format::DescriptionFormat;
+pub use drop_type::DropType;
 pub use effect_type::EffectType;
+pub use flags::Flags;
+pub use gc_item_sort::GCItemSort;
 pub use grade::Grade;
+pub use holiday_restriction::HolidayRestriction;
 pub use item_attribute::ItemAttribute;
 pub use item_level::{ItemLevel, Level};
 pub use item_slot::ItemSlot;
@@ -97,6 +110,7 @@ pub use killstreaker::Killstreaker;
 pub use origin::Origin;
 pub use paint::Paint;
 pub use quality::Quality;
+pub use rarity::Rarity;
 pub use sheen::Sheen;
 pub use spell::{FootprintsSpell, PaintSpell, Spell};
 pub use spell_set::{SpellSet, SpellSetIterator};
@@ -104,3 +118,62 @@ pub use stock_weapon::StockWeapon;
 pub use strange_part::StrangePart;
 pub use strange_part_set::{StrangePartSet, StrangePartSetIterator};
 pub use wear::Wear;
+
+#[cfg(feature = "sqlx-postgres")]
+mod sqlx_macros;
+
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(Capability);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(Class);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(CraftClass);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(CraftMaterialType);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(DescriptionFormat);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(DropType);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(EffectType);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(Grade);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(HolidayRestriction);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(ItemLevel);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(ItemSlot);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(Spell);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_display_postgres!(StockWeapon);
+
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Flags);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(FootprintsSpell);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(GCItemSort);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(KillEaterScoreType);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(KillstreakTier);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Killstreaker);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Origin);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Paint);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(PaintSpell);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Quality);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Rarity);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Sheen);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(StrangePart);
+#[cfg(feature = "sqlx-postgres")]
+impl_sqlx_enum_repr_postgres!(Wear);

@@ -20,6 +20,7 @@ use strum::{Display, EnumCount, EnumIter, EnumString};
 )]
 #[strum(serialize_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
+#[non_exhaustive]
 pub enum Capability {
     /// Whether the item can be painted.
     Paintable,
@@ -47,4 +48,20 @@ pub enum Capability {
     CanConsume,
     /// Whether the item can be unusualified.
     CanUnusualify,
+    /// Whether the item can be collected.
+    CanCollect,
+    /// Whether the item can have a custom texture.
+    CanCustomizeTexture,
+    /// Whether the item can have a spell page.
+    CanSpellPage,
+    /// Whether the item is decodable.
+    Decodable,
+    /// Whether the item is duck upgradable.
+    DuckUpgradable,
+    /// Whether the item is usable.
+    Usable,
+    /// Whether the item is usable in GC.
+    UsableGc,
+    /// Whether the item is usable out of game.
+    UsableOutOfGame,
 }

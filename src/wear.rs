@@ -11,6 +11,19 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
 /// Wear.
+/// 
+/// The repr values are commonly associated with each wear on various platforms
+/// (<https://backpack.tf> or <https://marketplace.tf>). [`Wear::as_float`] refers to the values
+/// used in the schema. [`std::convert::TryFrom`] for [`f32`] and [`f64`] will try to convert to
+/// the appropriate wear variant.
+/// 
+/// # Examples
+/// ```
+/// use std::convert::TryFrom;
+/// use tf2_enum::Wear;
+/// 
+/// assert_eq!(Wear::try_from(0.6f32), Ok(Wear::FieldTested));
+/// ```
 #[derive(
     Debug,
     Clone,

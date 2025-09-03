@@ -22,6 +22,7 @@ use strum::{Display, EnumCount, EnumIter, EnumString};
     IntoPrimitive,
 )]
 #[repr(u32)]
+#[non_exhaustive]
 #[allow(missing_docs)]
 pub enum Origin {
     #[strum(serialize = "Timed Drop")]
