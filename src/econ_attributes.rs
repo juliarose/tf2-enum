@@ -141,8 +141,6 @@ macro_rules! impl_attr {
                 stored_as_integer: $stored_as_integer,
             };
             
-            // These attributes are booleans but our structs are unit types because we assume if an
-            // item has attribute that this is set to true.
             fn attribute_float_value(&self) -> Option<f32> {
                 Some(self.0 as usize as f32)
             }
@@ -1278,5 +1276,14 @@ mod tests {
         
         assert_eq!(series_number_value_float, 2.0);
         assert_eq!(series_number_value, AttributeValue::from(series_number_value_float.to_bits()));
+    }
+    
+    #[test]
+    fn supply_crate_series_try_from() {
+        let series_number = 57u32;
+        // Verifies that we can use the TryFrom trait to create a SupplyCrateSeries from a u32.
+        let supply_crate_series = SupplyCrateSeries::try_from(series_number).unwrap();
+        
+        assert_eq!(supply_crate_series.0, series_number);
     }
 }

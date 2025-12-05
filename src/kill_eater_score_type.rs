@@ -37,7 +37,8 @@ pub enum KillEaterScoreType {
     /// "Kills" used for most Strange weapons.
     #[strum(serialize = "Kills")]
     Kills = 0,
-    #[strum(serialize = "Ubers")]
+    // Allow conversion from both versions, but serialize as "Übers".
+    #[strum(serialize = "Ubers", serialize = "Übers")]
     Ubers = 1,
     #[strum(serialize = "Kill Assists")]
     KillAssists = 2,

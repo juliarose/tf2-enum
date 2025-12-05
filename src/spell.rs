@@ -56,7 +56,7 @@ pub enum Spell {
     PutrescentPigmentation,
     SpectralSpectrum,
     SinisterStaining,
-    // Allow conversion from "Voices From Below" but serialize as "Voices from Below".
+    // Allow conversion from both versions but serialize as "Voices from Below".
     #[strum(serialize = "Voices From Below", serialize = "Voices from Below")]
     VoicesFromBelow,
     PumpkinBombs,

@@ -1,30 +1,17 @@
-//! Provides enumerated types for models related to the Team Fortress 2 item schema. Other
-//! utilities relating to the schema are also included, as well as related item and
-//! attribute conversion helpers. This crate provides a number of additional attributes mostly
-//! related to trading.
+//! Provides enumerated types for attributes related to the Team Fortress 2 item schema.
 //! 
-//! For the most part, definitions here are relatively stable and don't have any new values added
-//! or changed. However, Valve can implement changes to the item schema at any time, which may
-//! affect some of the values defined here.
-//! 
-//! Definitions for things that are often updated like items, skins, and particles are
-//! not included.
+//! Definitions are generally stable, though Valve occasionally changes spelling or adds new values.
+//! Frequently updated values like items, skins, and particles are not included.
 //! 
 //! ## Usage
 //! 
 //! ```
-//! use tf2_enum::{Quality, Spell, ItemLevel, KillstreakTier, IntoEnumIterator};
+//! use tf2_enum::{Quality, Spell, IntoEnumIterator};
 //! use std::str::FromStr;
 //! 
 //! assert_eq!("Unusual".parse::<Quality>().unwrap(), Quality::Unusual);
 //! assert_eq!(Quality::Unusual as u32, 5);
 //! assert_eq!(Spell::HalloweenFire.to_string(), "Halloween Fire");
-//! 
-//! let level = ItemLevel::KillEaterRank.score_level(9000);
-//! let killstreak_tier = KillstreakTier::Professional;
-//! let full_name = format!("{level} {killstreak_tier} Pomson 6000");
-//! 
-//! assert_eq!(full_name, "Hale's Own Professional Killstreak Pomson 6000");
 //! 
 //! /// Iterate over all quality values.
 //! for quality in Quality::iter() {

@@ -12,6 +12,11 @@
 - More robust DEFINDEX consts to types that implement `Attributes`.
 - `from_set_item_tint_rgb_1` and `from_set_item_tint_rgb_2` to `Paint`.
 - `#[non_exhaustive]` for enumerated types where it makes the most sense, like `Capability`.
+- Missing known variants for `Capability`.
+
+### Changed
+- `KillEaterScoreType::Ubers` serializes as "Übers" instead of "Ubers".
+- `ItemLevel` for the Spirit of Giving rank "The Über-Altruist's" to "The Über-Altruist's". 
 
 ## 0.13.0 (2025-08-21)
 

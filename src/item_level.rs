@@ -129,7 +129,7 @@ impl ItemLevel {
                 Level { level: 15, required_score: 158, name: "The First-Class Philanthropist's" },
                 Level { level: 16, required_score: 179, name: "The Humanitarian Hotshot's" },
                 Level { level: 17, required_score: 210, name: "The Selfless Samaritan's" },
-                Level { level: 18, required_score: 250, name: "The Uber-Altruist's" },
+                Level { level: 18, required_score: 250, name: "The Über-Altruist's" },
                 Level { level: 19, required_score: 500, name: "Saxton's Own" },
             ],
             Self::KillEaterHolidayPunchRank => &[
