@@ -6,7 +6,6 @@ edition = "2021"
 rust-version = "1.75.0"
 description = "Provides enumerated types for models related to the Team Fortress 2 item schema."
 authors = ["Julia"]
-homepage = "https://github.com/juliarose/tf2-enum"
 repository = "https://github.com/juliarose/tf2-enum"
 license = "MIT"
 keywords = ["tf2", "steam", "enum"]
@@ -33,4 +32,4 @@ name = "match_vs_hashmap"
 harness = false
 
 [features]
-sqlx-postgres = ["sqlx"]
+sqlx-postgres-0_8 = ["sqlx"]

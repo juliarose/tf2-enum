@@ -3,6 +3,9 @@
 //! Definitions are generally stable, though Valve occasionally changes spelling or adds new values.
 //! Frequently updated values like items, skins, and particles are not included.
 //! 
+//! Includes some additional utilities, such as [`SpellSet`] and [`StrangePartSet`] or working with
+//! sets of spells and strange parts respectively.
+//! 
 //! ## Usage
 //! 
 //! ```
@@ -20,7 +23,7 @@
 //! ```
 //! 
 //! If you are using [sqlx](https://crates.io/crates/sqlx) (v0.8) with PostgreSQL, you can enable
-//! the `sqlx-postgres` feature. This adds the appropriate bindings for Postgres databases for
+//! the `sqlx-postgres-0_8` feature. This adds the appropriate bindings for Postgres databases for
 //! enums.
 
 #![warn(missing_docs)]
@@ -106,61 +109,61 @@ pub use strange_part::StrangePart;
 pub use strange_part_set::{StrangePartSet, StrangePartSetIterator};
 pub use wear::Wear;
 
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 mod sqlx_macros;
 
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(Capability);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(Class);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(CraftClass);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(CraftMaterialType);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(DescriptionFormat);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(DropType);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(EffectType);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(Grade);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(HolidayRestriction);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(ItemLevel);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(ItemSlot);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(Spell);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_display_postgres!(StockWeapon);
 
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Flags);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(FootprintsSpell);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(GCItemSort);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(KillEaterScoreType);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(KillstreakTier);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Killstreaker);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Origin);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Paint);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(PaintSpell);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Quality);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Rarity);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Sheen);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(StrangePart);
-#[cfg(feature = "sqlx-postgres")]
+#[cfg(feature = "sqlx-postgres-0_8")]
 impl_sqlx_enum_repr_postgres!(Wear);

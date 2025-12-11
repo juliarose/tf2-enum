@@ -8,6 +8,7 @@ macro_rules! impl_sqlx_enum_display_postgres {
             fn type_info() -> ::sqlx::postgres::PgTypeInfo {
                 <&str as ::sqlx::Type<::sqlx::Postgres>>::type_info()
             }
+            
             fn compatible(ty: &::sqlx::postgres::PgTypeInfo) -> bool {
                 use sqlx::TypeInfo;
                 matches!(ty.name(), "TEXT" | "VARCHAR")

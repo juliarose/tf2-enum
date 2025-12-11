@@ -13,10 +13,10 @@
 - `from_set_item_tint_rgb_1` and `from_set_item_tint_rgb_2` to `Paint`.
 - `#[non_exhaustive]` for enumerated types where it makes the most sense, like `Capability`.
 - Missing known variants for `Capability`.
+- sqlx bindings for Postgres, enabled with `sqlx-postgres-0_8` feature.
 
 ### Changed
-- `KillEaterScoreType::Ubers` serializes as "Übers" instead of "Ubers".
-- `ItemLevel` for the Spirit of Giving rank "The Über-Altruist's" to "The Über-Altruist's". 
+- Renamed "Uber" strings to be "Über" to match recent changes.
 
 ## 0.13.0 (2025-08-21)
 
