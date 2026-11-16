@@ -253,6 +253,7 @@ impl KillEaterScoreType {
         382,
         384,
     ];
+    
     /// Converts this [`KillEaterScoreType`] into its related [`StrangePart`], if it exists.
     pub fn strange_part(&self) -> Option<StrangePart> {
         StrangePart::try_from(self).ok()

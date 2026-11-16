@@ -13,7 +13,7 @@
 - `from_set_item_tint_rgb_1` and `from_set_item_tint_rgb_2` to `Paint`.
 - `#[non_exhaustive]` for enumerated types where it makes the most sense, like `Capability`.
 - Missing known variants for `Capability`.
-- sqlx bindings for Postgres, enabled with `sqlx-postgres-0_8` feature.
+- sqlx bindings for Postgres, enabled with `sqlx-postgres-0_8` and `sqlx-postgres-0_9` feature.
 
 ### Changed
 - Renamed "Uber" strings to be "Über" to match recent changes.

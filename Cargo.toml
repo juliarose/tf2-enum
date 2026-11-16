@@ -16,7 +16,8 @@ serde = { version = "^1", features = ["derive"] }
 serde_repr = "^0.1"
 strum = { version = "^0.27", features = ["derive"] }
 num_enum = "^0.7"
-sqlx = { version = "~0.8", features = ["postgres"], optional = true }
+sqlx_08 = { package = "sqlx", version = "~0.8", features = ["postgres"], optional = true }
+sqlx_09 = { package = "sqlx", version = "~0.9", features = ["postgres"], optional = true }
 
 [dev-dependencies]
 serde_json = "^1.0"
@@ -32,4 +33,5 @@ name = "match_vs_hashmap"
 harness = false
 
 [features]
-sqlx-postgres-0_8 = ["sqlx"]
+sqlx-postgres-0_8 = ["dep:sqlx_08"]
+sqlx-postgres-0_9 = ["dep:sqlx_09"]

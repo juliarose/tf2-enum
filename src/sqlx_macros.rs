@@ -1,39 +1,38 @@
-
 /// Macro to implement sqlx::Type, Decode, and Encode for a type that implements FromStr and
 /// Display.
 #[macro_export]
 macro_rules! impl_sqlx_enum_display_postgres {
     ($t:ty) => {
-        impl ::sqlx::Type<::sqlx::Postgres> for $t {
-            fn type_info() -> ::sqlx::postgres::PgTypeInfo {
-                <&str as ::sqlx::Type<::sqlx::Postgres>>::type_info()
+        impl $crate::sqlx::Type<$crate::sqlx::Postgres> for $t {
+            fn type_info() -> $crate::sqlx::postgres::PgTypeInfo {
+                <&str as $crate::sqlx::Type<$crate::sqlx::Postgres>>::type_info()
             }
             
-            fn compatible(ty: &::sqlx::postgres::PgTypeInfo) -> bool {
-                use sqlx::TypeInfo;
+            fn compatible(ty: &$crate::sqlx::postgres::PgTypeInfo) -> bool {
+                use $crate::sqlx::TypeInfo;
                 matches!(ty.name(), "TEXT" | "VARCHAR")
             }
         }
 
-        impl<'r> ::sqlx::Decode<'r, ::sqlx::Postgres> for $t {
+        impl<'r> $crate::sqlx::Decode<'r, $crate::sqlx::Postgres> for $t {
             fn decode(
-                value: <::sqlx::Postgres as ::sqlx::Database>::ValueRef<'r>,
+                value: <$crate::sqlx::Postgres as $crate::sqlx::Database>::ValueRef<'r>,
             ) -> Result<$t, Box<dyn std::error::Error + 'static + Send + Sync>> {
-                Ok(<&str as ::sqlx::Decode<'r, ::sqlx::Postgres>>::decode(value)?.parse()?)
+                Ok(<&str as $crate::sqlx::Decode<'r, $crate::sqlx::Postgres>>::decode(value)?.parse()?)
             }
         }
 
-        impl ::sqlx::Encode<'_, ::sqlx::Postgres> for $t {
-            fn encode_by_ref(&self, buf: &mut ::sqlx::postgres::PgArgumentBuffer) -> Result<::sqlx::encode::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        impl $crate::sqlx::Encode<'_, $crate::sqlx::Postgres> for $t {
+            fn encode_by_ref(&self, buf: &mut $crate::sqlx::postgres::PgArgumentBuffer) -> Result<$crate::sqlx::encode::IsNull, Box<dyn std::error::Error + Sync + Send>> {
                 let s = self.to_string();
-                <&str as ::sqlx::Encode<'_, ::sqlx::Postgres>>::encode(&s, buf)
+                <&str as $crate::sqlx::Encode<'_, $crate::sqlx::Postgres>>::encode(&s, buf)
             }
         }
         
-        impl sqlx::postgres::PgHasArrayType for $t {
+        impl $crate::sqlx::postgres::PgHasArrayType for $t {
             // Required method
-            fn array_type_info() -> sqlx::postgres::PgTypeInfo {
-                <&str as sqlx::postgres::PgHasArrayType>::array_type_info()
+            fn array_type_info() -> $crate::sqlx::postgres::PgTypeInfo {
+                <&str as $crate::sqlx::postgres::PgHasArrayType>::array_type_info()
             }
         }
     };
@@ -44,39 +43,39 @@ macro_rules! impl_sqlx_enum_display_postgres {
 #[macro_export]
 macro_rules! impl_sqlx_enum_repr_postgres {
     ($t:ty) => {
-        impl ::sqlx::Type<::sqlx::Postgres> for $t {
-            fn type_info() -> ::sqlx::postgres::PgTypeInfo {
-                <i32 as ::sqlx::Type<::sqlx::Postgres>>::type_info()
+        impl $crate::sqlx::Type<$crate::sqlx::Postgres> for $t {
+            fn type_info() -> $crate::sqlx::postgres::PgTypeInfo {
+                <i32 as $crate::sqlx::Type<$crate::sqlx::Postgres>>::type_info()
             }
             
-            fn compatible(ty: &::sqlx::postgres::PgTypeInfo) -> bool {
-                use sqlx::TypeInfo;
+            fn compatible(ty: &$crate::sqlx::postgres::PgTypeInfo) -> bool {
+                use $crate::sqlx::TypeInfo;
                 matches!(ty.name(), "INT4" | "INTEGER")
             }
         }
 
-        impl<'r> ::sqlx::Decode<'r, ::sqlx::Postgres> for $t {
+        impl<'r> $crate::sqlx::Decode<'r, $crate::sqlx::Postgres> for $t {
             fn decode(
-                value: <::sqlx::Postgres as ::sqlx::Database>::ValueRef<'r>,
+                value: <$crate::sqlx::Postgres as $crate::sqlx::Database>::ValueRef<'r>,
             ) -> Result<$t, Box<dyn std::error::Error + 'static + Send + Sync>> {
-                let v = <i32 as ::sqlx::Decode<'r, ::sqlx::Postgres>>::decode(value)?;
+                let v = <i32 as $crate::sqlx::Decode<'r, $crate::sqlx::Postgres>>::decode(value)?;
                 
                 <$t as ::std::convert::TryFrom<u32>>::try_from(v as u32)
                     .map_err(|_| format!("Invalid enum value for {}: {}", stringify!($t), v).into())
             }
         }
         
-        impl ::sqlx::Encode<'_, ::sqlx::Postgres> for $t {
-            fn encode_by_ref(&self, buf: &mut ::sqlx::postgres::PgArgumentBuffer) -> Result<::sqlx::encode::IsNull, Box<dyn std::error::Error + Sync + Send>> {
+        impl $crate::sqlx::Encode<'_, $crate::sqlx::Postgres> for $t {
+            fn encode_by_ref(&self, buf: &mut $crate::sqlx::postgres::PgArgumentBuffer) -> Result<$crate::sqlx::encode::IsNull, Box<dyn std::error::Error + Sync + Send>> {
                 let v = *self as u32 as i32;
-                <i32 as ::sqlx::Encode<'_, ::sqlx::Postgres>>::encode(v, buf)
+                <i32 as $crate::sqlx::Encode<'_, $crate::sqlx::Postgres>>::encode(v, buf)
             }
         }
         
-        impl sqlx::postgres::PgHasArrayType for $t {
+        impl $crate::sqlx::postgres::PgHasArrayType for $t {
             // Required method
-            fn array_type_info() -> sqlx::postgres::PgTypeInfo {
-                <i32 as sqlx::postgres::PgHasArrayType>::array_type_info()
+            fn array_type_info() -> $crate::sqlx::postgres::PgTypeInfo {
+                <i32 as $crate::sqlx::postgres::PgHasArrayType>::array_type_info()
             }
         }
     };

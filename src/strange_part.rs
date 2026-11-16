@@ -1,4 +1,3 @@
-
 use crate::{
     Attributes,
     AttributeDef,
@@ -137,6 +136,7 @@ pub enum StrangePart {
     #[strum(serialize = "Cloaked Spies Killed")]
     CloakedSpiesKilled = 37,
     #[strum(serialize = "Medics Killed That Have Full ÜberCharge")]
+    #[serde(alias = "Medics Killed That Have Full UberCharge")]
     MedicsKilledThatHaveFullUberCharge = 38,
     #[strum(serialize = "Robots Destroyed")]
     RobotsDestroyed = 39,
@@ -154,6 +154,7 @@ pub enum StrangePart {
     #[strum(serialize = "Submerged Enemy Kills")]
     SubmergedEnemyKills = 48,
     #[strum(serialize = "Kills While Invuln ÜberCharged")]
+    #[serde(alias = "Kills While Invuln UberCharged")]
     KillsWhileInvulnUberCharged = 49,
     #[strum(serialize = "Tanks Destroyed")]
     TanksDestroyed = 61,
